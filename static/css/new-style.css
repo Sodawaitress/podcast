@@ -6,193 +6,180 @@
 }
 
 :root {
-    /* 梦幻女巫主题色彩 - 更柔和可爱的色调，但文字颜色更深 */
-    --primary-color: #9966CC;       /* 更深的紫色 */
-    --secondary-color: #F2E6FF;     /* 超淡梦幻紫 */
-    --accent-color: #FF85C2;        /* 鲜明一点的粉红 */
-    --accent-color2: #D6AEDD;       /* 淡梦幻紫 */
-    --text-color: #4A3B76;          /* 更深的紫色文本，提高可读性 */
-    --light-color: #FFF9FE;         /* 轻微粉紫色调白色 */
-    --dark-color: #6A3A9B;          /* 深紫色 */
+    /* 蒸汽波主题色彩 - 霓虹色调与强烈对比 */
+    --primary-color: #ff00ff;      /* 霓虹粉 */
+    --secondary-color: #00ffff;    /* 霓虹青 */
+    --accent-color: #fe01b1;       /* 亮粉红 */
+    --accent-color2: #9933ff;      /* 亮紫色 */
+    --text-color: #ffffff;         /* 白色文本，增加可读性 */
+    --bg-color: #0b0b1e;           /* 深蓝黑色背景 */
+    --dark-color: #120458;         /* 深紫色 */
+    --grid-color: rgba(0, 255, 255, 0.2); /* 网格线颜色 */
+    --glow-color: rgba(255, 0, 255, 0.7); /* 霓虹粉光晕 */
+    --control-bg: #1a1141;         /* 控制面板背景 */
+    --button-bg: #1d1646;          /* 按钮背景 */
+}
+
+@font-face {
+    font-family: 'VCR OSD Mono';
+    src: url('https://cdn.jsdelivr.net/npm/@typopro/web-vcr-osd-mono@3.7.5/TypoPRO-VCROSDMono.woff2') format('woff2');
+    font-weight: normal;
+    font-style: normal;
 }
 
 body {
-    font-family: 'Noto Sans SC', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-family: 'VCR OSD Mono', 'Courier New', monospace;
     line-height: 1.6;
     color: var(--text-color);
-    background-color: var(--light-color);
+    background-color: var(--bg-color);
     text-align: center;
-    background-image: radial-gradient(circle at top right, rgba(255, 133, 194, 0.05) 0%, transparent 60%), 
-                     radial-gradient(circle at bottom left, rgba(153, 102, 204, 0.05) 0%, transparent 60%);
+    background-image: 
+        linear-gradient(0deg, rgba(18, 4, 88, 0.8) 0%, rgba(11, 11, 30, 0.9) 100%),
+        repeating-linear-gradient(0deg, var(--grid-color) 0px, var(--grid-color) 1px, transparent 1px, transparent 20px),
+        repeating-linear-gradient(90deg, var(--grid-color) 0px, var(--grid-color) 1px, transparent 1px, transparent 20px);
+    background-attachment: fixed;
+    overflow-x: hidden;
 }
 
 .container {
     width: 90%;
-    max-width: 1000px;
+    max-width: 1200px;
     margin: 0 auto;
     padding: 0 15px;
 }
 
 a {
-    color: var(--primary-color);   /* 加深链接颜色 */
+    color: var(--secondary-color);   
     text-decoration: none;
     transition: all 0.3s ease;
+    text-shadow: 0 0 8px var(--secondary-color);
 }
 
 a:hover {
-    color: var(--dark-color);
-    text-decoration: none;
+    color: var(--primary-color);
+    text-shadow: 0 0 15px var(--primary-color);
 }
 
-/* 柔和可爱的彩虹元素 */
-.rainbow-glow {
+/* 控制台风格的元素 */
+.console-element {
     position: relative;
+    margin: 20px 0;
+    padding: 20px;
+    background-color: var(--control-bg);
+    border: 1px solid var(--secondary-color);
+    border-radius: 5px;
+    box-shadow: 0 0 15px var(--glow-color), inset 0 0 10px rgba(0, 255, 255, 0.3);
 }
 
-.rainbow-glow::before {
-    content: '';
-    position: absolute;
-    left: -10px;
-    right: -10px;
-    top: -10px;
-    bottom: -10px;
-    z-index: -1;
-    border-radius: 20px;
-    background: linear-gradient(
-        135deg, 
-        rgba(255, 183, 197, 0.6) 0%,   /* 柔粉色 */
-        rgba(255, 223, 186, 0.6) 16.6%, /* 柔橙色 */
-        rgba(255, 255, 186, 0.6) 33.3%, /* 柔黄色 */
-        rgba(186, 255, 201, 0.6) 50%,   /* 柔绿色 */
-        rgba(186, 225, 255, 0.6) 66.6%, /* 柔蓝色 */
-        rgba(210, 186, 255, 0.6) 83.3%, /* 柔紫色 */
-        rgba(255, 186, 255, 0.6) 100%   /* 柔粉紫色 */
-    );
-    filter: blur(15px);
-    opacity: 0;
-    transition: opacity 0.5s ease;
-}
-
-.rainbow-glow:hover::before {
-    opacity: 1;
-}
-
-/* 可爱的彩虹边框 */
-.rainbow-border {
-    position: relative;
-}
-
-.rainbow-border::after {
-    content: '';
-    position: absolute;
-    left: 25%;
-    right: 25%;
-    bottom: -5px;
-    height: 4px;
-    background: linear-gradient(
-        to right, 
-        #FFB7C5, /* 柔粉色 */
-        #FFDFBA, /* 柔橙色 */
-        #FFFFBA, /* 柔黄色 */
-        #BAFFC9, /* 柔绿色 */
-        #BAE1FF, /* 柔蓝色 */
-        #D2BAFF, /* 柔紫色 */
-        #FFBAFF  /* 柔粉紫色 */
-    );
-    border-radius: 10px;
-    opacity: 0.8;
-    transform: scaleX(0.8);
-    transition: all 0.3s ease;
-}
-
-.rainbow-border:hover::after {
-    transform: scaleX(1);
-    opacity: 1;
-}
-
-/* 彩虹按钮效果 */
-.rainbow-button {
-    position: relative;
-    z-index: 1;
-    background: white;
-    color: var(--text-color);
-    border: none;
-    border-radius: 25px;
-    padding: 10px 25px;
-    font-weight: 600;
-    overflow: hidden;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-    transition: all 0.3s ease;
-}
-
-.rainbow-button::before {
+.console-element::before {
     content: '';
     position: absolute;
     top: 0;
     left: 0;
     width: 100%;
+    height: 5px;
+    background: linear-gradient(90deg, 
+        transparent 0%, 
+        var(--secondary-color) 50%, 
+        transparent 100%);
+    opacity: 0.7;
+}
+
+/* 电报机按钮效果 */
+.telegraph-button {
+    position: relative;
+    z-index: 1;
+    background: var(--button-bg);
+    color: var(--text-color);
+    border: 2px solid var(--secondary-color);
+    border-radius: 5px;
+    padding: 12px 25px;
+    font-family: 'VCR OSD Mono', monospace;
+    font-weight: bold;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    overflow: hidden;
+    box-shadow: 0 0 15px rgba(0, 255, 255, 0.4), inset 0 0 5px rgba(0, 255, 255, 0.4);
+    transition: all 0.3s cubic-bezier(0.23, 1, 0.32, 1);
+    cursor: pointer;
+    text-shadow: 0 0 5px var(--secondary-color);
+}
+
+.telegraph-button::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
     height: 100%;
     background: linear-gradient(
         90deg, 
-        #FFB7C5, /* 柔粉色 */
-        #FFDFBA, /* 柔橙色 */
-        #FFFFBA, /* 柔黄色 */
-        #BAFFC9, /* 柔绿色 */
-        #BAE1FF, /* 柔蓝色 */
-        #D2BAFF, /* 柔紫色 */
-        #FFBAFF  /* 柔粉紫色 */
+        transparent 0%, 
+        rgba(0, 255, 255, 0.4) 50%, 
+        transparent 100%
     );
     z-index: -1;
-    opacity: 0;
-    transition: opacity 0.3s ease;
+    transition: left 0.5s ease;
 }
 
-.rainbow-button:hover {
-    color: #4A3B76;  /* 更深的文字颜色，提高悬停时的可读性 */
+.telegraph-button:hover {
+    color: var(--secondary-color);
     transform: translateY(-3px);
-    box-shadow: 0 7px 20px rgba(0,0,0,0.15);
+    box-shadow: 0 0 25px rgba(0, 255, 255, 0.6), inset 0 0 10px rgba(0, 255, 255, 0.4);
 }
 
-.rainbow-button:hover::before {
-    opacity: 0.85;
+.telegraph-button:hover::before {
+    left: 100%;
 }
 
-/* 头部样式 */
+.telegraph-button:active {
+    transform: translateY(2px);
+    box-shadow: 0 0 10px rgba(0, 255, 255, 0.3);
+}
+
+/* 头部样式 - 飞船控制台风格 */
 header {
-    background-color: white;
-    box-shadow: 0 4px 20px rgba(153, 102, 204, 0.15);
+    background-color: var(--dark-color);
+    border-bottom: 3px solid var(--secondary-color);
     padding: 2rem 0;
     margin-bottom: 3rem;
     position: relative;
     overflow: hidden;
+    box-shadow: 0 0 30px rgba(0, 255, 255, 0.5);
 }
 
-/* 柔和彩虹顶部装饰 */
-header::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    height: 5px;
-    background: linear-gradient(
-        to right, 
-        #FFB7C5, /* 柔粉色 */
-        #FFDFBA, /* 柔橙色 */
-        #FFFFBA, /* 柔黄色 */
-        #BAFFC9, /* 柔绿色 */
-        #BAE1FF, /* 柔蓝色 */
-        #D2BAFF, /* 柔紫色 */
-        #FFBAFF  /* 柔粉紫色 */
-    );
-    opacity: 0.8;
-}
-
+/* 霓虹灯标题效果 */
 header h1 {
     margin: 0 0 0.5rem 0;
-    font-size: 2.5rem;
+    font-size: 3rem;
     color: var(--primary-color);
     font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 3px;
+    text-shadow: 
+        0 0 5px var(--primary-color),
+        0 0 10px var(--primary-color),
+        0 0 15px var(--primary-color),
+        0 0 20px var(--primary-color);
+    animation: neon-pulse 1.5s infinite alternate;
+}
+
+@keyframes neon-pulse {
+    0% {
+        text-shadow: 
+            0 0 5px var(--primary-color),
+            0 0 10px var(--primary-color),
+            0 0 15px var(--primary-color),
+            0 0 20px var(--primary-color);
+    }
+    100% {
+        text-shadow: 
+            0 0 5px var(--primary-color),
+            0 0 10px var(--primary-color),
+            0 0 15px var(--primary-color),
+            0 0 20px var(--primary-color),
+            0 0 30px var(--primary-color);
+    }
 }
 
 header h1 a {
@@ -202,14 +189,17 @@ header h1 a {
 
 header p {
     font-size: 1.2rem;
-    color: var(--text-color);
+    color: var(--secondary-color);
     margin-bottom: 1.5rem;
     font-style: italic;
-    opacity: 0.9;
+    text-shadow: 0 0 5px var(--secondary-color);
+    letter-spacing: 1px;
 }
 
 header nav {
-    margin-top: 1rem;
+    margin-top: 1.5rem;
+    border-top: 1px solid rgba(0, 255, 255, 0.3);
+    padding-top: 1.5rem;
 }
 
 header nav ul {
@@ -221,18 +211,22 @@ header nav ul {
 
 header nav ul li a {
     font-weight: 600;
-    font-size: 1.1rem;
-    padding: 0.5rem 1rem;
-    border-radius: 20px;
+    font-size: 1rem;
+    padding: 0.7rem 1.2rem;
+    border-radius: 3px;
     transition: all 0.3s ease;
+    border: 1px solid transparent;
+    text-transform: uppercase;
+    letter-spacing: 2px;
 }
 
 header nav ul li a:hover {
-    background-color: var(--secondary-color);
-    color: var(--dark-color);
+    background-color: rgba(0, 255, 255, 0.1);
+    border: 1px solid var(--secondary-color);
+    box-shadow: 0 0 15px rgba(0, 255, 255, 0.5);
 }
 
-/* 主内容区 */
+/* 主内容区 - 电报机控制台 */
 main {
     min-height: 70vh;
     padding: 2rem 0 4rem;
@@ -240,25 +234,28 @@ main {
 
 h2 {
     margin-bottom: 2rem;
-    padding-bottom: 0.8rem;
+    padding-bottom: 1rem;
     font-size: 2rem;
-    color: var(--primary-color);
+    color: var(--secondary-color);
     position: relative;
     display: inline-block;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    text-shadow: 0 0 10px var(--secondary-color);
 }
 
 h2::after {
     content: "";
     position: absolute;
     bottom: 0;
-    left: 25%;
-    width: 50%;
+    left: 10%;
+    width: 80%;
     height: 3px;
-    background-color: var(--accent-color);
-    border-radius: 10px;
+    background-color: var(--secondary-color);
+    box-shadow: 0 0 10px var(--secondary-color);
 }
 
-/* 播客列表 */
+/* 电报机/控制台面板列表 */
 .episodes-list {
     display: grid;
     gap: 2rem;
@@ -267,13 +264,13 @@ h2::after {
 }
 
 .episode-card {
-    background: white;
-    border-radius: 18px;
+    background: var(--control-bg);
+    border: 2px solid var(--secondary-color);
+    border-radius: 5px;
     padding: 1.8rem;
-    box-shadow: 0 10px 30px rgba(153, 102, 204, 0.1);
-    transition: all 0.4s ease;
+    box-shadow: 0 0 20px rgba(0, 255, 255, 0.3);
+    transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
     text-align: left;
-    border: 1px solid rgba(153, 102, 204, 0.1);
     position: relative;
     overflow: hidden;
 }
@@ -284,140 +281,131 @@ h2::after {
     top: 0;
     left: 0;
     width: 100%;
-    height: 5px;
-    background: linear-gradient(
-        to right, 
-        #FFB7C5, /* 柔粉色 */
-        #FFDFBA, /* 柔橙色 */
-        #FFFFBA, /* 柔黄色 */
-        #BAFFC9, /* 柔绿色 */
-        #BAE1FF, /* 柔蓝色 */
-        #D2BAFF, /* 柔紫色 */
-        #FFBAFF  /* 柔粉紫色 */
-    );
-    opacity: 0;
-    transition: opacity 0.4s ease;
+    height: 100%;
+    background: 
+        linear-gradient(0deg, transparent 90%, var(--secondary-color) 100%),
+        linear-gradient(90deg, transparent 90%, var(--secondary-color) 100%);
+    opacity: 0.2;
+    pointer-events: none;
+}
+
+.episode-card::after {
+    content: '';
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    width: 10px;
+    height: 10px;
+    background-color: var(--secondary-color);
+    border-radius: 50%;
+    box-shadow: 0 0 10px var(--secondary-color);
+    animation: blink 2s infinite alternate;
+}
+
+@keyframes blink {
+    0%, 80% {
+        opacity: 1;
+    }
+    90%, 100% {
+        opacity: 0.2;
+    }
 }
 
 .episode-card:hover {
-    transform: translateY(-8px);
-    box-shadow: 0 15px 35px rgba(153, 102, 204, 0.2);
-    border-color: var(--secondary-color);
-}
-
-.episode-card:hover::before {
-    opacity: 1;
+    transform: translateY(-8px) scale(1.02);
+    box-shadow: 0 0 30px rgba(0, 255, 255, 0.5);
 }
 
 .episode-card h3 {
     margin-bottom: 0.8rem;
     font-size: 1.4rem;
     color: var(--primary-color);
+    text-shadow: 0 0 5px var(--primary-color);
+    letter-spacing: 1px;
 }
 
 .episode-meta {
     font-size: 0.9rem;
-    color: #775DA9;  /* 加深元数据颜色 */
+    color: var(--secondary-color);
     margin-bottom: 1rem;
     display: flex;
     gap: 1rem;
+    opacity: 0.8;
 }
 
 .episode-description {
     margin-bottom: 1.5rem;
     color: var(--text-color);
     line-height: 1.7;
+    font-family: 'Courier New', monospace;
+    opacity: 0.9;
 }
 
 .button {
     display: inline-block;
-    background: var(--primary-color);
-    color: white;
+    background: linear-gradient(45deg, var(--dark-color), var(--control-bg));
+    color: var(--secondary-color);
     padding: 0.7rem 1.5rem;
-    border-radius: 25px;
+    border: 1px solid var(--secondary-color);
+    border-radius: 3px;
     text-decoration: none;
-    font-size: 1rem;
-    border: none;
+    font-size: 0.9rem;
+    font-family: 'VCR OSD Mono', monospace;
     cursor: pointer;
     transition: all 0.3s ease;
-    box-shadow: 0 5px 15px rgba(153, 102, 204, 0.3);
-    font-weight: 600;
+    box-shadow: 0 0 10px rgba(0, 255, 255, 0.3);
+    text-transform: uppercase;
+    letter-spacing: 1px;
 }
 
 .button:hover {
-    background: var(--accent-color);
-    transform: translateY(-3px);
-    box-shadow: 0 8px 20px rgba(153, 102, 204, 0.4);
+    background: var(--control-bg);
+    box-shadow: 0 0 20px rgba(0, 255, 255, 0.6);
+    text-shadow: 0 0 5px var(--secondary-color);
 }
 
-/* 为世界不再恐同日添加特殊的按钮效果 */
-.pride-button {
+/* 电报机发光指示灯效果 */
+.indicator-light {
     display: inline-block;
-    background: white;
-    color: var(--text-color);
-    padding: 0.7rem 1.5rem;
-    border-radius: 25px;
-    text-decoration: none;
-    font-size: 1rem;
-    border: none;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-    font-weight: 600;
-    position: relative;
-    z-index: 1;
-    overflow: hidden;
+    width: 15px;
+    height: 15px;
+    border-radius: 50%;
+    margin-right: 10px;
+    vertical-align: middle;
+    background-color: var(--secondary-color);
+    box-shadow: 0 0 10px var(--secondary-color);
+    animation: indicator-pulse 2s infinite alternate;
 }
 
-.pride-button::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    z-index: -1;
-    background: linear-gradient(
-        90deg, 
-        #FFB7C5, /* 柔粉色 */
-        #FFDFBA, /* 柔橙色 */
-        #FFFFBA, /* 柔黄色 */
-        #BAFFC9, /* 柔绿色 */
-        #BAE1FF, /* 柔蓝色 */
-        #D2BAFF, /* 柔紫色 */
-        #FFBAFF  /* 柔粉紫色 */
-    );
-    opacity: 0;
-    transition: opacity 0.3s ease;
-}
-
-.pride-button:hover {
-    color: #4A3B76;  /* 更深的文字颜色，提高悬停时的可读性 */
-    transform: translateY(-3px);
-    box-shadow: 0 8px 20px rgba(0,0,0,0.15);
-}
-
-.pride-button:hover::before {
-    opacity: 1;
+@keyframes indicator-pulse {
+    0% {
+        opacity: 0.6;
+        box-shadow: 0 0 5px var(--secondary-color);
+    }
+    100% {
+        opacity: 1;
+        box-shadow: 0 0 15px var(--secondary-color);
+    }
 }
 
 .locked-indicator {
-    color: #775DA9;  /* 加深锁定指示器颜色 */
+    color: var(--primary-color);
     margin-left: 5px;
     font-size: 0.9rem;
+    text-shadow: 0 0 5px var(--primary-color);
 }
 
-/* 单集页面 */
+/* 单集页面 - 电报机/控制台详情 */
 .episode-detail {
-    background: white;
-    border-radius: 24px;
+    background: var(--control-bg);
+    border: 2px solid var(--secondary-color);
+    border-radius: 5px;
     padding: 3rem;
-    box-shadow: 0 15px 35px rgba(153, 102, 204, 0.1);
+    box-shadow: 0 0 30px rgba(0, 255, 255, 0.3);
     max-width: 800px;
     margin: 0 auto;
     text-align: left;
     position: relative;
-    overflow: hidden;
 }
 
 .episode-detail::before {
@@ -425,49 +413,39 @@ h2::after {
     position: absolute;
     top: 0;
     left: 0;
-    width: 100%;
-    height: 8px;
-    background: linear-gradient(
-        to right, 
-        #FFB7C5, /* 柔粉色 */
-        #FFDFBA, /* 柔橙色 */
-        #FFFFBA, /* 柔黄色 */
-        #BAFFC9, /* 柔绿色 */
-        #BAE1FF, /* 柔蓝色 */
-        #D2BAFF, /* 柔紫色 */
-        #FFBAFF  /* 柔粉紫色 */
-    );
-    opacity: 0.8;
+    right: 0;
+    height: 5px;
+    background: var(--secondary-color);
+    box-shadow: 0 0 10px var(--secondary-color);
 }
 
+/* 控制台样式音频播放器 */
 .audio-player {
     margin: 2rem 0;
-    background: var(--secondary-color);
+    background: rgba(0, 0, 0, 0.3);
     padding: 1.5rem;
-    border-radius: 18px;
+    border: 1px solid var(--secondary-color);
+    border-radius: 5px;
+    box-shadow: inset 0 0 10px rgba(0, 255, 255, 0.2);
 }
 
 .audio-player audio {
     width: 100%;
     margin-bottom: 1rem;
-    border-radius: 12px;
+    border-radius: 3px;
+    filter: hue-rotate(180deg); /* 改变播放器颜色以匹配主题 */
 }
 
-.download-links {
-    margin-top: 1.5rem;
-    text-align: center;
-}
-
-/* 密码保护 */
+/* 电报机密码终端 */
 .password-protection {
-    background: rgba(242, 230, 255, 0.4);
+    background: rgba(0, 0, 0, 0.3);
     padding: 2.5rem;
-    border-radius: 20px;
+    border: 2px solid var(--secondary-color);
+    border-radius: 5px;
     margin: 2rem auto;
     text-align: center;
     max-width: 500px;
-    border: 2px dashed rgba(153, 102, 204, 0.3);
-    box-shadow: 0 10px 30px rgba(153, 102, 204, 0.05);
+    box-shadow: 0 0 20px rgba(0, 255, 255, 0.3), inset 0 0 15px rgba(0, 0, 0, 0.5);
 }
 
 .form-group {
@@ -478,86 +456,100 @@ h2::after {
     display: block;
     margin-bottom: 0.7rem;
     font-weight: 600;
-    color: var(--primary-color);
+    color: var(--secondary-color);
+    text-shadow: 0 0 5px var(--secondary-color);
+    letter-spacing: 1px;
+    text-transform: uppercase;
 }
 
 .form-group input,
 .form-group textarea {
     width: 100%;
     padding: 1rem;
-    border: 2px solid var(--secondary-color);
-    border-radius: 12px;
-    font-family: inherit;
+    background: rgba(0, 0, 0, 0.5);
+    border: 1px solid var(--secondary-color);
+    border-radius: 3px;
+    color: var(--text-color);
+    font-family: 'VCR OSD Mono', monospace;
     font-size: 1rem;
     transition: all 0.3s ease;
-    background-color: rgba(255, 255, 255, 0.8);
+    box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.5);
 }
 
 .form-group input:focus,
 .form-group textarea:focus {
     outline: none;
-    border-color: var(--accent-color);
-    box-shadow: 0 0 0 4px rgba(255, 133, 194, 0.15);
-    background-color: white;
+    border-color: var(--primary-color);
+    box-shadow: 0 0 15px rgba(255, 0, 255, 0.4), inset 0 0 10px rgba(0, 0, 0, 0.7);
 }
 
 .error-message {
-    color: #ff6b6b;
+    color: #ff2d55;
     margin: 0.8rem 0;
     font-weight: 600;
+    text-shadow: 0 0 5px #ff2d55;
 }
 
-/* 分享选项 */
+/* 终端共享链接 */
 .sharing-options {
     margin-top: 3rem;
     padding-top: 2rem;
-    border-top: 3px dashed var(--secondary-color);
+    border-top: 1px solid var(--secondary-color);
     text-align: center;
 }
 
 .sharing-options h3 {
     margin-bottom: 1rem;
-    color: var(--primary-color);
+    color: var(--secondary-color);
+    text-shadow: 0 0 5px var(--secondary-color);
+    text-transform: uppercase;
+    letter-spacing: 1px;
 }
 
 .sharing-options input {
     width: 100%;
     padding: 0.8rem;
     margin-bottom: 1rem;
-    border: 2px solid var(--secondary-color);
-    border-radius: 12px;
-    font-family: monospace;
+    background: rgba(0, 0, 0, 0.5);
+    border: 1px solid var(--secondary-color);
+    border-radius: 3px;
+    font-family: 'VCR OSD Mono', monospace;
     font-size: 0.9rem;
-    background-color: rgba(255, 255, 255, 0.8);
+    color: var(--text-color);
+    box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.5);
 }
 
 .back-link {
     display: inline-block;
     margin-top: 2.5rem;
-    color: var(--text-color);
+    color: var(--secondary-color);
     font-weight: 600;
     position: relative;
     padding: 0.5rem 1rem;
-    border-radius: 8px;
+    border-radius: 3px;
     transition: all 0.3s ease;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    border: 1px solid transparent;
 }
 
 .back-link:hover {
-    background-color: var(--secondary-color);
-    color: var(--dark-color);
+    background-color: rgba(0, 255, 255, 0.1);
+    border: 1px solid var(--secondary-color);
+    box-shadow: 0 0 10px rgba(0, 255, 255, 0.3);
 }
 
-/* 上传表单 */
+/* 终端风格上传界面 */
 .upload-form {
     max-width: 700px;
     margin: 0 auto 3rem auto;
-    background: white;
+    background: var(--control-bg);
     padding: 3rem;
-    border-radius: 24px;
-    box-shadow: 0 15px 35px rgba(153, 102, 204, 0.1);
+    border: 2px solid var(--secondary-color);
+    border-radius: 5px;
+    box-shadow: 0 0 30px rgba(0, 255, 255, 0.3);
     text-align: left;
     position: relative;
-    overflow: hidden;
 }
 
 .upload-form::before {
@@ -565,19 +557,10 @@ h2::after {
     position: absolute;
     top: 0;
     left: 0;
-    width: 100%;
-    height: 8px;
-    background: linear-gradient(
-        to right, 
-        #FFB7C5, /* 柔粉色 */
-        #FFDFBA, /* 柔橙色 */
-        #FFFFBA, /* 柔黄色 */
-        #BAFFC9, /* 柔绿色 */
-        #BAE1FF, /* 柔蓝色 */
-        #D2BAFF, /* 柔紫色 */
-        #FFBAFF  /* 柔粉紫色 */
-    );
-    opacity: 0.8;
+    right: 0;
+    height: 5px;
+    background: var(--secondary-color);
+    box-shadow: 0 0 10px var(--secondary-color);
 }
 
 .upload-form h2 {
@@ -585,76 +568,63 @@ h2::after {
     text-align: center;
 }
 
-/* 订阅指南 */
+/* 订阅终端指南 */
 .subscription-guide {
     margin: 4rem auto 0 auto;
     padding: 2.5rem;
-    background: rgba(242, 230, 255, 0.4);
-    border-radius: 24px;
+    background: rgba(0, 0, 0, 0.3);
+    border: 2px solid var(--secondary-color);
+    border-radius: 5px;
     max-width: 800px;
     text-align: left;
-    box-shadow: 0 15px 30px rgba(153, 102, 204, 0.1);
+    box-shadow: 0 0 20px rgba(0, 255, 255, 0.3), inset 0 0 15px rgba(0, 0, 0, 0.5);
 }
 
 .subscription-guide h3 {
     margin-bottom: 1.5rem;
-    color: var(--primary-color);
+    color: var(--secondary-color);
     font-size: 1.5rem;
     text-align: center;
+    text-shadow: 0 0 5px var(--secondary-color);
+    text-transform: uppercase;
+    letter-spacing: 1px;
 }
 
 .subscription-guide code {
-    background: white;
+    background: rgba(0, 0, 0, 0.5);
     padding: 0.3rem 0.6rem;
-    border-radius: 8px;
+    border-radius: 3px;
     font-size: 0.9rem;
-    color: var(--dark-color);
-    border: 1px solid var(--secondary-color);
+    color: var(--primary-color);
+    border: 1px solid rgba(255, 0, 255, 0.3);
+    font-family: 'VCR OSD Mono', monospace;
+    text-shadow: 0 0 5px var(--primary-color);
 }
 
-/* 页脚 */
+/* 控制台风格页脚 */
 footer {
-    background: var(--primary-color);
-    color: white;
+    background: var(--dark-color);
+    color: var(--text-color);
     padding: 3rem 0;
     margin-top: 5rem;
     position: relative;
-    overflow: hidden;
-}
-
-footer::before {
-    content: '';
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    width: 100%;
-    height: 5px;
-    background: linear-gradient(
-        to right, 
-        #FFB7C5, /* 柔粉色 */
-        #FFDFBA, /* 柔橙色 */
-        #FFFFBA, /* 柔黄色 */
-        #BAFFC9, /* 柔绿色 */
-        #BAE1FF, /* 柔蓝色 */
-        #D2BAFF, /* 柔紫色 */
-        #FFBAFF  /* 柔粉紫色 */
-    );
-    opacity: 0.8;
+    border-top: 3px solid var(--secondary-color);
+    box-shadow: 0 0 30px rgba(0, 255, 255, 0.5);
 }
 
 footer a {
-    color: white;
+    color: var(--secondary-color);
     font-weight: 600;
-    text-decoration: underline;
     transition: all 0.3s ease;
+    text-shadow: 0 0 5px var(--secondary-color);
 }
 
 footer a:hover {
-    color: var(--light-color);
-    text-decoration: none;
+    color: var(--primary-color);
+    text-shadow: 0 0 8px var(--primary-color);
 }
 
-/* 模态框 */
+/* 控制台模态框 */
 .modal {
     display: none;
     position: fixed;
@@ -663,119 +633,128 @@ footer a:hover {
     top: 0;
     width: 100%;
     height: 100%;
-    background-color: rgba(0,0,0,0.7);
+    background-color: rgba(0, 0, 0, 0.8);
 }
 
 .modal-content {
-    background-color: white;
+    background-color: var(--control-bg);
     margin: 10% auto;
     padding: 3rem;
-    border-radius: 24px;
+    border: 2px solid var(--secondary-color);
+    border-radius: 5px;
     max-width: 550px;
     position: relative;
-    box-shadow: 0 20px 50px rgba(106, 58, 155, 0.3);
+    box-shadow: 0 0 30px rgba(0, 255, 255, 0.4);
 }
 
 .close {
     position: absolute;
     right: 1.5rem;
     top: 1rem;
-    color: var(--text-color);
+    color: var(--secondary-color);
     font-size: 2rem;
     font-weight: bold;
     cursor: pointer;
     transition: all 0.3s ease;
+    text-shadow: 0 0 5px var(--secondary-color);
 }
 
 .close:hover {
-    color: var(--accent-color);
+    color: var(--primary-color);
+    text-shadow: 0 0 10px var(--primary-color);
     transform: rotate(90deg);
 }
 
-/* 可爱的魔法光标效果 - 改为粉紫色 */
-.magic-cursor {
+/* 扫描线效果 */
+body::after {
+    content: '';
     position: fixed;
-    pointer-events: none;
-    width: 30px;
-    height: 30px;
-    border-radius: 50%;
-    transform: translate(-50%, -50%);
-    z-index: 9999;
-    mix-blend-mode: difference;
-    transition: width 0.2s, height 0.2s;
-    background: radial-gradient(
-        circle, 
-        rgba(255, 255, 255, 0.8) 0%, 
-        rgba(255, 133, 194, 0.6) 30%, 
-        rgba(210, 186, 255, 0.4) 60%,
-        rgba(255, 186, 255, 0) 100%
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(
+        to bottom,
+        rgba(0, 0, 0, 0) 0%,
+        rgba(0, 255, 255, 0.07) 50%,
+        rgba(0, 0, 0, 0) 100%
     );
-    filter: blur(2px);
-}
-
-.magic-cursor.grow {
-    width: 50px;
-    height: 50px;
-}
-
-/* 魔法星星特效 - 改为更多粉紫色调 */
-.magic-stars {
-    position: absolute;
-    width: 3px;
-    height: 3px;
-    border-radius: 50%;
-    box-shadow: 
-        0 0 #fff,
-        0 0 #fff,
-        0 0 #fff,
-        0 0 #fff,
-        0 0 #fff,
-        0 0 #fff,
-        0 0 #fff;
-    animation: sparkle 1.5s infinite linear;
     pointer-events: none;
+    animation: scanline 8s linear infinite;
+    z-index: 1001;
 }
 
-@keyframes sparkle {
+@keyframes scanline {
+    0% {
+        transform: translateY(-100%);
+    }
+    100% {
+        transform: translateY(100%);
+    }
+}
+
+/* 终端闪烁光标 */
+.terminal-cursor {
+    display: inline-block;
+    width: 10px;
+    height: 20px;
+    background-color: var(--secondary-color);
+    margin-left: 5px;
+    animation: blink-cursor 1s step-end infinite;
+    vertical-align: middle;
+}
+
+@keyframes blink-cursor {
     0%, 100% {
-        box-shadow: 
-            0 0 #fff,
-            0 0 #fff,
-            0 0 #fff,
-            0 0 #fff,
-            0 0 #fff,
-            0 0 #fff,
-            0 0 #fff;
+        opacity: 0;
     }
-    20% {
-        box-shadow: 
-            0 -10px #FFB7C5,
-            10px 0 #FFBAFF,
-            0 10px #D2BAFF,
-            -10px 0 #FFB7C5,
-            5px -5px #FFBAFF,
-            -5px 5px #D2BAFF,
-            5px 5px #FFB7C5;
+    50% {
+        opacity: 1;
     }
-    40% {
-        box-shadow: 
-            0 -20px #FFB7C5,
-            20px 0 #FFBAFF,
-            0 20px #D2BAFF,
-            -20px 0 #FFB7C5,
-            10px -10px #FFBAFF,
-            -10px 10px #D2BAFF,
-            10px 10px #FFB7C5;
+}
+
+/* 飞船控制台LED灯效果 */
+.control-lights {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    margin: 1.5rem 0;
+}
+
+.control-light {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background-color: rgba(255, 255, 255, 0.8);
+    box-shadow: 0 0 8px currentColor;
+}
+
+.control-light.red {
+    color: #ff2d55;
+    animation: blink-light 2.5s infinite alternate;
+}
+
+.control-light.green {
+    color: #00ff9d;
+    animation: blink-light 3.7s infinite alternate-reverse;
+}
+
+.control-light.blue {
+    color: #00ccff;
+    animation: blink-light 1.8s infinite alternate;
+}
+
+.control-light.purple {
+    color: #da00ff;
+    animation: blink-light 4.2s infinite alternate-reverse;
+}
+
+@keyframes blink-light {
+    0%, 80% {
+        opacity: 1;
     }
-    60% {
-        box-shadow: 
-            0 -30px transparent,
-            30px 0 transparent,
-            0 30px transparent,
-            -30px 0 transparent,
-            15px -15px transparent,
-            -15px 15px transparent,
-            15px 15px transparent;
+    90%, 100% {
+        opacity: 0.4;
     }
 }
 
@@ -801,75 +780,120 @@ footer a:hover {
         flex-direction: column;
         gap: 1rem;
     }
+    
+    .console-element {
+        padding: 15px;
+    }
 }
 
-/* 一些有趣的动画和过渡效果 */
-@keyframes rainbow-pulse {
+/* 旧电视静电效果 */
+body::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyMDAiIGhlaWdodD0iMjAwIj48ZmlsdGVyIGlkPSJhIiB4PSIwIiB5PSIwIj48ZmVUdXJidWxlbmNlIHR5cGU9ImZyYWN0YWxOb2lzZSIgYmFzZUZyZXF1ZW5jeT0iLjc1IiBzdGl0Y2hUaWxlcz0ic3RpdGNoIi8+PGZlQ29sb3JNYXRyaXggdHlwZT0ic2F0dXJhdGUiIHZhbHVlcz0iMCIvPjwvZmlsdGVyPjxwYXRoIGZpbHRlcj0idXJsKCNhKSIgb3BhY2l0eT0iLjA1IiBkPSJNMCAwaDIwMHYyMDBIMHoiLz48L3N2Zz4=');
+    pointer-events: none;
+    opacity: 0.3;
+    z-index: 1000;
+}
+
+/* 电子荧光效果 */
+.glow-text {
+    text-shadow: 
+        0 0 5px currentColor,
+        0 0 10px currentColor;
+    animation: text-glow 2s infinite alternate;
+}
+
+@keyframes text-glow {
     0% {
-        background-position: 0% 50%;
-    }
-    50% {
-        background-position: 100% 50%;
+        text-shadow: 
+            0 0 5px currentColor,
+            0 0 10px currentColor;
     }
     100% {
-        background-position: 0% 50%;
+        text-shadow: 
+            0 0 5px currentColor,
+            0 0 10px currentColor,
+            0 0 15px currentColor;
     }
 }
 
-.rainbow-pulse {
-    background: linear-gradient(
-        90deg, 
-        #FFB7C5, /* 柔粉色 */
-        #FFBAFF, /* 粉紫色 */
-        #D2BAFF, /* 柔紫色 */
-        #BAE1FF, /* 柔蓝色 */
-        #D2BAFF, /* 柔紫色 */
-        #FFBAFF, /* 粉紫色 */
-        #FFB7C5  /* 柔粉色 */
-    );
-    background-size: 400% 400%;
-    animation: rainbow-pulse 8s ease infinite;
+/* 星际战舰按钮控制板 */
+.control-panel {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 15px;
+    margin: 30px 0;
+    padding: 20px;
+    background: var(--control-bg);
+    border: 2px solid var(--secondary-color);
+    border-radius: 5px;
+    box-shadow: 0 0 20px rgba(0, 255, 255, 0.3), inset 0 0 15px rgba(0, 0, 0, 0.5);
 }
 
-/* 特殊效果：彩虹悬浮卡片 */
-.rainbow-float-card {
+.control-button {
     position: relative;
-    overflow: hidden;
-    border-radius: 18px;
-    padding: 2rem;
-    background: white;
-    box-shadow: 0 10px 30px rgba(153, 102, 204, 0.1);
-    transition: all 0.5s ease;
+    padding: 15px;
+    background: linear-gradient(to bottom, rgba(30, 16, 78, 1) 0%, rgba(14, 7, 36, 1) 100%);
+    border: 1px solid var(--secondary-color);
+    border-radius: 5px;
+    color: var(--text-color);
+    font-family: 'VCR OSD Mono', monospace;
+    text-align: center;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 0 10px rgba(0, 255, 255, 0.2);
 }
 
-.rainbow-float-card::before {
+.control-button::before {
     content: '';
     position: absolute;
-    top: -5px;
-    left: -5px;
-    right: -5px;
-    bottom: -5px;
-    z-index: -1;
-    background: linear-gradient(
-        45deg, 
-        #FFB7C5, /* 柔粉色 */
-        #FFBAFF, /* 粉紫色 */
-        #D2BAFF, /* 柔紫色 */
-        #BAE1FF, /* 柔蓝色 */
-        #D2BAFF, /* 柔紫色 */
-        #FFBAFF, /* 粉紫色 */
-        #FFB7C5  /* 柔粉色 */
-    );
-    border-radius: 23px;
-    opacity: 0;
-    transition: all 0.5s ease;
+    top: 5px;
+    right: 5px;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background-color: var(--primary-color);
+    box-shadow: 0 0 8px var(--primary-color);
+    opacity: 0.7;
 }
 
-.rainbow-float-card:hover {
-    transform: translateY(-10px);
-    box-shadow: 0 20px 40px rgba(153, 102, 204, 0.2);
+.control-button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 0 15px rgba(0, 255, 255, 0.4);
 }
 
-.rainbow-float-card:hover::before {
+.control-button:hover::before {
+    background-color: var(--secondary-color);
+    box-shadow: 0 0 10px var(--secondary-color);
     opacity: 1;
+}
+
+/* 电报机或电脑终端输出效果 */
+.terminal-output {
+    background: rgba(0, 0, 0, 0.5);
+    color: var(--secondary-color);
+    font-family: 'VCR OSD Mono', monospace;
+    padding: 20px;
+    border: 1px solid var(--secondary-color);
+    border-radius: 5px;
+    box-shadow: inset 0 0 15px rgba(0, 0, 0, 0.5);
+    text-align: left;
+    margin: 20px 0;
+    height: 200px;
+    overflow-y: auto;
+    position: relative;
+}
+
+.terminal-output::before {
+    content: '> SYSTEM READY';
+    display: block;
+    color: var(--secondary-color);
+    margin-bottom: 10px;
 }
