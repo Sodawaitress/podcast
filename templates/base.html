@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}{{ site_name }}{% endblock %}</title>
+    <meta name="description" content="{{ site_description }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/new-style.css') }}">
+</head>
+<script src="{{ url_for('static', filename='js/magic.js') }}"></script>
+<!-- 放在base.html的</body>标签前 -->
+<script>
+    /**
+     * 美丽浅蓝紫色光标效果 - 完全无绿色
+     */
+    document.addEventListener('DOMContentLoaded', function() {
+      // 首先移除任何可能存在的旧光标效果
+      const oldCursors = document.querySelectorAll('.pure-pink-cursor, .kawaii-cursor, .kawaii-cursor-ring, .magic-cursor');
+      oldCursors.forEach(el => el.remove());
+      
+      // 添加浅蓝紫色光标样式
+      const style = document.createElement('style');
+      style.textContent = `
+      .lavender-cursor {
+        position: fixed;
+        pointer-events: none;
+        width: 20px;
+        height: 20px;
+        border-radius: 50%;
+        transform: translate(-50%, -50%);
+        z-index: 9999;
+        background: rgba(181, 173, 237, 0.8);  /* 浅蓝紫色 */
+        transition: all 0.2s ease;
+      }
+    
+      .lavender-cursor.hover {
+        width: 32px;
+        height: 32px;
+        background: rgba(147, 137, 211, 0.9);  /* 悬停时更深的蓝紫色 */
+      }
+    
+      .lavender-star {
+        position: absolute;
+        width: 15px;
+        height: 15px;
+        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23b5adee'%3E%3Cpath d='M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z'/%3E%3C/svg%3E");
+        background-size: contain;
+        opacity: 0;
+        z-index: 9998;
+        animation: lavender-star-fade 1.5s forwards;
+      }
+    
+      @keyframes lavender-star-fade {
+        0% {
+          transform: scale(0.5);
+          opacity: 1;
+        }
+        100% {
+          transform: scale(1.2);
+          opacity: 0;
+        }
+      }
+      `;
+      document.head.appendChild(style);
+      
+      // 创建浅蓝紫色光标元素
+      const cursor = document.createElement('div');
+      cursor.classList.add('lavender-cursor');
+      document.body.appendChild(cursor);
+      
+      // 创建星星容器
+      const starsContainer = document.createElement('div');
+      starsContainer.style.position = 'absolute';
+      starsContainer.style.top = '0';
+      starsContainer.style.left = '0';
+      starsContainer.style.width = '100%';
+      starsContainer.style.height = '100%';
+      starsContainer.style.pointerEvents = 'none';
+      starsContainer.style.overflow = 'hidden';
+      starsContainer.style.zIndex = '9998';
+      document.body.appendChild(starsContainer);
+      
+      // 跟随鼠标移动
+      document.addEventListener('mousemove', function(e) {
+        cursor.style.left = e.clientX + 'px';
+        cursor.style.top = e.clientY + 'px';
+      });
+      
+      // 鼠标悬停在交互元素上时的效果
+      const interactiveElements = document.querySelectorAll('a, button, .button, input[type="submit"], input[type="text"], textarea');
+      interactiveElements.forEach(element => {
+        element.addEventListener('mouseenter', () => {
+          cursor.classList.add('hover');
+          createLavenderStar(cursor.offsetLeft, cursor.offsetTop);
+        });
+        
+        element.addEventListener('mouseleave', () => {
+          cursor.classList.remove('hover');
+        });
+      });
+      
+      // 点击效果
+      document.addEventListener('click', function(e) {
+        // 点击时创建星星爆发
+        createLavenderStarBurst(e.clientX, e.clientY);
+        
+        // 点击动画
+        cursor.style.transform = 'translate(-50%, -50%) scale(0.8)';
+        setTimeout(() => {
+          cursor.style.transform = 'translate(-50%, -50%)';
+        }, 100);
+      });
+      
+      // 创建单个浅蓝紫色星星
+      function createLavenderStar(x, y) {
+        const star = document.createElement('div');
+        star.classList.add('lavender-star');
+        
+        // 随机位置偏移
+        const offsetX = Math.random() * 60 - 30;
+        const offsetY = Math.random() * 60 - 30;
+        
+        star.style.position = 'absolute';
+        star.style.left = (x + offsetX) + 'px';
+        star.style.top = (y + offsetY) + 'px';
+        
+        starsContainer.appendChild(star);
+        
+        // 动画结束后移除星星
+        setTimeout(() => {
+          star.remove();
+        }, 1500);
+      }
+      
+      // 创建星星爆发效果
+      function createLavenderStarBurst(x, y) {
+        for (let i = 0; i < 5; i++) {
+          setTimeout(() => {
+            createLavenderStar(x, y);
+          }, i * 50);
+        }
+      }
+      
+      // 隐藏原始光标
+      document.body.style.cursor = 'none';
+      
+      // 处理鼠标离开页面的情况
+      document.addEventListener('mouseleave', function() {
+        cursor.style.opacity = '0';
+      });
+      
+      document.addEventListener('mouseenter', function() {
+        cursor.style.opacity = '1';
+      });
+    });
+    </script>
+<body>
+    <header>
+        <div class="container">
+            <h1 class="rainbow-border"><a href="{{ url_for('index') }}">{{ site_name }}</a></h1>
+            <p>{{ site_description }}</p>
+            <nav>
+                <ul> 
+                    <li><a href="{{ url_for('index') }}"class="button rainbow-button">首页</a></li>
+                    <li><a href="{{ url_for('feed') }}"class="button rainbow-button">RSS订阅</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+    
+    <main class="container">
+        {% block content %}{% endblock %}
+    </main>
+    
+    <footer>
+        <div class="container">
+            <p>© {{ current_year }} {{ site_name }}</p>
+        </div>
+    </footer>
+</body>
+</html>

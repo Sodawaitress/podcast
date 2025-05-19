@@ -1,0 +1,875 @@
+/* 基础重置 */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+:root {
+    /* 梦幻女巫主题色彩 - 更柔和可爱的色调，但文字颜色更深 */
+    --primary-color: #9966CC;       /* 更深的紫色 */
+    --secondary-color: #F2E6FF;     /* 超淡梦幻紫 */
+    --accent-color: #FF85C2;        /* 鲜明一点的粉红 */
+    --accent-color2: #D6AEDD;       /* 淡梦幻紫 */
+    --text-color: #4A3B76;          /* 更深的紫色文本，提高可读性 */
+    --light-color: #FFF9FE;         /* 轻微粉紫色调白色 */
+    --dark-color: #6A3A9B;          /* 深紫色 */
+}
+
+body {
+    font-family: 'Noto Sans SC', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    line-height: 1.6;
+    color: var(--text-color);
+    background-color: var(--light-color);
+    text-align: center;
+    background-image: radial-gradient(circle at top right, rgba(255, 133, 194, 0.05) 0%, transparent 60%), 
+                     radial-gradient(circle at bottom left, rgba(153, 102, 204, 0.05) 0%, transparent 60%);
+}
+
+.container {
+    width: 90%;
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 0 15px;
+}
+
+a {
+    color: var(--primary-color);   /* 加深链接颜色 */
+    text-decoration: none;
+    transition: all 0.3s ease;
+}
+
+a:hover {
+    color: var(--dark-color);
+    text-decoration: none;
+}
+
+/* 柔和可爱的彩虹元素 */
+.rainbow-glow {
+    position: relative;
+}
+
+.rainbow-glow::before {
+    content: '';
+    position: absolute;
+    left: -10px;
+    right: -10px;
+    top: -10px;
+    bottom: -10px;
+    z-index: -1;
+    border-radius: 20px;
+    background: linear-gradient(
+        135deg, 
+        rgba(255, 183, 197, 0.6) 0%,   /* 柔粉色 */
+        rgba(255, 223, 186, 0.6) 16.6%, /* 柔橙色 */
+        rgba(255, 255, 186, 0.6) 33.3%, /* 柔黄色 */
+        rgba(186, 255, 201, 0.6) 50%,   /* 柔绿色 */
+        rgba(186, 225, 255, 0.6) 66.6%, /* 柔蓝色 */
+        rgba(210, 186, 255, 0.6) 83.3%, /* 柔紫色 */
+        rgba(255, 186, 255, 0.6) 100%   /* 柔粉紫色 */
+    );
+    filter: blur(15px);
+    opacity: 0;
+    transition: opacity 0.5s ease;
+}
+
+.rainbow-glow:hover::before {
+    opacity: 1;
+}
+
+/* 可爱的彩虹边框 */
+.rainbow-border {
+    position: relative;
+}
+
+.rainbow-border::after {
+    content: '';
+    position: absolute;
+    left: 25%;
+    right: 25%;
+    bottom: -5px;
+    height: 4px;
+    background: linear-gradient(
+        to right, 
+        #FFB7C5, /* 柔粉色 */
+        #FFDFBA, /* 柔橙色 */
+        #FFFFBA, /* 柔黄色 */
+        #BAFFC9, /* 柔绿色 */
+        #BAE1FF, /* 柔蓝色 */
+        #D2BAFF, /* 柔紫色 */
+        #FFBAFF  /* 柔粉紫色 */
+    );
+    border-radius: 10px;
+    opacity: 0.8;
+    transform: scaleX(0.8);
+    transition: all 0.3s ease;
+}
+
+.rainbow-border:hover::after {
+    transform: scaleX(1);
+    opacity: 1;
+}
+
+/* 彩虹按钮效果 */
+.rainbow-button {
+    position: relative;
+    z-index: 1;
+    background: white;
+    color: var(--text-color);
+    border: none;
+    border-radius: 25px;
+    padding: 10px 25px;
+    font-weight: 600;
+    overflow: hidden;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    transition: all 0.3s ease;
+}
+
+.rainbow-button::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(
+        90deg, 
+        #FFB7C5, /* 柔粉色 */
+        #FFDFBA, /* 柔橙色 */
+        #FFFFBA, /* 柔黄色 */
+        #BAFFC9, /* 柔绿色 */
+        #BAE1FF, /* 柔蓝色 */
+        #D2BAFF, /* 柔紫色 */
+        #FFBAFF  /* 柔粉紫色 */
+    );
+    z-index: -1;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.rainbow-button:hover {
+    color: #4A3B76;  /* 更深的文字颜色，提高悬停时的可读性 */
+    transform: translateY(-3px);
+    box-shadow: 0 7px 20px rgba(0,0,0,0.15);
+}
+
+.rainbow-button:hover::before {
+    opacity: 0.85;
+}
+
+/* 头部样式 */
+header {
+    background-color: white;
+    box-shadow: 0 4px 20px rgba(153, 102, 204, 0.15);
+    padding: 2rem 0;
+    margin-bottom: 3rem;
+    position: relative;
+    overflow: hidden;
+}
+
+/* 柔和彩虹顶部装饰 */
+header::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 5px;
+    background: linear-gradient(
+        to right, 
+        #FFB7C5, /* 柔粉色 */
+        #FFDFBA, /* 柔橙色 */
+        #FFFFBA, /* 柔黄色 */
+        #BAFFC9, /* 柔绿色 */
+        #BAE1FF, /* 柔蓝色 */
+        #D2BAFF, /* 柔紫色 */
+        #FFBAFF  /* 柔粉紫色 */
+    );
+    opacity: 0.8;
+}
+
+header h1 {
+    margin: 0 0 0.5rem 0;
+    font-size: 2.5rem;
+    color: var(--primary-color);
+    font-weight: 700;
+}
+
+header h1 a {
+    color: var(--primary-color);
+    text-decoration: none;
+}
+
+header p {
+    font-size: 1.2rem;
+    color: var(--text-color);
+    margin-bottom: 1.5rem;
+    font-style: italic;
+    opacity: 0.9;
+}
+
+header nav {
+    margin-top: 1rem;
+}
+
+header nav ul {
+    list-style: none;
+    display: flex;
+    justify-content: center;
+    gap: 2rem;
+}
+
+header nav ul li a {
+    font-weight: 600;
+    font-size: 1.1rem;
+    padding: 0.5rem 1rem;
+    border-radius: 20px;
+    transition: all 0.3s ease;
+}
+
+header nav ul li a:hover {
+    background-color: var(--secondary-color);
+    color: var(--dark-color);
+}
+
+/* 主内容区 */
+main {
+    min-height: 70vh;
+    padding: 2rem 0 4rem;
+}
+
+h2 {
+    margin-bottom: 2rem;
+    padding-bottom: 0.8rem;
+    font-size: 2rem;
+    color: var(--primary-color);
+    position: relative;
+    display: inline-block;
+}
+
+h2::after {
+    content: "";
+    position: absolute;
+    bottom: 0;
+    left: 25%;
+    width: 50%;
+    height: 3px;
+    background-color: var(--accent-color);
+    border-radius: 10px;
+}
+
+/* 播客列表 */
+.episodes-list {
+    display: grid;
+    gap: 2rem;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    justify-content: center;
+}
+
+.episode-card {
+    background: white;
+    border-radius: 18px;
+    padding: 1.8rem;
+    box-shadow: 0 10px 30px rgba(153, 102, 204, 0.1);
+    transition: all 0.4s ease;
+    text-align: left;
+    border: 1px solid rgba(153, 102, 204, 0.1);
+    position: relative;
+    overflow: hidden;
+}
+
+.episode-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 5px;
+    background: linear-gradient(
+        to right, 
+        #FFB7C5, /* 柔粉色 */
+        #FFDFBA, /* 柔橙色 */
+        #FFFFBA, /* 柔黄色 */
+        #BAFFC9, /* 柔绿色 */
+        #BAE1FF, /* 柔蓝色 */
+        #D2BAFF, /* 柔紫色 */
+        #FFBAFF  /* 柔粉紫色 */
+    );
+    opacity: 0;
+    transition: opacity 0.4s ease;
+}
+
+.episode-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 15px 35px rgba(153, 102, 204, 0.2);
+    border-color: var(--secondary-color);
+}
+
+.episode-card:hover::before {
+    opacity: 1;
+}
+
+.episode-card h3 {
+    margin-bottom: 0.8rem;
+    font-size: 1.4rem;
+    color: var(--primary-color);
+}
+
+.episode-meta {
+    font-size: 0.9rem;
+    color: #775DA9;  /* 加深元数据颜色 */
+    margin-bottom: 1rem;
+    display: flex;
+    gap: 1rem;
+}
+
+.episode-description {
+    margin-bottom: 1.5rem;
+    color: var(--text-color);
+    line-height: 1.7;
+}
+
+.button {
+    display: inline-block;
+    background: var(--primary-color);
+    color: white;
+    padding: 0.7rem 1.5rem;
+    border-radius: 25px;
+    text-decoration: none;
+    font-size: 1rem;
+    border: none;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 5px 15px rgba(153, 102, 204, 0.3);
+    font-weight: 600;
+}
+
+.button:hover {
+    background: var(--accent-color);
+    transform: translateY(-3px);
+    box-shadow: 0 8px 20px rgba(153, 102, 204, 0.4);
+}
+
+/* 为世界不再恐同日添加特殊的按钮效果 */
+.pride-button {
+    display: inline-block;
+    background: white;
+    color: var(--text-color);
+    padding: 0.7rem 1.5rem;
+    border-radius: 25px;
+    text-decoration: none;
+    font-size: 1rem;
+    border: none;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    font-weight: 600;
+    position: relative;
+    z-index: 1;
+    overflow: hidden;
+}
+
+.pride-button::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+    background: linear-gradient(
+        90deg, 
+        #FFB7C5, /* 柔粉色 */
+        #FFDFBA, /* 柔橙色 */
+        #FFFFBA, /* 柔黄色 */
+        #BAFFC9, /* 柔绿色 */
+        #BAE1FF, /* 柔蓝色 */
+        #D2BAFF, /* 柔紫色 */
+        #FFBAFF  /* 柔粉紫色 */
+    );
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.pride-button:hover {
+    color: #4A3B76;  /* 更深的文字颜色，提高悬停时的可读性 */
+    transform: translateY(-3px);
+    box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+}
+
+.pride-button:hover::before {
+    opacity: 1;
+}
+
+.locked-indicator {
+    color: #775DA9;  /* 加深锁定指示器颜色 */
+    margin-left: 5px;
+    font-size: 0.9rem;
+}
+
+/* 单集页面 */
+.episode-detail {
+    background: white;
+    border-radius: 24px;
+    padding: 3rem;
+    box-shadow: 0 15px 35px rgba(153, 102, 204, 0.1);
+    max-width: 800px;
+    margin: 0 auto;
+    text-align: left;
+    position: relative;
+    overflow: hidden;
+}
+
+.episode-detail::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 8px;
+    background: linear-gradient(
+        to right, 
+        #FFB7C5, /* 柔粉色 */
+        #FFDFBA, /* 柔橙色 */
+        #FFFFBA, /* 柔黄色 */
+        #BAFFC9, /* 柔绿色 */
+        #BAE1FF, /* 柔蓝色 */
+        #D2BAFF, /* 柔紫色 */
+        #FFBAFF  /* 柔粉紫色 */
+    );
+    opacity: 0.8;
+}
+
+.audio-player {
+    margin: 2rem 0;
+    background: var(--secondary-color);
+    padding: 1.5rem;
+    border-radius: 18px;
+}
+
+.audio-player audio {
+    width: 100%;
+    margin-bottom: 1rem;
+    border-radius: 12px;
+}
+
+.download-links {
+    margin-top: 1.5rem;
+    text-align: center;
+}
+
+/* 密码保护 */
+.password-protection {
+    background: rgba(242, 230, 255, 0.4);
+    padding: 2.5rem;
+    border-radius: 20px;
+    margin: 2rem auto;
+    text-align: center;
+    max-width: 500px;
+    border: 2px dashed rgba(153, 102, 204, 0.3);
+    box-shadow: 0 10px 30px rgba(153, 102, 204, 0.05);
+}
+
+.form-group {
+    margin-bottom: 1.8rem;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 0.7rem;
+    font-weight: 600;
+    color: var(--primary-color);
+}
+
+.form-group input,
+.form-group textarea {
+    width: 100%;
+    padding: 1rem;
+    border: 2px solid var(--secondary-color);
+    border-radius: 12px;
+    font-family: inherit;
+    font-size: 1rem;
+    transition: all 0.3s ease;
+    background-color: rgba(255, 255, 255, 0.8);
+}
+
+.form-group input:focus,
+.form-group textarea:focus {
+    outline: none;
+    border-color: var(--accent-color);
+    box-shadow: 0 0 0 4px rgba(255, 133, 194, 0.15);
+    background-color: white;
+}
+
+.error-message {
+    color: #ff6b6b;
+    margin: 0.8rem 0;
+    font-weight: 600;
+}
+
+/* 分享选项 */
+.sharing-options {
+    margin-top: 3rem;
+    padding-top: 2rem;
+    border-top: 3px dashed var(--secondary-color);
+    text-align: center;
+}
+
+.sharing-options h3 {
+    margin-bottom: 1rem;
+    color: var(--primary-color);
+}
+
+.sharing-options input {
+    width: 100%;
+    padding: 0.8rem;
+    margin-bottom: 1rem;
+    border: 2px solid var(--secondary-color);
+    border-radius: 12px;
+    font-family: monospace;
+    font-size: 0.9rem;
+    background-color: rgba(255, 255, 255, 0.8);
+}
+
+.back-link {
+    display: inline-block;
+    margin-top: 2.5rem;
+    color: var(--text-color);
+    font-weight: 600;
+    position: relative;
+    padding: 0.5rem 1rem;
+    border-radius: 8px;
+    transition: all 0.3s ease;
+}
+
+.back-link:hover {
+    background-color: var(--secondary-color);
+    color: var(--dark-color);
+}
+
+/* 上传表单 */
+.upload-form {
+    max-width: 700px;
+    margin: 0 auto 3rem auto;
+    background: white;
+    padding: 3rem;
+    border-radius: 24px;
+    box-shadow: 0 15px 35px rgba(153, 102, 204, 0.1);
+    text-align: left;
+    position: relative;
+    overflow: hidden;
+}
+
+.upload-form::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 8px;
+    background: linear-gradient(
+        to right, 
+        #FFB7C5, /* 柔粉色 */
+        #FFDFBA, /* 柔橙色 */
+        #FFFFBA, /* 柔黄色 */
+        #BAFFC9, /* 柔绿色 */
+        #BAE1FF, /* 柔蓝色 */
+        #D2BAFF, /* 柔紫色 */
+        #FFBAFF  /* 柔粉紫色 */
+    );
+    opacity: 0.8;
+}
+
+.upload-form h2 {
+    margin-bottom: 2rem;
+    text-align: center;
+}
+
+/* 订阅指南 */
+.subscription-guide {
+    margin: 4rem auto 0 auto;
+    padding: 2.5rem;
+    background: rgba(242, 230, 255, 0.4);
+    border-radius: 24px;
+    max-width: 800px;
+    text-align: left;
+    box-shadow: 0 15px 30px rgba(153, 102, 204, 0.1);
+}
+
+.subscription-guide h3 {
+    margin-bottom: 1.5rem;
+    color: var(--primary-color);
+    font-size: 1.5rem;
+    text-align: center;
+}
+
+.subscription-guide code {
+    background: white;
+    padding: 0.3rem 0.6rem;
+    border-radius: 8px;
+    font-size: 0.9rem;
+    color: var(--dark-color);
+    border: 1px solid var(--secondary-color);
+}
+
+/* 页脚 */
+footer {
+    background: var(--primary-color);
+    color: white;
+    padding: 3rem 0;
+    margin-top: 5rem;
+    position: relative;
+    overflow: hidden;
+}
+
+footer::before {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 5px;
+    background: linear-gradient(
+        to right, 
+        #FFB7C5, /* 柔粉色 */
+        #FFDFBA, /* 柔橙色 */
+        #FFFFBA, /* 柔黄色 */
+        #BAFFC9, /* 柔绿色 */
+        #BAE1FF, /* 柔蓝色 */
+        #D2BAFF, /* 柔紫色 */
+        #FFBAFF  /* 柔粉紫色 */
+    );
+    opacity: 0.8;
+}
+
+footer a {
+    color: white;
+    font-weight: 600;
+    text-decoration: underline;
+    transition: all 0.3s ease;
+}
+
+footer a:hover {
+    color: var(--light-color);
+    text-decoration: none;
+}
+
+/* 模态框 */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0,0,0,0.7);
+}
+
+.modal-content {
+    background-color: white;
+    margin: 10% auto;
+    padding: 3rem;
+    border-radius: 24px;
+    max-width: 550px;
+    position: relative;
+    box-shadow: 0 20px 50px rgba(106, 58, 155, 0.3);
+}
+
+.close {
+    position: absolute;
+    right: 1.5rem;
+    top: 1rem;
+    color: var(--text-color);
+    font-size: 2rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.close:hover {
+    color: var(--accent-color);
+    transform: rotate(90deg);
+}
+
+/* 可爱的魔法光标效果 - 改为粉紫色 */
+.magic-cursor {
+    position: fixed;
+    pointer-events: none;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 9999;
+    mix-blend-mode: difference;
+    transition: width 0.2s, height 0.2s;
+    background: radial-gradient(
+        circle, 
+        rgba(255, 255, 255, 0.8) 0%, 
+        rgba(255, 133, 194, 0.6) 30%, 
+        rgba(210, 186, 255, 0.4) 60%,
+        rgba(255, 186, 255, 0) 100%
+    );
+    filter: blur(2px);
+}
+
+.magic-cursor.grow {
+    width: 50px;
+    height: 50px;
+}
+
+/* 魔法星星特效 - 改为更多粉紫色调 */
+.magic-stars {
+    position: absolute;
+    width: 3px;
+    height: 3px;
+    border-radius: 50%;
+    box-shadow: 
+        0 0 #fff,
+        0 0 #fff,
+        0 0 #fff,
+        0 0 #fff,
+        0 0 #fff,
+        0 0 #fff,
+        0 0 #fff;
+    animation: sparkle 1.5s infinite linear;
+    pointer-events: none;
+}
+
+@keyframes sparkle {
+    0%, 100% {
+        box-shadow: 
+            0 0 #fff,
+            0 0 #fff,
+            0 0 #fff,
+            0 0 #fff,
+            0 0 #fff,
+            0 0 #fff,
+            0 0 #fff;
+    }
+    20% {
+        box-shadow: 
+            0 -10px #FFB7C5,
+            10px 0 #FFBAFF,
+            0 10px #D2BAFF,
+            -10px 0 #FFB7C5,
+            5px -5px #FFBAFF,
+            -5px 5px #D2BAFF,
+            5px 5px #FFB7C5;
+    }
+    40% {
+        box-shadow: 
+            0 -20px #FFB7C5,
+            20px 0 #FFBAFF,
+            0 20px #D2BAFF,
+            -20px 0 #FFB7C5,
+            10px -10px #FFBAFF,
+            -10px 10px #D2BAFF,
+            10px 10px #FFB7C5;
+    }
+    60% {
+        box-shadow: 
+            0 -30px transparent,
+            30px 0 transparent,
+            0 30px transparent,
+            -30px 0 transparent,
+            15px -15px transparent,
+            -15px 15px transparent,
+            15px 15px transparent;
+    }
+}
+
+/* 响应式调整 */
+@media (max-width: 768px) {
+    .episodes-list {
+        grid-template-columns: 1fr;
+    }
+    
+    .episode-detail, .upload-form {
+        padding: 2rem;
+    }
+    
+    header h1 {
+        font-size: 2rem;
+    }
+    
+    header p {
+        font-size: 1rem;
+    }
+    
+    header nav ul {
+        flex-direction: column;
+        gap: 1rem;
+    }
+}
+
+/* 一些有趣的动画和过渡效果 */
+@keyframes rainbow-pulse {
+    0% {
+        background-position: 0% 50%;
+    }
+    50% {
+        background-position: 100% 50%;
+    }
+    100% {
+        background-position: 0% 50%;
+    }
+}
+
+.rainbow-pulse {
+    background: linear-gradient(
+        90deg, 
+        #FFB7C5, /* 柔粉色 */
+        #FFBAFF, /* 粉紫色 */
+        #D2BAFF, /* 柔紫色 */
+        #BAE1FF, /* 柔蓝色 */
+        #D2BAFF, /* 柔紫色 */
+        #FFBAFF, /* 粉紫色 */
+        #FFB7C5  /* 柔粉色 */
+    );
+    background-size: 400% 400%;
+    animation: rainbow-pulse 8s ease infinite;
+}
+
+/* 特殊效果：彩虹悬浮卡片 */
+.rainbow-float-card {
+    position: relative;
+    overflow: hidden;
+    border-radius: 18px;
+    padding: 2rem;
+    background: white;
+    box-shadow: 0 10px 30px rgba(153, 102, 204, 0.1);
+    transition: all 0.5s ease;
+}
+
+.rainbow-float-card::before {
+    content: '';
+    position: absolute;
+    top: -5px;
+    left: -5px;
+    right: -5px;
+    bottom: -5px;
+    z-index: -1;
+    background: linear-gradient(
+        45deg, 
+        #FFB7C5, /* 柔粉色 */
+        #FFBAFF, /* 粉紫色 */
+        #D2BAFF, /* 柔紫色 */
+        #BAE1FF, /* 柔蓝色 */
+        #D2BAFF, /* 柔紫色 */
+        #FFBAFF, /* 粉紫色 */
+        #FFB7C5  /* 柔粉色 */
+    );
+    border-radius: 23px;
+    opacity: 0;
+    transition: all 0.5s ease;
+}
+
+.rainbow-float-card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 20px 40px rgba(153, 102, 204, 0.2);
+}
+
+.rainbow-float-card:hover::before {
+    opacity: 1;
+}

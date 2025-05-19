@@ -1,0 +1,40 @@
+{% extends 'base.html' %}
+
+{% block title %}播客首页{% endblock %}
+
+{% block content %}
+    <h2>最新播客集数</h2>
+    
+    <div class="episodes-list">
+        {% for episode in episodes %}
+            <div class="episode-card">
+                <h3>
+                    <a href="{{ url_for('episode', episode_id=episode.id) }}">
+                        {{ episode.title }}
+                        {% if episode.password %}
+                            <span class="locked-indicator">🔒</span>
+                        {% endif %}
+                    </a>
+                </h3>
+                <div class="episode-meta">
+                    <span class="date">{{ episode.pub_date.strftime('%Y-%m-%d') }}</span>
+                </div>
+                <p class="episode-description">{{ episode.description|truncate(150) }}</p>
+                <a href="{{ url_for('episode', episode_id=episode.id) }}" class="button">收听此集</a>
+            </div>
+        {% else %}
+            <p>目前还没有发布任何播客集数。</p>
+        {% endfor %}
+    </div>
+    
+    <!-- 简单的订阅指南 -->
+    <div class="subscription-guide">
+        <h3>如何订阅</h3>
+        <p>您可以通过以下方式订阅本播客：</p>
+        <ul>
+            <li>在您喜欢的播客应用中添加 RSS 订阅: <code>{{ request.url_root }}feed.xml</code></li>
+            <li>使用 <a href="https://getpodcast.xyz/" target="_blank">GetPodcast</a> 代理服务</li>
+            <li>关注我们的社交媒体获取更新通知</li>
+        </ul>
+    </div>
+{% endblock %}

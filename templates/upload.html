@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+
+{% block title %}上传新播客{% endblock %}
+
+{% block content %}
+    <div class="upload-form">
+        <h2>发布新播客</h2>
+        
+        <form method="post" enctype="multipart/form-data">
+            <div class="form-group">
+                <label for="title">标题:</label>
+                <input type="text" id="title" name="title" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="description">描述:</label>
+                <textarea id="description" name="description" rows="5" required></textarea>
+                <small>支持基本HTML标签</small>
+            </div>
+            
+            <div class="form-group">
+                <label for="audio_file">音频文件 (MP3):</label>
+                <input type="file" id="audio_file" name="audio_file" accept="audio/mp3,audio/mpeg" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="password">密码保护 (可选):</label>
+                <input type="password" id="password" name="password">
+                <small>如果设置密码，此集将不会出现在RSS Feed中</small>
+            </div>
+            
+            <button type="submit" class="button">上传播客</button>
+        </form>
+    </div>
+{% endblock %}
