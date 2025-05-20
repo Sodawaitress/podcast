@@ -37,6 +37,17 @@ if cloudinary_available:
         api_secret = "EkrlSu4mv50B9Aclc_a4US3ZdX4" 
     )
 
+# 默认播客数据
+def default_episodes():
+    return [{
+        'id': 0,
+        'title': '欢迎收听灰礁播客',
+        'description': '这是一个演示播客，用于验证样式是否正确加载。你可以在上传新播客后删除它。',
+        'audio_file': 'https://docs.google.com/uc?export=download&id=1v6JDgNLlQB9cHIuWiUhpJrKp-s73V56j',
+        'pub_date': '2025-05-20',
+        'is_demo': True  # 标记为演示播客
+    }]
+
 # 从Cloudinary下载JSON数据
 def download_episodes_from_cloudinary():
     # 首次部署时，requests可能不可用，使用默认数据
@@ -56,16 +67,6 @@ def download_episodes_from_cloudinary():
     except Exception as e:
         print(f"从Cloudinary下载播客数据出错: {e}")
         return default_episodes()
-
-# 默认播客数据
-def default_episodes():
-    return [{
-        'id': 0,
-        'title': '欢迎收听灰礁播客',
-        'description': '这是一个演示播客，用于验证样式是否正确加载。上传新的播客后此条目会保留。',
-        'audio_file': 'https://docs.google.com/uc?export=download&id=1v6JDgNLlQB9cHIuWiUhpJrKp-s73V56j',
-        'pub_date': '2025-05-20'
-    }]
 
 # 上传JSON数据到Cloudinary
 def upload_episodes_to_cloudinary(episodes):
@@ -109,8 +110,43 @@ def index():
 # 单集页面
 @app.route('/episode/<int:episode_id>')
 def episode(episode_id):
-    if episode_id < len(EPISODES):
-        return render_template('episode.html', episode=EPISODES[episode_id], authenticated=True)
+    # 查找ID匹配的播客
+    matching_episode = None
+    for ep in EPISODES:
+        if ep['id'] == episode_id:
+            matching_episode = ep
+            break
+            
+    if matching_episode:
+        return render_template('episode.html', episode=matching_episode, authenticated=True)
+    return "播客不存在", 404
+
+# 删除播客
+@app.route('/delete/<int:episode_id>', methods=['POST'])
+def delete_episode(episode_id):
+    global EPISODES
+    
+    # 查找要删除的播客索引
+    episode_index = -1
+    for i, ep in enumerate(EPISODES):
+        if ep['id'] == episode_id:
+            episode_index = i
+            break
+    
+    if episode_index >= 0:
+        # 删除播客
+        removed = EPISODES.pop(episode_index)
+        
+        # 重新编号剩余播客
+        for i, ep in enumerate(EPISODES):
+            ep['id'] = i
+        
+        # 保存到Cloudinary
+        if cloudinary_available:
+            upload_episodes_to_cloudinary(EPISODES)
+            
+        return redirect(url_for('index'))
+    
     return "播客不存在", 404
 
 # 上传页面
@@ -128,7 +164,8 @@ def upload():
                 'title': title,
                 'description': description,
                 'audio_file': audio_url,
-                'pub_date': datetime.now().isoformat()
+                'pub_date': datetime.now().isoformat(),
+                'is_demo': False  # 标记为非演示播客
             }
             
             # 添加到内存列表

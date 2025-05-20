@@ -1,45 +1,38 @@
-{% extends 'base.html' %}
-
-{% block title %}{{ site_name }} - {{ site_description }}{% endblock %}
+{% extends "base.html" %}
 
 {% block content %}
-    <h2>最新播客</h2>
-    
+<h2>播客列表</h2>
+
+{% if episodes|length > 0 %}
     <div class="episodes-list">
-        {% if episodes %}
-            {% for episode in episodes %}
-            <div class="episode-card">
-                <h3>{{ episode.title }}</h3>
-                <div class="episode-meta">
-                    <span>发布于: {{ episode.pub_date }}</span>
-                    {% if episode.duration %}
-                    <span>时长: {{ episode.duration//60 }}:{{ '%02d'|format(episode.duration%60) }}</span>
-                    {% endif %}
-                    {% if episode.password %}
-                    <span class="locked-indicator">🔒 受密码保护</span>
-                    {% endif %}
-                </div>
-                <div class="episode-description">{{ episode.description|safe|truncate(150) }}</div>
-                <a href="{{ url_for('episode', episode_id=episode.id) }}" class="button">
-                    {% if episode.password %}
-                    输入密码收听
-                    {% else %}
-                    收听播客
-                    {% endif %}
-                </a>
+        {% for episode in episodes %}
+        <div class="episode-card">
+            <h3>{{ episode.title }}</h3>
+            <div class="episode-meta">
+                <span class="episode-date">{{ episode.pub_date }}</span>
             </div>
-            {% endfor %}
-        {% else %}
-            <p>目前还没有播客内容。</p>
-        {% endif %}
+            <p class="episode-description">{{ episode.description }}</p>
+            <a href="{{ url_for('episode', episode_id=episode.id) }}" class="button">收听播客</a>
+            
+            <!-- 添加删除功能 -->
+            <form action="{{ url_for('delete_episode', episode_id=episode.id) }}" method="post" style="margin-top: 10px;">
+                <button type="submit" class="button" style="background-color: rgba(255, 50, 50, 0.3);"
+                    onclick="return confirm('确定要删除这个播客吗？');">删除</button>
+            </form>
+            
+            {% if episode.is_demo %}
+            <span style="display: inline-block; margin-top: 8px; font-size: 0.8em; color: #ff5fd7;">* 演示播客</span>
+            {% endif %}
+        </div>
+        {% endfor %}
     </div>
-    
-    <div class="subscription-guide">
-        <h3>订阅播客</h3>
-        <p>您可以通过以下方式订阅我们的播客:</p>
-        <ul>
-            <li>RSS Feed: <code>{{ url_for('feed', _external=True) }}</code></li>
-            <li>将上面的链接添加到您喜欢的播客应用中</li>
-        </ul>
-    </div>
+{% else %}
+    <p>还没有上传任何播客。</p>
+{% endif %}
+
+<div class="subscription-guide">
+    <h3>如何订阅</h3>
+    <p>将本站的 RSS Feed 地址添加到您的播客应用中：</p>
+    <code>{{ site_url }}/feed.xml</code>
+</div>
 {% endblock %}
