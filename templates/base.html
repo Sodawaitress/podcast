@@ -222,9 +222,86 @@
             opacity: 0.2;
             z-index: 1000;
         }
+        
+        /* 星星动画 */
+        .stars {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        .star {
+            position: absolute;
+            width: 2px;
+            height: 2px;
+            background-color: #fff;
+            border-radius: 50%;
+            animation: twinkle var(--duration, 4s) infinite ease-in-out;
+            opacity: 0;
+        }
+
+        @keyframes twinkle {
+            0%, 100% {
+                opacity: 0;
+            }
+            50% {
+                opacity: var(--opacity, 0.8);
+            }
+        }
+
+        /* 流星效果 */
+        .shooting-star {
+            position: absolute;
+            width: 100px;
+            height: 1px;
+            background: linear-gradient(to right, rgba(0, 0, 0, 0), #fff);
+            transform: rotate(var(--angle));
+            animation: shooting var(--duration, 6s) infinite ease-out;
+            animation-delay: var(--delay, 0s);
+            opacity: 0;
+            top: var(--top);
+            left: var(--left);
+        }
+
+        .shooting-star::before {
+            content: '';
+            position: absolute;
+            right: 0;
+            width: 8px;
+            height: 8px;
+            background-color: #fff;
+            border-radius: 50%;
+            box-shadow: 0 0 10px 2px rgba(255, 255, 255, 0.7);
+            transform: translate(0, -50%);
+        }
+
+        @keyframes shooting {
+            0% {
+                opacity: 0;
+                transform: translateX(0) rotate(var(--angle));
+            }
+            5%, 15% {
+                opacity: 1;
+            }
+            30% {
+                opacity: 0;
+                transform: translateX(var(--distance, 500px)) rotate(var(--angle));
+            }
+            100% {
+                opacity: 0;
+                transform: translateX(var(--distance, 500px)) rotate(var(--angle));
+            }
+        }
     </style>
 </head>
 <body>
+    <!-- 星星和流星背景 -->
+    <div class="stars" id="starsContainer"></div>
+    
     <header>
         <div class="container">
             <h1><a href="{{ url_for('index') }}">{{ site_name }}</a></h1>
@@ -258,5 +335,97 @@
             <p>&copy; {{ current_year }} {{ site_name }}. 版权所有.</p>
         </div>
     </footer>
+
+    <!-- 星星和流星效果的脚本 -->
+    <script>
+        // 创建星星
+        function createStars() {
+            const starsContainer = document.getElementById('starsContainer');
+            const starCount = 150; // 星星数量
+            
+            for (let i = 0; i < starCount; i++) {
+                const star = document.createElement('div');
+                star.className = 'star';
+                
+                // 随机位置
+                const x = Math.random() * 100;
+                const y = Math.random() * 100;
+                
+                // 随机大小 (1-3像素)
+                const size = 1 + Math.random() * 2;
+                
+                // 随机闪烁速度和强度
+                const duration = 2 + Math.random() * 4;
+                const opacity = 0.5 + Math.random() * 0.5;
+                
+                star.style.cssText = `
+                    left: ${x}%;
+                    top: ${y}%;
+                    width: ${size}px;
+                    height: ${size}px;
+                    --duration: ${duration}s;
+                    --opacity: ${opacity};
+                `;
+                
+                starsContainer.appendChild(star);
+            }
+        }
+        
+        // 创建流星
+        function createShootingStars() {
+            const starsContainer = document.getElementById('starsContainer');
+            const shootingStarCount = 5; // 流星数量
+            
+            for (let i = 0; i < shootingStarCount; i++) {
+                const shootingStar = document.createElement('div');
+                shootingStar.className = 'shooting-star';
+                
+                // 随机参数
+                updateShootingStar(shootingStar);
+                
+                starsContainer.appendChild(shootingStar);
+                
+                // 每次动画结束后重新设置参数
+                shootingStar.addEventListener('animationiteration', () => {
+                    updateShootingStar(shootingStar);
+                });
+            }
+        }
+        
+        // 更新流星参数
+        function updateShootingStar(star) {
+            // 随机角度 (-30到-60度)
+            const angle = -(30 + Math.random() * 30);
+            
+            // 随机位置 (顶部区域)
+            const top = Math.random() * 30;
+            const left = Math.random() * 80;
+            
+            // 随机速度和延迟
+            const duration = 2 + Math.random() * 6;
+            const delay = Math.random() * 15;
+            
+            // 随机距离
+            const distance = 300 + Math.random() * 500;
+            
+            star.style.cssText = `
+                --angle: ${angle}deg;
+                --top: ${top}%;
+                --left: ${left}%;
+                --duration: ${duration}s;
+                --delay: ${delay}s;
+                --distance: ${distance}px;
+                top: ${top}%;
+                left: ${left}%;
+                transform: rotate(${angle}deg);
+            `;
+        }
+        
+        // 在页面加载完成后创建星空
+        window.addEventListener('DOMContentLoaded', () => {
+            createStars();
+            createShootingStars();
+        });
+    </script>
 </body>
 </html>

@@ -27,7 +27,8 @@ if cloudinary_available:
         api_secret = "EkrlSu4mv50B9Aclc_a4US3ZdX4" 
     )
 
-
+# 播客数据列表 - 已移除测试播客
+EPISODES = []
 
 # 上下文处理器 - 为所有模板提供站点信息
 @app.context_processor
