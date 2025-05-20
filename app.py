@@ -5,6 +5,8 @@ from feedgen.feed import FeedGenerator
 import os
 import secrets
 import hashlib
+import cloudinary
+import cloudinary.uploader
 
 app = Flask(__name__, static_folder='static')
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///podcast.db'
@@ -13,6 +15,11 @@ app.config['SECRET_KEY'] = secrets.token_hex(16)
 app.config['SITE_NAME'] = "灰礁播客"  # 站点名称
 app.config['SITE_DESCRIPTION'] = "浮筝带来的灰礁上的声音"  # 站点描述
 app.config['SITE_URL'] = 'http://127.0.0.1:5000'  # 本地开发时的URL
+cloudinary.config( 
+  cloud_name = "ml_default", 
+  api_key = "286612799875297", 
+  api_secret = "EkrlSu4mv50B9Aclc_a4US3ZdX4" 
+)
 
 db = SQLAlchemy(app)
 
@@ -103,19 +110,16 @@ def upload():
     if request.method == 'POST':
         title = request.form.get('title')
         description = request.form.get('description')
-        audio_file = request.files.get('audio_file')
+        audio_url = request.form.get('audio_url')  # 从表单获取Cloudinary URL
+        audio_filename = request.form.get('audio_filename')
         password = request.form.get('password')
         
-        if audio_file:
-            filename = audio_file.filename
-            audio_path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
-            audio_file.save(audio_path)
-            
+        if audio_url and audio_filename:
             # 创建新的Episode
             new_episode = Episode(
                 title=title,
                 description=description,
-                audio_file=filename
+                audio_file=audio_url  # 直接存储完整URL，而非文件名
             )
             
             # 如果提供了密码，存储其哈希值
@@ -130,6 +134,35 @@ def upload():
     return render_template('upload.html')
 
 from datetime import datetime
+@app.route('/feed.xml')
+def feed():
+    fg = FeedGenerator()
+    fg.title(app.config['SITE_NAME'])
+    fg.description(app.config['SITE_DESCRIPTION'])
+    fg.link(href=app.config['SITE_URL'])
+    fg.language('zh-CN')
+    
+    episodes = Episode.query.order_by(Episode.pub_date.desc()).all()
+    
+    for episode in episodes:
+        # 跳过有密码的集数(在RSS中不包含私密内容)
+        if episode.password:
+            continue
+            
+        fe = fg.add_entry()
+        fe.title(episode.title)
+        fe.description(episode.description)
+        fe.pubDate(episode.pub_date)
+        
+        # 创建音频文件的URL - 现在直接使用存储的URL
+        audio_url = episode.audio_file
+        # 如果URL不是以http开头，添加站点URL前缀
+        if not audio_url.startswith(('http://', 'https://')):
+            audio_url = f"{app.config['SITE_URL']}/media/{episode.audio_file}"
+            
+        fe.enclosure(audio_url, 0, 'audio/mpeg')
+    
+    return fg.rss_str(pretty=True), 200, {'Content-Type': 'application/xml'}
 
 # 将这段代码添加到您的app.py文件中，放在其他上下文处理器旁边
 @app.context_processor

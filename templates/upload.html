@@ -6,7 +6,7 @@
     <div class="upload-form">
         <h2>发布新播客</h2>
         
-        <form method="post" enctype="multipart/form-data">
+        <form method="post" id="podcast-form">
             <div class="form-group">
                 <label for="title">标题:</label>
                 <input type="text" id="title" name="title" required>
@@ -20,7 +20,12 @@
             
             <div class="form-group">
                 <label for="audio_file">音频文件 (MP3):</label>
-                <input type="file" id="audio_file" name="audio_file" accept="audio/mp3,audio/mpeg" required>
+                <!-- 替换为上传按钮 -->
+                <button type="button" id="upload_widget" class="button">选择音频文件</button>
+                <div id="upload-status"></div>
+                <!-- 隐藏字段用于存储上传后的URL -->
+                <input type="hidden" id="audio_url" name="audio_url">
+                <input type="hidden" id="audio_filename" name="audio_filename">
             </div>
             
             <div class="form-group">
@@ -29,7 +34,60 @@
                 <small>如果设置密码，此集将不会出现在RSS Feed中</small>
             </div>
             
-            <button type="submit" class="button">上传播客</button>
+            <button type="submit" class="button" id="submit-button" disabled>上传播客</button>
         </form>
     </div>
+
+    <!-- Cloudinary上传小部件脚本 -->
+    <script src="https://upload-widget.cloudinary.com/global/all.js" type="text/javascript"></script>
+    <script type="text/javascript">
+        // 创建Cloudinary上传小部件
+        const myWidget = cloudinary.createUploadWidget({
+            cloudName: 'ml_default', // 您的Cloud Name
+            uploadPreset: 'ml_default', // 您的Upload Preset
+            resourceType: "auto", // 自动检测文件类型
+            sources: ["local"], // 只允许从本地上传
+            multiple: false, // 一次只能上传一个文件
+            maxFileSize: 100000000, // 100MB
+            folder: "podcasts", // 存储在Cloudinary的文件夹
+            allowedFormats: ["mp3", "mpeg"], // 只允许MP3格式
+        }, (error, result) => {
+            if (error) {
+                document.getElementById("upload-status").textContent = "上传出错: " + error.message;
+                return;
+            }
+            
+            if (result.event === "success") {
+                // 上传成功，获取URL
+                const fileUrl = result.info.secure_url;
+                const fileName = result.info.original_filename;
+                
+                // 显示成功消息
+                document.getElementById("upload-status").innerHTML = 
+                    "上传成功! 文件名: " + fileName;
+                
+                // 存储URL到隐藏字段
+                document.getElementById("audio_url").value = fileUrl;
+                document.getElementById("audio_filename").value = fileName;
+                
+                // 启用提交按钮
+                document.getElementById("submit-button").disabled = false;
+            }
+        });
+
+        // 点击按钮打开上传小部件
+        document.getElementById("upload_widget").addEventListener("click", function(){
+            myWidget.open();
+        }, false);
+
+        // 表单提交处理
+        document.getElementById("podcast-form").addEventListener("submit", function(e){
+            if (!document.getElementById("audio_url").value) {
+                e.preventDefault(); // 阻止表单提交
+                alert("请先上传音频文件!");
+                return false;
+            }
+            // 表单可以正常提交
+        });
+    </script>
 {% endblock %}
