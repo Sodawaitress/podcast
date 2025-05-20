@@ -8,6 +8,14 @@ import hashlib
 import cloudinary
 import cloudinary.uploader
 
+try:
+    import cloudinary
+    import cloudinary.uploader
+    cloudinary_available = True
+except ImportError:
+    cloudinary_available = False
+    print("警告: Cloudinary模块未找到。将使用本地文件上传。")
+
 app = Flask(__name__, static_folder='static')
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///podcast.db'
 app.config['UPLOAD_FOLDER'] = os.path.join('static', 'media')
@@ -15,11 +23,13 @@ app.config['SECRET_KEY'] = secrets.token_hex(16)
 app.config['SITE_NAME'] = "灰礁播客"  # 站点名称
 app.config['SITE_DESCRIPTION'] = "浮筝带来的灰礁上的声音"  # 站点描述
 app.config['SITE_URL'] = 'http://127.0.0.1:5000'  # 本地开发时的URL
-cloudinary.config( 
-  cloud_name = "ml_default", 
-  api_key = "286612799875297", 
-  api_secret = "EkrlSu4mv50B9Aclc_a4US3ZdX4" 
-)
+# 如果Cloudinary可用，则配置它
+if cloudinary_available:
+    cloudinary.config( 
+        cloud_name = "ml_default", 
+        api_key = "286612799875297", 
+        api_secret = "EkrlSu4mv50B9Aclc_a4US3ZdX4" 
+    )
 
 db = SQLAlchemy(app)
 
@@ -104,34 +114,52 @@ def feed():
     
     return fg.rss_str(pretty=True), 200, {'Content-Type': 'application/xml'}
 
-# 简单的上传界面 (真实使用时应添加身份验证)
 @app.route('/upload', methods=['GET', 'POST'])
 def upload():
     if request.method == 'POST':
         title = request.form.get('title')
         description = request.form.get('description')
-        audio_url = request.form.get('audio_url')  # 从表单获取Cloudinary URL
-        audio_filename = request.form.get('audio_filename')
         password = request.form.get('password')
         
-        if audio_url and audio_filename:
+        # 检查是否使用Cloudinary上传
+        audio_url = request.form.get('audio_url')
+        if audio_url and cloudinary_available:
+            # Cloudinary模式 - 使用URL
+            filename = request.form.get('audio_filename', 'unknown.mp3')
+            
             # 创建新的Episode
             new_episode = Episode(
                 title=title,
                 description=description,
-                audio_file=audio_url  # 直接存储完整URL，而非文件名
+                audio_file=audio_url  # 直接使用Cloudinary URL
             )
+        else:
+            # 传统模式 - 本地文件上传
+            audio_file = request.files.get('audio_file')
+            if not audio_file:
+                return "没有选择文件", 400
+                
+            filename = audio_file.filename
+            audio_path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
+            audio_file.save(audio_path)
             
-            # 如果提供了密码，存储其哈希值
-            if password:
-                new_episode.password = hashlib.sha256(password.encode()).hexdigest()
-            
-            db.session.add(new_episode)
-            db.session.commit()
-            
-            return redirect(url_for('index'))
+            # 创建新的Episode
+            new_episode = Episode(
+                title=title,
+                description=description,
+                audio_file=filename
+            )
+        
+        # 如果提供了密码，存储其哈希值
+        if password:
+            new_episode.password = hashlib.sha256(password.encode()).hexdigest()
+        
+        db.session.add(new_episode)
+        db.session.commit()
+        
+        return redirect(url_for('index'))
     
-    return render_template('upload.html')
+    return render_template('upload.html', use_cloudinary=cloudinary_available)
 
 from datetime import datetime
 @app.route('/feed.xml')
