@@ -3,6 +3,9 @@ from datetime import datetime
 import os
 import secrets
 import hashlib
+import json
+import base64
+import requests
 
 # 尝试导入cloudinary
 try:
@@ -22,13 +25,68 @@ app.config['SITE_URL'] = os.environ.get('SITE_URL', 'https://podcast-five-pink.v
 # 如果Cloudinary可用，则配置它
 if cloudinary_available:
     cloudinary.config( 
-        cloud_name = "dxm0ajjil",  # 更正为您的cloud_name
+        cloud_name = "dxm0ajjil",
         api_key = "286612799875297", 
         api_secret = "EkrlSu4mv50B9Aclc_a4US3ZdX4" 
     )
 
-# 播客数据列表 - 已移除测试播客
-EPISODES = []
+# 从Cloudinary下载JSON数据
+def download_episodes_from_cloudinary():
+    try:
+        # 获取JSON文件URL
+        url = cloudinary.utils.cloudinary_url("episodes_data", resource_type="raw")[0]
+        # 下载JSON数据
+        response = requests.get(url)
+        if response.status_code == 200:
+            return json.loads(response.text)
+        else:
+            # 如果文件不存在，返回空列表或默认数据
+            return [{
+                'id': 0,
+                'title': '欢迎收听灰礁播客',
+                'description': '这是一个演示播客，用于验证样式是否正确加载。上传新的播客后此条目会保留。',
+                'audio_file': 'https://docs.google.com/uc?export=download&id=1v6JDgNLlQB9cHIuWiUhpJrKp-s73V56j',
+                'pub_date': '2025-05-20'
+            }]
+    except Exception as e:
+        print(f"从Cloudinary下载播客数据出错: {e}")
+        return [{
+            'id': 0,
+            'title': '欢迎收听灰礁播客',
+            'description': '这是一个演示播客，用于验证样式是否正确加载。上传新的播客后此条目会保留。',
+            'audio_file': 'https://docs.google.com/uc?export=download&id=1v6JDgNLlQB9cHIuWiUhpJrKp-s73V56j',
+            'pub_date': '2025-05-20'
+        }]
+
+# 上传JSON数据到Cloudinary
+def upload_episodes_to_cloudinary(episodes):
+    try:
+        # 将数据转换为JSON字符串
+        episodes_json = json.dumps(episodes, ensure_ascii=False)
+        # 使用Cloudinary的raw上传功能
+        result = cloudinary.uploader.upload(
+            "data:application/json;base64," + base64.b64encode(episodes_json.encode('utf-8')).decode('utf-8'),
+            resource_type="raw",
+            public_id="episodes_data",
+            overwrite=True
+        )
+        return result.get('secure_url')
+    except Exception as e:
+        print(f"上传播客数据到Cloudinary出错: {e}")
+        return None
+
+# 初始化播客数据
+if cloudinary_available:
+    EPISODES = download_episodes_from_cloudinary()
+else:
+    # 如果Cloudinary不可用，使用默认数据
+    EPISODES = [{
+        'id': 0,
+        'title': '欢迎收听灰礁播客',
+        'description': '这是一个演示播客，用于验证样式是否正确加载。上传新的播客后此条目会保留。',
+        'audio_file': 'https://docs.google.com/uc?export=download&id=1v6JDgNLlQB9cHIuWiUhpJrKp-s73V56j',
+        'pub_date': '2025-05-20'
+    }]
 
 # 上下文处理器 - 为所有模板提供站点信息
 @app.context_processor
@@ -73,12 +131,16 @@ def upload():
             # 添加到内存列表
             EPISODES.append(new_episode)
             
+            # 保存到Cloudinary
+            if cloudinary_available:
+                upload_episodes_to_cloudinary(EPISODES)
+                
             return redirect(url_for('index'))
     
     # 传递正确的upload_preset到模板
     return render_template('upload.html', use_cloudinary=cloudinary_available, 
                           cloud_name="dxm0ajjil", 
-                          upload_preset="podcast_upload")  # 使用您创建的upload_preset
+                          upload_preset="podcast_upload")
 
 # RSS Feed
 @app.route('/feed.xml')
@@ -101,6 +163,7 @@ def status():
     return jsonify({
         "status": "ok",
         "cloudinary_available": cloudinary_available,
+        "episodes_count": len(EPISODES),
         "static_url": url_for('static', filename='css/new-style.css'),
         "css_exists": os.path.exists(os.path.join(app.static_folder, 'css', 'new-style.css'))
     })
