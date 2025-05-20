@@ -42,7 +42,7 @@ body {
     position: relative;
 }
 
-/* 光剑风格的流星CSS */
+/* 修正 z-index 的光剑风格CSS */
 /* 星星容器 */
 .stars {
     position: fixed;
@@ -51,14 +51,14 @@ body {
     width: 100%;
     height: 100%;
     pointer-events: none;
-    z-index: -1;
+    z-index: -10; /* 降低z-index，确保不会覆盖内容 */
 }
 
 /* 星星样式 */
 .star {
     position: absolute;
-    width: 5px;
-    height: 5px;
+    width: 2px;
+    height: 2px;
     background-color: #fff;
     border-radius: 50%;
     animation: twinkle var(--duration, 4s) infinite ease-in-out;
@@ -84,7 +84,7 @@ body {
     width: 100%;
     height: 100%;
     pointer-events: none;
-    z-index: -1;
+    z-index: -5; /* 降低z-index，确保不会覆盖内容 */
     overflow: hidden;
 }
 
@@ -153,6 +153,32 @@ body {
         opacity: 0;
         transform: translateX(var(--travel-x, 1000px)) translateY(var(--travel-y, 500px)) rotate(var(--angle, -45deg));
     }
+}
+
+
+
+/* 确保上传表单正确显示 */
+.upload-form {
+    position: relative; /* 添加相对定位 */
+    z-index: 10; /* 确保表单在星空和光剑上面 */
+    max-width: 700px;
+    margin: 0 auto 3rem auto;
+    background: var(--control-bg);
+    padding: 3rem;
+    border: 2px solid var(--secondary-color);
+    border-radius: 5px;
+    box-shadow: 0 0 30px rgba(0, 255, 255, 0.3);
+    text-align: left;
+}
+
+/* 确保按钮和表单元素在顶层 */
+.rainbow-button, 
+input, 
+textarea, 
+button, 
+select {
+    position: relative;
+    z-index: 15;
 }
 
 /* 控制台风格的元素 */

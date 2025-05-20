@@ -1,3 +1,4 @@
+<!-- 修复版的base.html -->
 <!DOCTYPE html>
 <html lang="zh">
 <head>
@@ -49,6 +50,7 @@
                 repeating-linear-gradient(90deg, var(--grid-color) 0px, var(--grid-color) 1px, transparent 1px, transparent 20px);
             background-attachment: fixed;
             overflow-x: hidden;
+            position: relative;
         }
 
         .container {
@@ -56,11 +58,15 @@
             max-width: 1200px;
             margin: 0 auto;
             padding: 0 15px;
+            position: relative;
+            z-index: 5; /* 确保内容在星空之上 */
         }
 
         a {
             color: var(--secondary-color);   
             text-decoration: none;
+            position: relative;
+            z-index: 5;
         }
 
         a:hover {
@@ -73,6 +79,8 @@
             border-bottom: 3px solid var(--secondary-color);
             padding: 2rem 0;
             margin-bottom: 3rem;
+            position: relative;
+            z-index: 5;
         }
 
         /* 霓虹灯标题效果 */
@@ -144,6 +152,8 @@
         main {
             min-height: 70vh;
             padding: 2rem 0 4rem;
+            position: relative;
+            z-index: 5; /* 确保内容在星空之上 */
         }
 
         h2 {
@@ -165,6 +175,8 @@
             font-family: 'VCR OSD Mono', monospace;
             font-weight: bold;
             cursor: pointer;
+            position: relative;
+            z-index: 10;
         }
 
         /* 上传表单 */
@@ -176,10 +188,14 @@
             border: 2px solid var(--secondary-color);
             border-radius: 5px;
             text-align: left;
+            position: relative;
+            z-index: 10;
         }
 
         .form-group {
             margin-bottom: 1.8rem;
+            position: relative;
+            z-index: 10;
         }
 
         .form-group label {
@@ -199,6 +215,8 @@
             color: var(--text-color);
             font-family: 'VCR OSD Mono', monospace;
             font-size: 1rem;
+            position: relative;
+            z-index: 10;
         }
 
         /* 页脚 */
@@ -208,6 +226,8 @@
             padding: 3rem 0;
             margin-top: 5rem;
             border-top: 3px solid var(--secondary-color);
+            position: relative;
+            z-index: 5;
         }
 
         /* 静态效果 */
@@ -220,7 +240,7 @@
             height: 100%;
             pointer-events: none;
             opacity: 0.2;
-            z-index: 1000;
+            z-index: 0;
         }
         
         /* 星星动画 */
@@ -231,7 +251,7 @@
             width: 100%;
             height: 100%;
             pointer-events: none;
-            z-index: -1;
+            z-index: -10;
         }
 
         .star {
@@ -241,208 +261,212 @@
             background-color: #fff;
             border-radius: 50%;
             animation: twinkle var(--duration, 4s) infinite ease-in-out;
-            opacity: 0;
+            opacity: 0.6;
         }
 
         @keyframes twinkle {
             0%, 100% {
-                opacity: 0;
+                opacity: 0.2;
+                transform: scale(0.8);
             }
             50% {
-                opacity: var(--opacity, 0.8);
+                opacity: 0.8;
+                transform: scale(1);
             }
         }
 
-        /* 流星效果 */
-        .shooting-star {
-            position: absolute;
-            width: 100px;
-            height: 1px;
-            background: linear-gradient(to right, rgba(0, 0, 0, 0), #fff);
-            transform: rotate(var(--angle));
-            animation: shooting var(--duration, 6s) infinite ease-out;
-            animation-delay: var(--delay, 0s);
-            opacity: 0;
-            top: var(--top);
-            left: var(--left);
-        }
-
-        .shooting-star::before {
-            content: '';
-            position: absolute;
-            right: 0;
-            width: 8px;
-            height: 8px;
-            background-color: #fff;
-            border-radius: 50%;
-            box-shadow: 0 0 10px 2px rgba(255, 255, 255, 0.7);
-            transform: translate(0, -50%);
-        }
-
-        @keyframes shooting {
-            0% {
-                opacity: 0;
-                transform: translateX(0) rotate(var(--angle));
-            }
-            5%, 15% {
-                opacity: 1;
-            }
-            30% {
-                opacity: 0;
-                transform: translateX(var(--distance, 500px)) rotate(var(--angle));
-            }
-            100% {
-                opacity: 0;
-                transform: translateX(var(--distance, 500px)) rotate(var(--angle));
-            }
+        /* 光剑流星容器 */
+        .lightsaber-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: -5;
+            overflow: hidden;
         }
     </style>
 </head>
 <body>
-   <!-- 星空和光剑流星HTML -->
-<div class="stars" id="starsContainer"></div>
-<div class="lightsaber-container" id="lightsaberContainer"></div>
-
-<!-- 星空和光剑流星JavaScript -->
-<script>
-    // 创建星空背景
-    function createStars() {
-        const starsContainer = document.getElementById('starsContainer');
-        const starCount = 200; // 星星数量
-        
-        for (let i = 0; i < starCount; i++) {
-            const star = document.createElement('div');
-            star.className = 'star';
-            
-            // 随机位置
-            const x = Math.random() * 100;
-            const y = Math.random() * 100;
-            
-            // 随机大小 (1-3像素)
-            const size = 1 + Math.random() * 2;
-            
-            // 随机闪烁速度
-            const duration = 2 + Math.random() * 4;
-            
-            star.style.cssText = `
-                left: ${x}%;
-                top: ${y}%;
-                width: ${size}px;
-                height: ${size}px;
-                --duration: ${duration}s;
-            `;
-            
-            starsContainer.appendChild(star);
-        }
-    }
+    <!-- 星空和光剑背景 -->
+    <div class="stars" id="starsContainer"></div>
+    <div class="lightsaber-container" id="lightsaberContainer"></div>
     
-    // 创建光剑效果
-    function createLightsabers() {
-        const container = document.getElementById('lightsaberContainer');
-        
-        // 定义光剑颜色
-        const saberColors = [
-            { color: '#0ff', shadow: '#0ff' }, // 青色
-            { color: '#f0f', shadow: '#f0f' }, // 粉色
-            { color: '#0f0', shadow: '#0f0' }, // 绿色
-            { color: '#f00', shadow: '#f00' }, // 红色
-            { color: '#00f', shadow: '#00f' }, // 蓝色
-            { color: '#ff0', shadow: '#ff0' }  // 黄色
-        ];
-        
-        // 创建6个光剑元素（初始不可见）
-        for (let i = 0; i < 6; i++) {
-            const lightsaber = document.createElement('div');
-            lightsaber.className = 'lightsaber';
-            container.appendChild(lightsaber);
+    <header>
+        <div class="container">
+            <h1><a href="{{ url_for('index') }}">{{ site_name }}</a></h1>
+            <p>{{ site_description }}</p>
+            
+            <div class="control-lights">
+                <div class="control-light red"></div>
+                <div class="control-light green"></div>
+                <div class="control-light blue"></div>
+                <div class="control-light purple"></div>
+            </div>
+            
+            <nav>
+                <ul>
+                    <li><a href="{{ url_for('index') }}">首页</a></li>
+                    <li><a href="{{ url_for('upload') }}">上传</a></li>
+                    <li><a href="{{ url_for('feed') }}">RSS</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+    
+    <main>
+        <div class="container">
+            {% block content %}{% endblock %}
+        </div>
+    </main>
+    
+    <footer>
+        <div class="container">
+            <p>&copy; {{ current_year }} {{ site_name }}. 版权所有.</p>
+        </div>
+    </footer>
+
+    <!-- 星星和光剑效果的脚本 -->
+    <script>
+        // 创建星空背景
+        function createStars() {
+            const starsContainer = document.getElementById('starsContainer');
+            const starCount = 200; // 星星数量
+            
+            for (let i = 0; i < starCount; i++) {
+                const star = document.createElement('div');
+                star.className = 'star';
+                
+                // 随机位置
+                const x = Math.random() * 100;
+                const y = Math.random() * 100;
+                
+                // 随机大小 (1-3像素)
+                const size = 1 + Math.random() * 2;
+                
+                // 随机闪烁速度
+                const duration = 2 + Math.random() * 4;
+                
+                star.style.cssText = `
+                    left: ${x}%;
+                    top: ${y}%;
+                    width: ${size}px;
+                    height: ${size}px;
+                    --duration: ${duration}s;
+                `;
+                
+                starsContainer.appendChild(star);
+            }
         }
         
-        // 随机发射光剑
-        function shootRandomLightsaber() {
-            // 获取所有光剑元素
-            const sabers = document.querySelectorAll('.lightsaber');
+        // 创建光剑效果
+        function createLightsabers() {
+            const container = document.getElementById('lightsaberContainer');
             
-            // 随机选择一个光剑
-            const index = Math.floor(Math.random() * sabers.length);
-            const saber = sabers[index];
+            // 定义光剑颜色
+            const saberColors = [
+                { color: '#0ff', shadow: '#0ff' }, // 青色
+                { color: '#f0f', shadow: '#f0f' }, // 粉色
+                { color: '#0f0', shadow: '#0f0' }, // 绿色
+                { color: '#f00', shadow: '#f00' }, // 红色
+                { color: '#00f', shadow: '#00f' }, // 蓝色
+                { color: '#ff0', shadow: '#ff0' }  // 黄色
+            ];
             
-            // 如果光剑当前正在动画，跳过
-            if (saber.style.opacity !== '0' && 
-                saber.style.animationName) {
-                return;
+            // 创建6个光剑元素（初始不可见）
+            for (let i = 0; i < 6; i++) {
+                const lightsaber = document.createElement('div');
+                lightsaber.className = 'lightsaber';
+                container.appendChild(lightsaber);
             }
             
-            // 随机角度 (-10度到-170度)
-            const angle = -(10 + Math.random() * 160);
+            // 随机发射光剑
+            function shootRandomLightsaber() {
+                // 获取所有光剑元素
+                const sabers = document.querySelectorAll('.lightsaber');
+                
+                // 随机选择一个光剑
+                const index = Math.floor(Math.random() * sabers.length);
+                const saber = sabers[index];
+                
+                // 如果光剑当前正在动画，跳过
+                if (saber.style.opacity !== '0' && 
+                    saber.style.animationName) {
+                    return;
+                }
+                
+                // 随机角度 (-10度到-170度)
+                const angle = -(10 + Math.random() * 160);
+                
+                // 随机长度
+                const length = 100 + Math.random() * 200;
+                
+                // 随机位置
+                const top = Math.random() * 100;
+                const left = Math.random() * 50;  // 从左侧飞出
+                
+                // 随机速度
+                const duration = 1.5 + Math.random() * 1.5;
+                
+                // 随机颜色
+                const colorIndex = Math.floor(Math.random() * saberColors.length);
+                const selectedColor = saberColors[colorIndex];
+                
+                // 计算移动距离，基于角度和屏幕尺寸
+                const angleRad = angle * (Math.PI / 180);
+                const distance = Math.max(window.innerWidth, window.innerHeight) * 1.5;
+                const travelX = Math.cos(angleRad) * distance;
+                const travelY = Math.sin(angleRad) * -distance;
+                
+                // 设置光剑样式
+                saber.style.cssText = `
+                    top: ${top}%;
+                    left: ${left}%;
+                    --angle: ${angle}deg;
+                    --length: ${length}px;
+                    --duration: ${duration}s;
+                    --travel-x: ${travelX}px;
+                    --travel-y: ${travelY}px;
+                    --color: ${selectedColor.color};
+                    box-shadow: 
+                        0 0 5px ${selectedColor.shadow},
+                        0 0 10px ${selectedColor.shadow},
+                        0 0 20px ${selectedColor.shadow};
+                    background-color: ${selectedColor.color};
+                    opacity: 0;
+                `;
+                
+                // 重置并启动动画
+                saber.style.animation = 'none';
+                void saber.offsetWidth; // 触发重绘
+                saber.style.animation = `lightsaber-fly ${duration}s linear forwards`;
+                
+                // 动画结束后重置
+                saber.addEventListener('animationend', function() {
+                    saber.style.opacity = '0';
+                }, { once: true });
+            }
             
-            // 随机长度
-            const length = 100 + Math.random() * 200;
+            // 定期随机发射光剑
+            function startLightsaberShow() {
+                // 随机发射一个光剑
+                shootRandomLightsaber();
+                
+                // 随机等待2-6秒后再发射下一个
+                const nextDelay = 2000 + Math.random() * 4000;
+                setTimeout(startLightsaberShow, nextDelay);
+            }
             
-            // 随机位置
-            const top = Math.random() * 100;
-            const left = Math.random() * 50;  // 从左侧飞出
-            
-            // 随机速度
-            const duration = 1.5 + Math.random() * 1.5;
-            
-            // 随机颜色
-            const colorIndex = Math.floor(Math.random() * saberColors.length);
-            const selectedColor = saberColors[colorIndex];
-            
-            // 计算移动距离，基于角度和屏幕尺寸
-            const angleRad = angle * (Math.PI / 180);
-            const distance = Math.max(window.innerWidth, window.innerHeight) * 1.5;
-            const travelX = Math.cos(angleRad) * distance;
-            const travelY = Math.sin(angleRad) * -distance;
-            
-            // 设置光剑样式
-            saber.style.cssText = `
-                top: ${top}%;
-                left: ${left}%;
-                --angle: ${angle}deg;
-                --length: ${length}px;
-                --duration: ${duration}s;
-                --travel-x: ${travelX}px;
-                --travel-y: ${travelY}px;
-                --color: ${selectedColor.color};
-                box-shadow: 
-                    0 0 5px ${selectedColor.shadow},
-                    0 0 10px ${selectedColor.shadow},
-                    0 0 20px ${selectedColor.shadow};
-                background-color: ${selectedColor.color};
-                opacity: 0;
-            `;
-            
-            // 重置并启动动画
-            saber.style.animation = 'none';
-            void saber.offsetWidth; // 触发重绘
-            saber.style.animation = `lightsaber-fly ${duration}s linear forwards`;
-            
-            // 动画结束后重置
-            saber.addEventListener('animationend', function() {
-                saber.style.opacity = '0';
-            }, { once: true });
+            // 启动光剑表演
+            startLightsaberShow();
         }
         
-        // 定期随机发射光剑
-        function startLightsaberShow() {
-            // 随机发射一个光剑
-            shootRandomLightsaber();
-            
-            // 随机等待2-6秒后再发射下一个
-            const nextDelay = 2000 + Math.random() * 4000;
-            setTimeout(startLightsaberShow, nextDelay);
-        }
-        
-        // 启动光剑表演
-        startLightsaberShow();
-    }
-    
-    // 页面加载完成后初始化
-    window.addEventListener('DOMContentLoaded', () => {
-        createStars();
-        createLightsabers();
-    });
-</script>
+        // 页面加载完成后初始化
+        window.addEventListener('DOMContentLoaded', () => {
+            createStars();
+            createLightsabers();
+        });
+    </script>
 </body>
 </html>
