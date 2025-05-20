@@ -8,23 +8,24 @@ import hashlib
 try:
     import cloudinary
     import cloudinary.uploader
-    
-    # 配置Cloudinary
-    cloudinary.config( 
-        cloud_name = "dxm0ajjil", 
-        api_key = "286612799875297", 
-        api_secret = "EkrlSu4mv50B9Aclc_a4US3ZdX4" 
-    )
     cloudinary_available = True
 except ImportError:
     cloudinary_available = False
-    print("警告: Cloudinary模块未找到。将使用本地文件上传。")
+    print("警告: Cloudinary模块未找到。")
 
 app = Flask(__name__, static_folder='static')
 app.config['SECRET_KEY'] = secrets.token_hex(16)
-app.config['SITE_NAME'] = "灰礁播客"  # 站点名称
-app.config['SITE_DESCRIPTION'] = "浮筝带来的灰礁上的声音"  # 站点描述
-app.config['SITE_URL'] = os.environ.get('SITE_URL', 'https://podcast-five-pink.vercel.app')  # 线上URL
+app.config['SITE_NAME'] = "灰礁播客"
+app.config['SITE_DESCRIPTION'] = "浮筝带来的灰礁上的声音"
+app.config['SITE_URL'] = os.environ.get('SITE_URL', 'https://podcast-five-pink.vercel.app')
+
+# 如果Cloudinary可用，则配置它
+if cloudinary_available:
+    cloudinary.config( 
+        cloud_name = "dxm0ajjil",  # 更正为您的cloud_name
+        api_key = "286612799875297", 
+        api_secret = "EkrlSu4mv50B9Aclc_a4US3ZdX4" 
+    )
 
 # 虚拟播客数据
 EPISODES = [
@@ -65,12 +66,10 @@ def upload():
     if request.method == 'POST':
         title = request.form.get('title')
         description = request.form.get('description')
-        password = request.form.get('password')
-        
-        # 检查是否使用Cloudinary上传
         audio_url = request.form.get('audio_url')
-        if audio_url and cloudinary_available:
-            # Cloudinary模式 - 使用URL
+        
+        if audio_url:
+            # 创建新的Episode
             new_episode = {
                 'id': len(EPISODES),
                 'title': title,
@@ -79,16 +78,15 @@ def upload():
                 'pub_date': datetime.now().isoformat()
             }
             
-            # 如果提供了密码，存储其哈希值
-            if password:
-                new_episode['password'] = hashlib.sha256(password.encode()).hexdigest()
-            
             # 添加到内存列表
             EPISODES.append(new_episode)
             
             return redirect(url_for('index'))
     
-    return render_template('upload.html', use_cloudinary=cloudinary_available)
+    # 传递正确的upload_preset到模板
+    return render_template('upload.html', use_cloudinary=cloudinary_available, 
+                          cloud_name="dxm0ajjil", 
+                          upload_preset="podcast_upload")  # 使用您创建的upload_preset
 
 # RSS Feed
 @app.route('/feed.xml')
@@ -98,29 +96,21 @@ def feed():
 # 提供CSS文件 - 直接路由
 @app.route('/static/css/new-style.css')
 def css():
-    try:
-        return send_from_directory(os.path.join(app.static_folder, 'css'), 'new-style.css')
-    except Exception as e:
-        return str(e), 500
+    return send_from_directory(os.path.join(app.static_folder, 'css'), 'new-style.css')
 
 # 提供favicon
 @app.route('/favicon.ico')
 def favicon():
-    try:
-        return send_from_directory(app.static_folder, 'favicon.ico', mimetype='image/x-icon')
-    except:
-        return "", 404
+    return send_from_directory(app.static_folder, 'favicon.ico', mimetype='image/x-icon')
 
 # 状态检查端点
 @app.route('/status')
 def status():
-    css_path = os.path.join(app.static_folder, 'css', 'new-style.css')
     return jsonify({
         "status": "ok",
-        "static_folder": app.static_folder,
-        "css_path": css_path,
-        "css_exists": os.path.exists(css_path),
-        "cloudinary_available": cloudinary_available
+        "cloudinary_available": cloudinary_available,
+        "static_url": url_for('static', filename='css/new-style.css'),
+        "css_exists": os.path.exists(os.path.join(app.static_folder, 'css', 'new-style.css'))
     })
 
 if __name__ == '__main__':

@@ -41,8 +41,8 @@
         <script src="https://upload-widget.cloudinary.com/global/all.js"></script>
         <script>
             const myWidget = cloudinary.createUploadWidget({
-                cloudName: 'dxm0ajjil',
-                uploadPreset: 'ml_default',
+                cloudName: "{{ cloud_name }}", // 使用从后端传递的cloud_name
+                uploadPreset: "{{ upload_preset }}", // 使用从后端传递的upload_preset
                 resourceType: "auto",
                 sources: ["local"],
                 multiple: false,
@@ -52,6 +52,7 @@
             }, (error, result) => {
                 if (error) {
                     document.getElementById("upload-status").textContent = "上传出错: " + error.message;
+                    console.error("Cloudinary错误:", error);
                     return;
                 }
                 
@@ -63,6 +64,10 @@
                     document.getElementById("audio_url").value = fileUrl;
                     document.getElementById("audio_filename").value = fileName;
                     document.getElementById("submit-button").disabled = false;
+                    
+                    console.log("上传成功:", result.info);
+                } else if (result.event) {
+                    console.log("Cloudinary事件:", result.event);
                 }
             });
             
