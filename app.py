@@ -5,7 +5,14 @@ import secrets
 import hashlib
 import json
 import base64
-import requests
+
+# 尝试导入requests，在Vercel上首次部署时可能不可用
+try:
+    import requests
+    requests_available = True
+except ImportError:
+    requests_available = False
+    print("警告: requests模块未找到。部分功能可能不可用。")
 
 # 尝试导入cloudinary
 try:
@@ -32,6 +39,10 @@ if cloudinary_available:
 
 # 从Cloudinary下载JSON数据
 def download_episodes_from_cloudinary():
+    # 首次部署时，requests可能不可用，使用默认数据
+    if not requests_available:
+        return default_episodes()
+        
     try:
         # 获取JSON文件URL
         url = cloudinary.utils.cloudinary_url("episodes_data", resource_type="raw")[0]
@@ -40,23 +51,21 @@ def download_episodes_from_cloudinary():
         if response.status_code == 200:
             return json.loads(response.text)
         else:
-            # 如果文件不存在，返回空列表或默认数据
-            return [{
-                'id': 0,
-                'title': '欢迎收听灰礁播客',
-                'description': '这是一个演示播客，用于验证样式是否正确加载。上传新的播客后此条目会保留。',
-                'audio_file': 'https://docs.google.com/uc?export=download&id=1v6JDgNLlQB9cHIuWiUhpJrKp-s73V56j',
-                'pub_date': '2025-05-20'
-            }]
+            # 如果文件不存在，返回默认数据
+            return default_episodes()
     except Exception as e:
         print(f"从Cloudinary下载播客数据出错: {e}")
-        return [{
-            'id': 0,
-            'title': '欢迎收听灰礁播客',
-            'description': '这是一个演示播客，用于验证样式是否正确加载。上传新的播客后此条目会保留。',
-            'audio_file': 'https://docs.google.com/uc?export=download&id=1v6JDgNLlQB9cHIuWiUhpJrKp-s73V56j',
-            'pub_date': '2025-05-20'
-        }]
+        return default_episodes()
+
+# 默认播客数据
+def default_episodes():
+    return [{
+        'id': 0,
+        'title': '欢迎收听灰礁播客',
+        'description': '这是一个演示播客，用于验证样式是否正确加载。上传新的播客后此条目会保留。',
+        'audio_file': 'https://docs.google.com/uc?export=download&id=1v6JDgNLlQB9cHIuWiUhpJrKp-s73V56j',
+        'pub_date': '2025-05-20'
+    }]
 
 # 上传JSON数据到Cloudinary
 def upload_episodes_to_cloudinary(episodes):
@@ -76,17 +85,11 @@ def upload_episodes_to_cloudinary(episodes):
         return None
 
 # 初始化播客数据
-if cloudinary_available:
+if cloudinary_available and requests_available:
     EPISODES = download_episodes_from_cloudinary()
 else:
-    # 如果Cloudinary不可用，使用默认数据
-    EPISODES = [{
-        'id': 0,
-        'title': '欢迎收听灰礁播客',
-        'description': '这是一个演示播客，用于验证样式是否正确加载。上传新的播客后此条目会保留。',
-        'audio_file': 'https://docs.google.com/uc?export=download&id=1v6JDgNLlQB9cHIuWiUhpJrKp-s73V56j',
-        'pub_date': '2025-05-20'
-    }]
+    # 如果Cloudinary不可用或requests不可用，使用默认数据
+    EPISODES = default_episodes()
 
 # 上下文处理器 - 为所有模板提供站点信息
 @app.context_processor
@@ -163,6 +166,7 @@ def status():
     return jsonify({
         "status": "ok",
         "cloudinary_available": cloudinary_available,
+        "requests_available": requests_available,
         "episodes_count": len(EPISODES),
         "static_url": url_for('static', filename='css/new-style.css'),
         "css_exists": os.path.exists(os.path.join(app.static_folder, 'css', 'new-style.css'))
