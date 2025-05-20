@@ -4,7 +4,225 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{% block title %}{{ site_name }}{% endblock %}</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/new-style.css') }}">
+    <!-- 使用绝对路径 -->
+    <link rel="stylesheet" href="/static/css/new-style.css">
+    <!-- 备用样式链接 -->
+    <style>
+        /* 基础重置 */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            /* 蒸汽波主题色彩 - 霓虹色调与强烈对比 */
+            --primary-color: #ff00ff;      /* 霓虹粉 */
+            --secondary-color: #00ffff;    /* 霓虹青 */
+            --accent-color: #fe01b1;       /* 亮粉红 */
+            --accent-color2: #9933ff;      /* 亮紫色 */
+            --text-color: #ffffff;         /* 白色文本 */
+            --bg-color: #0b0b1e;           /* 深蓝黑色背景 */
+            --dark-color: #120458;         /* 深紫色 */
+            --grid-color: rgba(0, 255, 255, 0.2); /* 网格线颜色 */
+            --glow-color: rgba(255, 0, 255, 0.7); /* 霓虹粉光晕 */
+            --control-bg: #1a1141;         /* 控制面板背景 */
+            --button-bg: #1d1646;          /* 按钮背景 */
+        }
+
+        @font-face {
+            font-family: 'VCR OSD Mono';
+            src: url('https://cdn.jsdelivr.net/npm/@typopro/web-vcr-osd-mono@3.7.5/TypoPRO-VCROSDMono.woff2') format('woff2');
+            font-weight: normal;
+            font-style: normal;
+        }
+
+        body {
+            font-family: 'VCR OSD Mono', 'Courier New', monospace;
+            line-height: 1.6;
+            color: var(--text-color);
+            background-color: var(--bg-color);
+            text-align: center;
+            background-image: 
+                linear-gradient(0deg, rgba(18, 4, 88, 0.8) 0%, rgba(11, 11, 30, 0.9) 100%),
+                repeating-linear-gradient(0deg, var(--grid-color) 0px, var(--grid-color) 1px, transparent 1px, transparent 20px),
+                repeating-linear-gradient(90deg, var(--grid-color) 0px, var(--grid-color) 1px, transparent 1px, transparent 20px);
+            background-attachment: fixed;
+            overflow-x: hidden;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 15px;
+        }
+
+        a {
+            color: var(--secondary-color);   
+            text-decoration: none;
+        }
+
+        a:hover {
+            color: var(--primary-color);
+        }
+
+        /* 头部样式 */
+        header {
+            background-color: var(--dark-color);
+            border-bottom: 3px solid var(--secondary-color);
+            padding: 2rem 0;
+            margin-bottom: 3rem;
+        }
+
+        /* 霓虹灯标题效果 */
+        header h1 {
+            margin: 0 0 0.5rem 0;
+            font-size: 3rem;
+            color: var(--primary-color);
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+        }
+
+        header h1 a {
+            color: var(--primary-color);
+            text-decoration: none;
+        }
+
+        header p {
+            font-size: 1.2rem;
+            color: var(--secondary-color);
+            margin-bottom: 1.5rem;
+        }
+
+        header nav {
+            margin-top: 1.5rem;
+            border-top: 1px solid rgba(0, 255, 255, 0.3);
+            padding-top: 1.5rem;
+        }
+
+        header nav ul {
+            list-style: none;
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+        }
+
+        /* 控制灯效果 */
+        .control-lights {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin: 1.5rem 0;
+        }
+
+        .control-light {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background-color: rgba(255, 255, 255, 0.8);
+        }
+
+        .control-light.red {
+            background-color: #ff2d55;
+        }
+
+        .control-light.green {
+            background-color: #00ff9d;
+        }
+
+        .control-light.blue {
+            background-color: #00ccff;
+        }
+
+        .control-light.purple {
+            background-color: #da00ff;
+        }
+
+        /* 主内容区 */
+        main {
+            min-height: 70vh;
+            padding: 2rem 0 4rem;
+        }
+
+        h2 {
+            margin-bottom: 2rem;
+            padding-bottom: 1rem;
+            font-size: 2rem;
+            color: var(--secondary-color);
+            position: relative;
+            display: inline-block;
+        }
+
+        /* 彩虹按钮 */
+        .rainbow-button {
+            background: linear-gradient(90deg, #ff00ff, #00ffff, #9933ff, #fe01b1);
+            border: none;
+            border-radius: 5px;
+            color: var(--text-color);
+            padding: 12px 25px;
+            font-family: 'VCR OSD Mono', monospace;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        /* 上传表单 */
+        .upload-form {
+            max-width: 700px;
+            margin: 0 auto 3rem auto;
+            background: var(--control-bg);
+            padding: 3rem;
+            border: 2px solid var(--secondary-color);
+            border-radius: 5px;
+            text-align: left;
+        }
+
+        .form-group {
+            margin-bottom: 1.8rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.7rem;
+            font-weight: 600;
+            color: var(--secondary-color);
+        }
+
+        .form-group input,
+        .form-group textarea {
+            width: 100%;
+            padding: 1rem;
+            background: rgba(0, 0, 0, 0.5);
+            border: 1px solid var(--secondary-color);
+            border-radius: 3px;
+            color: var(--text-color);
+            font-family: 'VCR OSD Mono', monospace;
+            font-size: 1rem;
+        }
+
+        /* 页脚 */
+        footer {
+            background: var(--dark-color);
+            color: var(--text-color);
+            padding: 3rem 0;
+            margin-top: 5rem;
+            border-top: 3px solid var(--secondary-color);
+        }
+
+        /* 静态效果 */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            opacity: 0.2;
+            z-index: 1000;
+        }
+    </style>
 </head>
 <body>
     <header>
