@@ -32,7 +32,7 @@ app.config['UPLOAD_FOLDER'] = os.path.join('static', 'media')
 # 如果Cloudinary可用，则配置它
 if cloudinary_available:
     cloudinary.config( 
-        cloud_name = "ml_default", 
+        cloud_name = "@dxm0ajjil", 
         api_key = "286612799875297", 
         api_secret = "EkrlSu4mv50B9Aclc_a4US3ZdX4" 
     )
