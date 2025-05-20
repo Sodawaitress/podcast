@@ -72,67 +72,124 @@ body {
     }
 }
 
-/* 流星效果 */
-.shooting-star {
-    position: absolute;
-    width: 100px;
-    height: 1px;
-    background: linear-gradient(to right, rgba(0, 0, 0, 0), #fff);
-    transform: rotate(var(--angle));
-    animation: shooting var(--duration, 6s) infinite ease-out;
-    animation-delay: var(--delay, 0s);
-    opacity: 0;
-    top: var(--top);
-    left: var(--left);
+/* 改进流星效果的样式 */
+/* 流星容器 */
+.shooting-stars {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: -1;
+    overflow: hidden;
 }
 
+/* 改进的流星效果 */
+.shooting-star {
+    position: absolute;
+    height: 2px;
+    background: linear-gradient(to right, 
+        rgba(0, 0, 0, 0) 0%, 
+        rgba(255, 255, 255, 0.4) 30%, 
+        rgba(255, 255, 255, 0.8) 60%, 
+        rgba(255, 255, 255, 1) 80%, 
+        rgba(219, 255, 255, 1) 100%);
+    transform: rotate(var(--angle));
+    animation: meteor var(--duration, 1.2s) linear infinite;
+    animation-delay: var(--delay, 0s);
+    opacity: 0;
+    filter: drop-shadow(0 0 6px rgba(105, 155, 255, 0.6));
+    overflow: hidden;
+    border-radius: 1px;
+}
+
+/* 流星尾迹 */
 .shooting-star::before {
     content: '';
     position: absolute;
+    top: 0;
     right: 0;
-    width: 8px;
-    height: 8px;
-    background-color: #fff;
+    width: 30px;
+    height: 2px;
+    background: linear-gradient(to left, 
+        rgba(255, 255, 255, 0.8) 0%, 
+        rgba(219, 255, 255, 0.3) 80%, 
+        rgba(219, 255, 255, 0) 100%);
     border-radius: 50%;
-    box-shadow: 0 0 10px 2px rgba(255, 255, 255, 0.7);
+    box-shadow: 0 0 20px 4px rgba(255, 255, 255, 0.6);
+}
+
+/* 流星光点 */
+.shooting-star::after {
+    content: "";
+    position: absolute;
+    top: 50%;
+    right: 0;
+    width: 4px;
+    height: 4px;
+    background: rgba(255, 255, 255, 1);
+    border-radius: 50%;
+    box-shadow: 
+        0 0 10px 2px rgba(255, 255, 255, 1),
+        0 0 20px 4px rgba(173, 216, 230, 0.6);
     transform: translate(0, -50%);
 }
 
-@keyframes shooting {
+/* 流星动画 */
+@keyframes meteor {
     0% {
         opacity: 0;
-        transform: translateX(0) rotate(var(--angle));
+        transform: translateX(0) translateY(0) rotate(var(--angle));
+        width: 0;
     }
-    5%, 15% {
+    5% {
         opacity: 1;
+        width: var(--length, 100px);
     }
-    30% {
-        opacity: 0;
-        transform: translateX(var(--distance, 500px)) rotate(var(--angle));
+    10%, 80% {
+        opacity: 1;
     }
     100% {
         opacity: 0;
-        transform: translateX(var(--distance, 500px)) rotate(var(--angle));
+        transform: translateX(var(--travel-x)) translateY(var(--travel-y)) rotate(var(--angle));
     }
 }
 
-.container {
-    width: 90%;
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 0 15px;
+/* 星星容器 */
+.stars {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: -1;
+    overflow: hidden;
 }
 
-a {
-    color: var(--secondary-color);   
-    text-decoration: none;
-    transition: all 0.3s ease;
-    text-shadow: 0 0 8px var(--secondary-color);
+/* 改进的星星效果 */
+.star {
+    position: absolute;
+    background-color: #fff;
+    border-radius: 50%;
+    animation: twinkle var(--duration, 4s) infinite ease-in-out;
+    opacity: 0.4;
+    filter: drop-shadow(0 0 3px rgba(255, 255, 255, 0.7));
 }
 
-a:hover {
-    color: var(--primary-color);
-    text-shadow: 0 0 15px var(--primary-color);
+/* 改进的星星闪烁动画 */
+@keyframes twinkle {
+    0%, 100% {
+        opacity: var(--min-opacity, 0.2);
+        transform: scale(0.7);
+        filter: drop-shadow(0 0 1px rgba(255, 255, 255, 0.3));
+    }
+    50% {
+        opacity: var(--max-opacity, 0.8);
+        transform: scale(1);
+        filter: drop-shadow(0 0 4px rgba(255, 255, 255, 0.8));
+    }
 }
 
 /* 控制台风格的元素 */

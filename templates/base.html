@@ -336,96 +336,159 @@
         </div>
     </footer>
 
-    <!-- 星星和流星效果的脚本 -->
-    <script>
-        // 创建星星
-        function createStars() {
-            const starsContainer = document.getElementById('starsContainer');
-            const starCount = 150; // 星星数量
-            
-            for (let i = 0; i < starCount; i++) {
-                const star = document.createElement('div');
-                star.className = 'star';
-                
-                // 随机位置
-                const x = Math.random() * 100;
-                const y = Math.random() * 100;
-                
-                // 随机大小 (1-3像素)
-                const size = 1 + Math.random() * 2;
-                
-                // 随机闪烁速度和强度
-                const duration = 2 + Math.random() * 4;
-                const opacity = 0.5 + Math.random() * 0.5;
-                
-                star.style.cssText = `
-                    left: ${x}%;
-                    top: ${y}%;
-                    width: ${size}px;
-                    height: ${size}px;
-                    --duration: ${duration}s;
-                    --opacity: ${opacity};
-                `;
-                
-                starsContainer.appendChild(star);
-            }
-        }
+   <!-- 改进的星星和流星背景 -->
+<div class="stars" id="starsContainer"></div>
+<div class="shooting-stars" id="shootingStarsContainer"></div>
+
+<!-- 改进的星星和流星JavaScript代码 -->
+<script>
+    // 创建更逼真的星星
+    function createStars() {
+        const starsContainer = document.getElementById('starsContainer');
+        const starCount = 200; // 增加星星数量
         
-        // 创建流星
-        function createShootingStars() {
-            const starsContainer = document.getElementById('starsContainer');
-            const shootingStarCount = 5; // 流星数量
+        for (let i = 0; i < starCount; i++) {
+            const star = document.createElement('div');
+            star.className = 'star';
             
-            for (let i = 0; i < shootingStarCount; i++) {
-                const shootingStar = document.createElement('div');
-                shootingStar.className = 'shooting-star';
-                
-                // 随机参数
-                updateShootingStar(shootingStar);
-                
-                starsContainer.appendChild(shootingStar);
-                
-                // 每次动画结束后重新设置参数
-                shootingStar.addEventListener('animationiteration', () => {
-                    updateShootingStar(shootingStar);
-                });
-            }
-        }
-        
-        // 更新流星参数
-        function updateShootingStar(star) {
-            // 随机角度 (-30到-60度)
-            const angle = -(30 + Math.random() * 30);
+            // 随机位置
+            const x = Math.random() * 100;
+            const y = Math.random() * 100;
             
-            // 随机位置 (顶部区域)
-            const top = Math.random() * 30;
-            const left = Math.random() * 80;
+            // 随机大小 (0.5-3像素)
+            const size = 0.5 + Math.random() * 2.5;
             
-            // 随机速度和延迟
-            const duration = 2 + Math.random() * 6;
-            const delay = Math.random() * 15;
+            // 不同大小的星星有不同的亮度
+            const minOpacity = 0.1 + (size / 5); // 大星星暗时也较亮
+            const maxOpacity = 0.5 + (size / 2.5); // 大星星最亮时更亮
             
-            // 随机距离
-            const distance = 300 + Math.random() * 500;
+            // 随机闪烁速度 - 更自然的变化
+            const duration = 3 + Math.random() * 7;
+            
+            // 随机延迟 - 让星星闪烁不同步
+            const delay = Math.random() * 5;
+            
+            // 不同的星星有不同的颜色色调
+            const hue = 180 + Math.random() * 60; // 从蓝色到青色范围
+            const colorVariation = Math.random() > 0.8; // 20%的星星有颜色
+            const color = colorVariation 
+                ? `hsl(${hue}, 100%, 85%)` 
+                : '#fff';
             
             star.style.cssText = `
-                --angle: ${angle}deg;
-                --top: ${top}%;
-                --left: ${left}%;
+                left: ${x}%;
+                top: ${y}%;
+                width: ${size}px;
+                height: ${size}px;
+                background-color: ${color};
                 --duration: ${duration}s;
-                --delay: ${delay}s;
-                --distance: ${distance}px;
-                top: ${top}%;
-                left: ${left}%;
-                transform: rotate(${angle}deg);
+                --min-opacity: ${minOpacity};
+                --max-opacity: ${maxOpacity};
+                animation-delay: -${delay}s;
             `;
+            
+            starsContainer.appendChild(star);
+        }
+    }
+    
+    // 创建更精美的流星
+    function createShootingStars() {
+        const shootingStarsContainer = document.getElementById('shootingStarsContainer');
+        
+        // 创建8个流星，但初始设置为0透明度
+        for (let i = 0; i < 8; i++) {
+            const shootingStar = document.createElement('div');
+            shootingStar.className = 'shooting-star';
+            shootingStar.style.opacity = 0;
+            shootingStarsContainer.appendChild(shootingStar);
         }
         
-        // 在页面加载完成后创建星空
-        window.addEventListener('DOMContentLoaded', () => {
-            createStars();
-            createShootingStars();
-        });
-    </script>
+        // 周期性地激活随机数量的流星
+        function activateMeteorShower() {
+            // 获取所有流星元素
+            const meteors = document.querySelectorAll('.shooting-star');
+            
+            // 在流星容器内随机激活1-3个流星
+            const count = 1 + Math.floor(Math.random() * 3);
+            
+            // 对每个要激活的流星，更新其参数并启动动画
+            for (let i = 0; i < count; i++) {
+                // 随机选择一个流星
+                const index = Math.floor(Math.random() * meteors.length);
+                const meteor = meteors[index];
+                
+                // 确保流星当前不活跃
+                if (meteor.style.opacity !== '0' && 
+                    !meteor.style.animationName) {
+                    continue;
+                }
+                
+                // 设置随机参数
+                updateMeteor(meteor);
+            }
+            
+            // 每3-8秒触发一次流星雨
+            const nextActivation = 3000 + Math.random() * 5000;
+            setTimeout(activateMeteorShower, nextActivation);
+        }
+        
+        // 立即开始第一次流星雨
+        setTimeout(activateMeteorShower, 1000);
+    }
+    
+    // 更新流星参数
+    function updateMeteor(meteor) {
+        // 随机角度 (-15度到-60度)
+        const angle = -(15 + Math.random() * 45);
+        
+        // 随机长度
+        const length = 80 + Math.random() * 120;
+        
+        // 速度与长度成正比
+        const duration = 0.5 + Math.random() * 0.7;
+        
+        // 随机位置 (左侧20%-100%的顶部区域)
+        const top = Math.random() * 30;
+        const left = 20 + Math.random() * 80;
+        
+        // 计算移动距离，基于角度和屏幕尺寸
+        const screenHeight = window.innerHeight;
+        const screenWidth = window.innerWidth;
+        const angleRad = angle * (Math.PI / 180);
+        
+        // 计算流星移动的水平和垂直距离
+        const distance = Math.max(screenWidth, screenHeight) * 1.5;
+        const travelX = Math.cos(angleRad) * distance;
+        const travelY = Math.sin(angleRad) * -distance; // 负号是因为CSS Y轴朝下
+        
+        meteor.style.cssText = `
+            --angle: ${angle}deg;
+            --length: ${length}px;
+            --duration: ${duration}s;
+            --travel-x: ${travelX}px;
+            --travel-y: ${travelY}px;
+            top: ${top}%;
+            left: ${left}%;
+            transform: rotate(${angle}deg);
+            opacity: 0;
+        `;
+        
+        // 重置动画
+        meteor.style.animation = 'none';
+        void meteor.offsetWidth; // 触发重绘
+        meteor.style.animation = `meteor ${duration}s linear forwards`;
+        
+        // 动画结束后重置
+        meteor.addEventListener('animationend', function() {
+            meteor.style.opacity = '0';
+        }, { once: true });
+    }
+    
+    // 在页面加载完成后创建星空
+    window.addEventListener('DOMContentLoaded', () => {
+        createStars();
+        createShootingStars();
+    });
+</script>
 </body>
 </html>
