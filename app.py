@@ -27,16 +27,7 @@ if cloudinary_available:
         api_secret = "EkrlSu4mv50B9Aclc_a4US3ZdX4" 
     )
 
-# 虚拟播客数据
-EPISODES = [
-    {
-        'id': 0,
-        'title': '测试播客 #1',
-        'description': '这是一个测试播客，用于验证样式是否正确加载。',
-        'audio_file': 'https://docs.google.com/uc?export=download&id=1v6JDgNLlQB9cHIuWiUhpJrKp-s73V56j',
-        'pub_date': '2025-05-20'
-    }
-]
+
 
 # 上下文处理器 - 为所有模板提供站点信息
 @app.context_processor
