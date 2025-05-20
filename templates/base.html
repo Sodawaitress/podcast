@@ -299,6 +299,73 @@
             z-index: -5;
             overflow: hidden;
         }
+        
+        /* 光剑样式 */
+        .lightsaber {
+            position: absolute;
+            height: 4px;
+            background-color: #0ff; /* 默认青色 */
+            border-radius: 2px;
+            box-shadow: 
+                0 0 5px var(--color, #0ff),
+                0 0 10px var(--color, #0ff),
+                0 0 20px var(--color, #0ff);
+            transform-origin: left center;
+            transform: rotate(var(--angle, -45deg));
+            opacity: 0;
+            animation: lightsaber-fly var(--duration, 2s) linear;
+            animation-fill-mode: forwards;
+        }
+
+        /* 光剑柄 */
+        .lightsaber::before {
+            content: '';
+            position: absolute;
+            left: -10px;
+            top: -3px;
+            width: 10px;
+            height: 10px;
+            background-color: #777;
+            border-radius: 2px;
+            box-shadow: 0 0 3px rgba(0, 0, 0, 0.5);
+        }
+
+        /* 光剑光芒 */
+        .lightsaber::after {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(
+                90deg, 
+                rgba(255, 255, 255, 0.8) 0%, 
+                var(--color, rgba(0, 255, 255, 0.3)) 70%, 
+                transparent 100%
+            );
+            border-radius: 2px;
+            filter: blur(2px);
+        }
+
+        /* 光剑飞行动画 - 更自然的动画，保持角度不变 */
+        @keyframes lightsaber-fly {
+            0% {
+                opacity: 0;
+                width: 0;
+            }
+            5% {
+                opacity: 1;
+                width: var(--length, 100px);
+            }
+            10%, 80% {
+                opacity: 1;
+            }
+            100% {
+                opacity: 0;
+                transform: translate(var(--travel-x, 1000px), var(--travel-y, -500px)) rotate(var(--angle, -45deg));
+            }
+        }
     </style>
 </head>
 <body>
@@ -395,7 +462,7 @@
             }
         }
         
-        // 创建光剑效果
+        // 创建光剑效果 - 对角线发射
         function createLightsabers() {
             const container = document.getElementById('lightsaberContainer');
             
@@ -409,7 +476,7 @@
                 { color: '#ff0', shadow: '#ff0' }  // 黄色
             ];
             
-            // 创建6个光剑元素（初始不可见）
+            // 创建光剑元素（初始不可见）
             for (let i = 0; i < 6; i++) {
                 const lightsaber = document.createElement('div');
                 lightsaber.className = 'lightsaber';
@@ -431,18 +498,32 @@
                     return;
                 }
                 
-                // 随机角度 (-10度到-170度)
-                const angle = -(10 + Math.random() * 160);
+                // 随机确定发射位置 - 主要从左侧和底部发射
+                // 随机决定是从左侧还是底部发射
+                const fromLeft = Math.random() > 0.3; // 70%的几率从左侧发射
+                
+                let startLeft, startTop;
+                let angle;
+                
+                if (fromLeft) {
+                    // 从左侧发射 - y可以是整个左侧，x是左边缘
+                    startLeft = 0;
+                    startTop = 10 + Math.random() * 80; // 从左侧 10%-90% 的位置发射
+                    // 从左侧发射时，角度范围从 -10 到 -80 度 (右上方向)
+                    angle = -(10 + Math.random() * 70);
+                } else {
+                    // 从底部发射 - x可以是底部左半部分，y是底边
+                    startLeft = Math.random() * 40; // 从底部 0-40% 的位置发射
+                    startTop = 100; // 底部
+                    // 从底部发射时，角度范围从 -45 到 -135 度 (左上方向)
+                    angle = -(45 + Math.random() * 90);
+                }
                 
                 // 随机长度
                 const length = 100 + Math.random() * 200;
                 
-                // 随机位置
-                const top = Math.random() * 100;
-                const left = Math.random() * 50;  // 从左侧飞出
-                
-                // 随机速度
-                const duration = 1.5 + Math.random() * 1.5;
+                // 随机速度 - 从低到高处速度较慢
+                const duration = 2 + Math.random() * 1.5;
                 
                 // 随机颜色
                 const colorIndex = Math.floor(Math.random() * saberColors.length);
@@ -450,14 +531,22 @@
                 
                 // 计算移动距离，基于角度和屏幕尺寸
                 const angleRad = angle * (Math.PI / 180);
-                const distance = Math.max(window.innerWidth, window.innerHeight) * 1.5;
-                const travelX = Math.cos(angleRad) * distance;
-                const travelY = Math.sin(angleRad) * -distance;
+                const screenWidth = window.innerWidth;
+                const screenHeight = window.innerHeight;
+                
+                // 计算光剑沿着角度方向移动的距离
+                // 使用屏幕对角线长度确保光剑能够完全穿过屏幕
+                const diagonalLength = Math.sqrt(Math.pow(screenWidth, 2) + Math.pow(screenHeight, 2));
+                const travelDistance = diagonalLength * 1.5; // 确保足够长
+                
+                // 计算x和y方向的移动距离
+                const travelX = Math.cos(angleRad) * travelDistance;
+                const travelY = Math.sin(angleRad) * travelDistance;
                 
                 // 设置光剑样式
                 saber.style.cssText = `
-                    top: ${top}%;
-                    left: ${left}%;
+                    top: ${startTop}%;
+                    left: ${startLeft}%;
                     --angle: ${angle}deg;
                     --length: ${length}px;
                     --duration: ${duration}s;
@@ -470,6 +559,7 @@
                         0 0 20px ${selectedColor.shadow};
                     background-color: ${selectedColor.color};
                     opacity: 0;
+                    transform: rotate(${angle}deg);
                 `;
                 
                 // 重置并启动动画
@@ -494,7 +584,7 @@
             }
             
             // 启动光剑表演
-            startLightsaberShow();
+            setTimeout(startLightsaberShow, 1000); // 给页面加载一点时间
         }
         
         // 页面加载完成后初始化
