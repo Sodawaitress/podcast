@@ -16,18 +16,26 @@
         }
 
         :root {
-            /* 更深沉的背景色 */
-            --primary-color: #ff00ff;      /* 霓虹粉 */
-            --secondary-color: #00ffff;    /* 霓虹青 */
-            --accent-color: #fe01b1;       /* 亮粉红 */
-            --accent-color2: #9933ff;      /* 亮紫色 */
+            /* 少女电波系配色 */
+            --primary-color: #ff6ad5;      /* 亮粉红 */
+            --secondary-color: #8466ff;    /* 紫罗兰 */
+            --accent-color: #00ffa2;       /* 亮绿色 */
+            --accent-color2: #ff66c4;      /* 樱花粉 */
+            
+            /* 文本和背景 */
             --text-color: #ffffff;         /* 白色文本 */
-            --bg-color: #050518;           /* 更深沉的蓝黑色背景 */
-            --dark-color: #0a0230;         /* 更深沉的紫色 */
-            --grid-color: rgba(0, 255, 255, 0.15); /* 更明显的网格线 */
-            --glow-color: rgba(255, 0, 255, 0.7); /* 霓虹粉光晕 */
-            --control-bg: #0a0930;         /* 更深沉的控制面板背景 */
-            --button-bg: #0a0825;          /* 更深沉的按钮背景 */
+            --bg-color: #22053f;           /* 深紫色背景 */
+            --dark-color: #3a0669;         /* 更深的紫色 */
+            
+            /* 特效颜色 */
+            --grid-color: rgba(255, 106, 213, 0.15); /* 粉色网格线 */
+            --glow-color: rgba(132, 102, 255, 0.7);  /* 紫色光晕 */
+            --control-bg: #3a0669;         /* 紫色控制面板背景 */
+            --button-bg: #2d0951;          /* 深紫按钮背景 */
+            
+            /* 扫描线颜色 */
+            --scanline-color: #ff6ad5;     /* 粉色扫描线 */
+            --flicker-color: rgba(132, 102, 255, 0.1); /* 紫色闪烁 */
         }
 
         @font-face {
@@ -44,7 +52,7 @@
             background-color: var(--bg-color);
             text-align: center;
             background-image: 
-                linear-gradient(0deg, rgba(5, 2, 45, 0.9) 0%, rgba(5, 5, 24, 0.95) 100%),
+                linear-gradient(0deg, rgba(42, 5, 77, 0.9) 0%, rgba(34, 5, 63, 0.95) 100%),
                 /* 网格线间距增大 */
                 repeating-linear-gradient(0deg, var(--grid-color) 0px, var(--grid-color) 2px, transparent 2px, transparent 40px),
                 repeating-linear-gradient(90deg, var(--grid-color) 0px, var(--grid-color) 2px, transparent 2px, transparent 40px);
@@ -76,7 +84,7 @@
         /* 头部样式 */
         header {
             background-color: var(--dark-color);
-            border-bottom: 3px solid var(--secondary-color);
+            border-bottom: 3px solid var(--primary-color);
             padding: 2rem 0;
             margin-bottom: 3rem;
             position: relative;
@@ -100,13 +108,13 @@
 
         header p {
             font-size: 1.2rem;
-            color: var(--secondary-color);
+            color: var(--accent-color);
             margin-bottom: 1.5rem;
         }
 
         header nav {
             margin-top: 1.5rem;
-            border-top: 1px solid rgba(0, 255, 255, 0.3);
+            border-top: 1px solid rgba(132, 102, 255, 0.3);
             padding-top: 1.5rem;
         }
 
@@ -133,19 +141,19 @@
         }
 
         .control-light.red {
-            background-color: #ff2d55;
+            background-color: #ff6ad5; /* 粉色 */
         }
 
         .control-light.green {
-            background-color: #00ff9d;
+            background-color: #00ffa2; /* 绿色 */
         }
 
         .control-light.blue {
-            background-color: #00ccff;
+            background-color: #61efff; /* 天蓝色 */
         }
 
         .control-light.purple {
-            background-color: #da00ff;
+            background-color: #8466ff; /* 紫色 */
         }
 
         /* 主内容区 */
@@ -160,14 +168,15 @@
             margin-bottom: 2rem;
             padding-bottom: 1rem;
             font-size: 2rem;
-            color: var(--secondary-color);
+            color: var(--accent-color);
             position: relative;
             display: inline-block;
         }
 
-        /* 彩虹按钮 */
+        /* 彩虹按钮 - 少女系渐变 */
         .rainbow-button {
-            background: linear-gradient(90deg, #ff00ff, #00ffff, #9933ff, #fe01b1);
+            background: linear-gradient(90deg, #ff6ad5, #8466ff, #00ffa2, #ff66c4);
+            background-size: 300% 100%;
             border: none;
             border-radius: 5px;
             color: var(--text-color);
@@ -177,6 +186,19 @@
             cursor: pointer;
             position: relative;
             z-index: 10;
+            animation: gradient-shift 3s ease infinite;
+        }
+        
+        @keyframes gradient-shift {
+            0% {
+                background-position: 0% 50%;
+            }
+            50% {
+                background-position: 100% 50%;
+            }
+            100% {
+                background-position: 0% 50%;
+            }
         }
 
         /* 上传表单 */
@@ -185,7 +207,7 @@
             margin: 0 auto 3rem auto;
             background: var(--control-bg);
             padding: 3rem;
-            border: 2px solid var(--secondary-color);
+            border: 2px solid var(--primary-color);
             border-radius: 5px;
             text-align: left;
             position: relative;
@@ -202,7 +224,7 @@
             display: block;
             margin-bottom: 0.7rem;
             font-weight: 600;
-            color: var(--secondary-color);
+            color: var(--accent-color);
         }
 
         .form-group input,
@@ -210,7 +232,7 @@
             width: 100%;
             padding: 1rem;
             background: rgba(0, 0, 0, 0.5);
-            border: 1px solid var(--secondary-color);
+            border: 1px solid var(--primary-color);
             border-radius: 3px;
             color: var(--text-color);
             font-family: 'VCR OSD Mono', monospace;
@@ -225,7 +247,7 @@
             color: var(--text-color);
             padding: 3rem 0;
             margin-top: 5rem;
-            border-top: 3px solid var(--secondary-color);
+            border-top: 3px solid var(--primary-color);
             position: relative;
             z-index: 5;
         }
@@ -276,6 +298,22 @@
             height: 5px;
             box-shadow: 0 0 12px rgba(255, 255, 255, 0.9);
         }
+        
+        /* 彩色星星 */
+        .star.pink {
+            background-color: #ff6ad5;
+            box-shadow: 0 0 8px rgba(255, 106, 213, 0.8);
+        }
+        
+        .star.purple {
+            background-color: #8466ff;
+            box-shadow: 0 0 8px rgba(132, 102, 255, 0.8);
+        }
+        
+        .star.green {
+            background-color: #00ffa2;
+            box-shadow: 0 0 8px rgba(0, 255, 162, 0.8);
+        }
 
         @keyframes twinkle {
             0%, 100% {
@@ -304,12 +342,12 @@
         .lightsaber {
             position: absolute;
             height: 4px;
-            background-color: #0ff; /* 默认青色 */
+            background-color: var(--primary-color); /* 粉色光剑 */
             border-radius: 2px;
             box-shadow: 
-                0 0 5px var(--color, #0ff),
-                0 0 10px var(--color, #0ff),
-                0 0 20px var(--color, #0ff);
+                0 0 5px var(--color, var(--primary-color)),
+                0 0 10px var(--color, var(--primary-color)),
+                0 0 20px var(--color, var(--primary-color));
             transform-origin: left center;
             transform: rotate(var(--angle, -45deg));
             opacity: 0;
@@ -341,7 +379,7 @@
             background: linear-gradient(
                 90deg, 
                 rgba(255, 255, 255, 0.8) 0%, 
-                var(--color, rgba(0, 255, 255, 0.3)) 70%, 
+                var(--color, rgba(255, 106, 213, 0.3)) 70%, 
                 transparent 100%
             );
             border-radius: 2px;
@@ -367,8 +405,8 @@
             }
         }
         
-        /* 增强的扫描线效果 */
-        /* 主扫描线 - 更亮、更明显 */
+        /* 增强的扫描线效果 - 少女系颜色 */
+        /* 主扫描线 */
         .scanline {
             position: fixed;
             top: 0;
@@ -378,16 +416,16 @@
             background: linear-gradient(
                 to right,
                 rgba(0, 0, 0, 0) 0%,
-                rgba(0, 255, 255, 0.2) 10%,
-                rgba(0, 255, 255, 0.5) 50%,
-                rgba(0, 255, 255, 0.2) 90%,
+                rgba(255, 106, 213, 0.2) 10%,
+                rgba(255, 106, 213, 0.5) 50%,
+                rgba(255, 106, 213, 0.2) 90%,
                 rgba(0, 0, 0, 0) 100%
             );
             opacity: 0.8;
             z-index: 1002;
             pointer-events: none;
             animation: scanline 5s linear infinite;
-            box-shadow: 0 0 15px rgba(0, 255, 255, 0.5); /* 发光效果 */
+            box-shadow: 0 0 15px rgba(255, 106, 213, 0.5); /* 发光效果 */
         }
 
         /* 主扫描线动画 */
@@ -413,8 +451,8 @@
                 to bottom,
                 transparent 0px,
                 transparent 3px,
-                rgba(0, 255, 255, 0.02) 3px,
-                rgba(0, 255, 255, 0.02) 6px
+                rgba(255, 106, 213, 0.02) 3px,
+                rgba(255, 106, 213, 0.02) 6px
             );
         }
 
@@ -430,7 +468,7 @@
             z-index: 1003;
             background: linear-gradient(
                 transparent 0%,
-                rgba(0, 255, 255, 0.07) 50%,
+                rgba(132, 102, 255, 0.07) 50%,
                 transparent 100%
             );
             animation: flicker 8s steps(1) infinite;
@@ -446,7 +484,7 @@
             }
         }
 
-        /* 旧CRT屏幕模拟效果 */
+        /* 渐变边缘效果 */
         .crt-overlay {
             position: fixed;
             top: 0;
@@ -456,12 +494,34 @@
             background: 
                 radial-gradient(
                     ellipse at center,
-                    rgba(5, 5, 24, 0) 0%,
-                    rgba(5, 5, 24, 0.3) 90%,
-                    rgba(5, 5, 24, 0.5) 100%
+                    rgba(34, 5, 63, 0) 0%,
+                    rgba(34, 5, 63, 0.3) 90%,
+                    rgba(34, 5, 63, 0.5) 100%
                 );
             pointer-events: none;
             z-index: 1000;
+        }
+        
+        /* 少女系卡片 */
+        .episode-card {
+            background: var(--control-bg);
+            border: 2px solid var(--primary-color);
+            border-radius: 5px;
+            padding: 1.8rem;
+            box-shadow: 0 0 20px rgba(255, 106, 213, 0.3);
+        }
+        
+        .episode-card h3 {
+            color: var(--primary-color);
+        }
+        
+        .episode-meta {
+            color: var(--secondary-color);
+        }
+        
+        .button {
+            border: 1px solid var(--primary-color);
+            color: var(--accent-color);
         }
     </style>
 </head>
@@ -512,7 +572,7 @@
 
     <!-- 星星和光剑效果的脚本 -->
     <script>
-        // 创建星空背景 - 更大的星星
+        // 创建星空背景 - 彩色星星
         function createStars() {
             const starsContainer = document.getElementById('starsContainer');
             const starCount = 200; // 星星总数量
@@ -524,11 +584,13 @@
                 // 随机位置
                 const x = Math.random() * 100;
                 const y = Math.random() * 100;
-                
-                // 随机大小 - 增加大星星的比例
+                 
+                // 随机大小和颜色
                 const sizeCategory = Math.random();
+                const colorCategory = Math.random();
                 let size, extraClass = '';
                 
+                // 大小分类
                 if (sizeCategory > 0.85) { // 15%的几率是超大星星
                     extraClass = 'extra-large';
                     size = 5;
@@ -539,15 +601,22 @@
                     size = 2 + Math.random() * 1.5;
                 }
                 
+                // 颜色分类 - 增加彩色星星
+                if (colorCategory > 0.7) { // 30%是彩色星星
+                    const colors = ['pink', 'purple', 'green'];
+                    const colorIndex = Math.floor(Math.random() * colors.length);
+                    extraClass += ' ' + colors[colorIndex];
+                }
+                
                 if (extraClass) {
-                    star.classList.add(extraClass);
+                    star.className = 'star ' + extraClass.trim();
                 }
                 
                 // 随机闪烁速度
                 const duration = 2 + Math.random() * 5;
                 
                 // 大星星闪烁得更慢一些
-                const actualDuration = extraClass ? duration * 1.5 : duration;
+                const actualDuration = extraClass.includes('large') ? duration * 1.5 : duration;
                 
                 // 随机延迟
                 const delay = Math.random() * 5;
@@ -565,18 +634,18 @@
             }
         }
         
-        // 创建光剑效果 - 对角线发射
+        // 创建光剑效果 - 少女系颜色
         function createLightsabers() {
             const container = document.getElementById('lightsaberContainer');
             
-            // 定义光剑颜色
+            // 定义光剑颜色 - 少女电波系颜色
             const saberColors = [
-                { color: '#0ff', shadow: '#0ff' }, // 青色
-                { color: '#f0f', shadow: '#f0f' }, // 粉色
-                { color: '#0f0', shadow: '#0f0' }, // 绿色
-                { color: '#f00', shadow: '#f00' }, // 红色
-                { color: '#00f', shadow: '#00f' }, // 蓝色
-                { color: '#ff0', shadow: '#ff0' }  // 黄色
+                { color: '#ff6ad5', shadow: '#ff6ad5' }, /* 粉色 */
+                { color: '#8466ff', shadow: '#8466ff' }, /* 紫色 */
+                { color: '#00ffa2', shadow: '#00ffa2' }, /* 绿色 */
+                { color: '#ff66c4', shadow: '#ff66c4' }, /* 樱花粉 */
+                { color: '#61efff', shadow: '#61efff' }, /* 天蓝色 */
+                { color: '#ffef5c', shadow: '#ffef5c' }  /* 鹅黄色 */
             ];
             
             // 创建光剑元素（初始不可见）
@@ -690,7 +759,7 @@
             setTimeout(startLightsaberShow, 1000); // 给页面加载一点时间
         }
         
-        // 创建额外的扫描线效果
+        // 创建额外的扫描线效果 - 粉色扫描线
         function createExtraScanlines() {
             // 创建随机闪烁扫描线
             setInterval(() => {
@@ -716,7 +785,7 @@
         window.addEventListener('DOMContentLoaded', () => {
             createStars();
             createLightsabers();
-            createExtraScanlines(); // 添加额外的扫描线效果
+            createExtraScanlines();
         });
     </script>
 </body>
