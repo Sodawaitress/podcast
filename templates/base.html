@@ -37,6 +37,8 @@
             font-style: normal;
         }
 
+
+        
         body {
             font-family: 'VCR OSD Mono', 'Courier New', monospace;
             line-height: 1.6;
@@ -225,6 +227,9 @@
     </style>
 </head>
 <body>
+    <div class="static-stars" id="staticStars"></div>
+    <!-- 流星容器 -->
+    <div class="shooting-stars-container" id="shootingStars"></div>
     <header>
         <div class="container">
             <h1><a href="{{ url_for('index') }}">{{ site_name }}</a></h1>
