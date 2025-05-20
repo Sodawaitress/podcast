@@ -16,26 +16,26 @@
         }
 
         :root {
-            /* 少女电波系配色 */
+            /* 梦幻天蓝紫配色 */
             --primary-color: #ff6ad5;      /* 亮粉红 */
-            --secondary-color: #8466ff;    /* 紫罗兰 */
+            --secondary-color: #61efff;    /* 天蓝色 */
             --accent-color: #00ffa2;       /* 亮绿色 */
-            --accent-color2: #ff66c4;      /* 樱花粉 */
+            --accent-color2: #b78aff;      /* 梦幻淡紫 */
             
             /* 文本和背景 */
             --text-color: #ffffff;         /* 白色文本 */
-            --bg-color: #22053f;           /* 深紫色背景 */
-            --dark-color: #3a0669;         /* 更深的紫色 */
+            --bg-color: #1b1056;           /* 梦幻深蓝紫色背景 */
+            --dark-color: #2d1b77;         /* 更深的蓝紫色 */
             
             /* 特效颜色 */
-            --grid-color: rgba(255, 106, 213, 0.15); /* 粉色网格线 */
-            --glow-color: rgba(132, 102, 255, 0.7);  /* 紫色光晕 */
-            --control-bg: #3a0669;         /* 紫色控制面板背景 */
-            --button-bg: #2d0951;          /* 深紫按钮背景 */
+            --grid-color: rgba(97, 239, 255, 0.15); /* 天蓝色网格线 */
+            --glow-color: rgba(183, 138, 255, 0.7);  /* 淡紫光晕 */
+            --control-bg: #332180;         /* 蓝紫控制面板背景 */
+            --button-bg: #291a69;          /* 深蓝紫按钮背景 */
             
             /* 扫描线颜色 */
-            --scanline-color: #ff6ad5;     /* 粉色扫描线 */
-            --flicker-color: rgba(132, 102, 255, 0.1); /* 紫色闪烁 */
+            --scanline-color: #61efff;     /* 天蓝色扫描线 */
+            --flicker-color: rgba(255, 106, 213, 0.1); /* 粉色闪烁 */
         }
 
         @font-face {
@@ -52,13 +52,31 @@
             background-color: var(--bg-color);
             text-align: center;
             background-image: 
-                linear-gradient(0deg, rgba(42, 5, 77, 0.9) 0%, rgba(34, 5, 63, 0.95) 100%),
+                linear-gradient(0deg, rgba(27, 16, 86, 0.9) 0%, rgba(41, 26, 105, 0.95) 100%),
                 /* 网格线间距增大 */
                 repeating-linear-gradient(0deg, var(--grid-color) 0px, var(--grid-color) 2px, transparent 2px, transparent 40px),
                 repeating-linear-gradient(90deg, var(--grid-color) 0px, var(--grid-color) 2px, transparent 2px, transparent 40px);
             background-attachment: fixed;
             overflow-x: hidden;
             position: relative;
+        }
+
+        /* 天蓝色渐变悬浮光晕 */
+        body::after {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: radial-gradient(
+                ellipse at top right,
+                rgba(97, 239, 255, 0.15) 0%,
+                rgba(97, 239, 255, 0.05) 40%,
+                rgba(27, 16, 86, 0) 70%
+            );
+            pointer-events: none;
+            z-index: 1;
         }
 
         .container {
@@ -84,7 +102,7 @@
         /* 头部样式 */
         header {
             background-color: var(--dark-color);
-            border-bottom: 3px solid var(--primary-color);
+            border-bottom: 3px solid var(--secondary-color);
             padding: 2rem 0;
             margin-bottom: 3rem;
             position: relative;
@@ -108,13 +126,13 @@
 
         header p {
             font-size: 1.2rem;
-            color: var(--accent-color);
+            color: var(--secondary-color);
             margin-bottom: 1.5rem;
         }
 
         header nav {
             margin-top: 1.5rem;
-            border-top: 1px solid rgba(132, 102, 255, 0.3);
+            border-top: 1px solid rgba(97, 239, 255, 0.3);
             padding-top: 1.5rem;
         }
 
@@ -153,7 +171,7 @@
         }
 
         .control-light.purple {
-            background-color: #8466ff; /* 紫色 */
+            background-color: #b78aff; /* 梦幻淡紫 */
         }
 
         /* 主内容区 */
@@ -168,14 +186,14 @@
             margin-bottom: 2rem;
             padding-bottom: 1rem;
             font-size: 2rem;
-            color: var(--accent-color);
+            color: var(--secondary-color);
             position: relative;
             display: inline-block;
         }
 
-        /* 彩虹按钮 - 少女系渐变 */
+        /* 彩虹按钮 - 梦幻系渐变 */
         .rainbow-button {
-            background: linear-gradient(90deg, #ff6ad5, #8466ff, #00ffa2, #ff66c4);
+            background: linear-gradient(90deg, #ff6ad5, #61efff, #b78aff, #00ffa2);
             background-size: 300% 100%;
             border: none;
             border-radius: 5px;
@@ -207,11 +225,12 @@
             margin: 0 auto 3rem auto;
             background: var(--control-bg);
             padding: 3rem;
-            border: 2px solid var(--primary-color);
+            border: 2px solid var(--secondary-color);
             border-radius: 5px;
             text-align: left;
             position: relative;
             z-index: 10;
+            box-shadow: 0 0 20px rgba(97, 239, 255, 0.3);
         }
 
         .form-group {
@@ -224,15 +243,15 @@
             display: block;
             margin-bottom: 0.7rem;
             font-weight: 600;
-            color: var(--accent-color);
+            color: var(--secondary-color);
         }
 
         .form-group input,
         .form-group textarea {
             width: 100%;
             padding: 1rem;
-            background: rgba(0, 0, 0, 0.5);
-            border: 1px solid var(--primary-color);
+            background: rgba(27, 16, 86, 0.7);
+            border: 1px solid var(--secondary-color);
             border-radius: 3px;
             color: var(--text-color);
             font-family: 'VCR OSD Mono', monospace;
@@ -247,7 +266,7 @@
             color: var(--text-color);
             padding: 3rem 0;
             margin-top: 5rem;
-            border-top: 3px solid var(--primary-color);
+            border-top: 3px solid var(--secondary-color);
             position: relative;
             z-index: 5;
         }
@@ -299,15 +318,20 @@
             box-shadow: 0 0 12px rgba(255, 255, 255, 0.9);
         }
         
-        /* 彩色星星 */
+        /* 彩色星星 - 梦幻系 */
         .star.pink {
             background-color: #ff6ad5;
             box-shadow: 0 0 8px rgba(255, 106, 213, 0.8);
         }
         
+        .star.blue {
+            background-color: #61efff;
+            box-shadow: 0 0 8px rgba(97, 239, 255, 0.8);
+        }
+        
         .star.purple {
-            background-color: #8466ff;
-            box-shadow: 0 0 8px rgba(132, 102, 255, 0.8);
+            background-color: #b78aff;
+            box-shadow: 0 0 8px rgba(183, 138, 255, 0.8);
         }
         
         .star.green {
@@ -342,12 +366,12 @@
         .lightsaber {
             position: absolute;
             height: 4px;
-            background-color: var(--primary-color); /* 粉色光剑 */
+            background-color: var(--secondary-color); /* 天蓝色光剑 */
             border-radius: 2px;
             box-shadow: 
-                0 0 5px var(--color, var(--primary-color)),
-                0 0 10px var(--color, var(--primary-color)),
-                0 0 20px var(--color, var(--primary-color));
+                0 0 5px var(--color, var(--secondary-color)),
+                0 0 10px var(--color, var(--secondary-color)),
+                0 0 20px var(--color, var(--secondary-color));
             transform-origin: left center;
             transform: rotate(var(--angle, -45deg));
             opacity: 0;
@@ -379,7 +403,7 @@
             background: linear-gradient(
                 90deg, 
                 rgba(255, 255, 255, 0.8) 0%, 
-                var(--color, rgba(255, 106, 213, 0.3)) 70%, 
+                var(--color, rgba(97, 239, 255, 0.3)) 70%, 
                 transparent 100%
             );
             border-radius: 2px;
@@ -405,7 +429,7 @@
             }
         }
         
-        /* 增强的扫描线效果 - 少女系颜色 */
+        /* 增强的扫描线效果 - 天蓝色系 */
         /* 主扫描线 */
         .scanline {
             position: fixed;
@@ -416,16 +440,16 @@
             background: linear-gradient(
                 to right,
                 rgba(0, 0, 0, 0) 0%,
-                rgba(255, 106, 213, 0.2) 10%,
-                rgba(255, 106, 213, 0.5) 50%,
-                rgba(255, 106, 213, 0.2) 90%,
+                rgba(97, 239, 255, 0.2) 10%,
+                rgba(97, 239, 255, 0.5) 50%,
+                rgba(97, 239, 255, 0.2) 90%,
                 rgba(0, 0, 0, 0) 100%
             );
             opacity: 0.8;
             z-index: 1002;
             pointer-events: none;
             animation: scanline 5s linear infinite;
-            box-shadow: 0 0 15px rgba(255, 106, 213, 0.5); /* 发光效果 */
+            box-shadow: 0 0 15px rgba(97, 239, 255, 0.5); /* 发光效果 */
         }
 
         /* 主扫描线动画 */
@@ -451,8 +475,8 @@
                 to bottom,
                 transparent 0px,
                 transparent 3px,
-                rgba(255, 106, 213, 0.02) 3px,
-                rgba(255, 106, 213, 0.02) 6px
+                rgba(97, 239, 255, 0.02) 3px,
+                rgba(97, 239, 255, 0.02) 6px
             );
         }
 
@@ -468,7 +492,7 @@
             z-index: 1003;
             background: linear-gradient(
                 transparent 0%,
-                rgba(132, 102, 255, 0.07) 50%,
+                rgba(97, 239, 255, 0.07) 50%,
                 transparent 100%
             );
             animation: flicker 8s steps(1) infinite;
@@ -494,21 +518,27 @@
             background: 
                 radial-gradient(
                     ellipse at center,
-                    rgba(34, 5, 63, 0) 0%,
-                    rgba(34, 5, 63, 0.3) 90%,
-                    rgba(34, 5, 63, 0.5) 100%
+                    rgba(27, 16, 86, 0) 0%,
+                    rgba(27, 16, 86, 0.3) 90%,
+                    rgba(27, 16, 86, 0.5) 100%
                 );
             pointer-events: none;
             z-index: 1000;
         }
         
-        /* 少女系卡片 */
+        /* 梦幻系卡片 */
         .episode-card {
             background: var(--control-bg);
-            border: 2px solid var(--primary-color);
+            border: 2px solid var(--secondary-color);
             border-radius: 5px;
             padding: 1.8rem;
-            box-shadow: 0 0 20px rgba(255, 106, 213, 0.3);
+            box-shadow: 0 0 20px rgba(97, 239, 255, 0.3);
+            transition: all 0.3s ease;
+        }
+        
+        .episode-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 0 30px rgba(97, 239, 255, 0.5);
         }
         
         .episode-card h3 {
@@ -520,8 +550,15 @@
         }
         
         .button {
-            border: 1px solid var(--primary-color);
+            border: 1px solid var(--secondary-color);
             color: var(--accent-color);
+            background: rgba(27, 16, 86, 0.7);
+            transition: all 0.3s ease;
+        }
+        
+        .button:hover {
+            background: rgba(97, 239, 255, 0.1);
+            box-shadow: 0 0 15px rgba(97, 239, 255, 0.3);
         }
     </style>
 </head>
@@ -572,7 +609,7 @@
 
     <!-- 星星和光剑效果的脚本 -->
     <script>
-        // 创建星空背景 - 彩色星星
+        // 创建星空背景 - 梦幻彩色星星
         function createStars() {
             const starsContainer = document.getElementById('starsContainer');
             const starCount = 200; // 星星总数量
@@ -601,11 +638,22 @@
                     size = 2 + Math.random() * 1.5;
                 }
                 
-                // 颜色分类 - 增加彩色星星
-                if (colorCategory > 0.7) { // 30%是彩色星星
-                    const colors = ['pink', 'purple', 'green'];
-                    const colorIndex = Math.floor(Math.random() * colors.length);
-                    extraClass += ' ' + colors[colorIndex];
+                // 颜色分类 - 增加彩色星星，更多的蓝色
+                if (colorCategory > 0.5) { // 50%是彩色星星
+                    const colorProb = Math.random();
+                    let colorClass;
+                    
+                    if (colorProb < 0.4) { // 40%天蓝色
+                        colorClass = 'blue';
+                    } else if (colorProb < 0.7) { // 30%紫色
+                        colorClass = 'purple';
+                    } else if (colorProb < 0.9) { // 20%粉色
+                        colorClass = 'pink';
+                    } else { // 10%绿色
+                        colorClass = 'green';
+                    }
+                    
+                    extraClass += ' ' + colorClass;
                 }
                 
                 if (extraClass) {
@@ -634,17 +682,16 @@
             }
         }
         
-        // 创建光剑效果 - 少女系颜色
+        // 创建光剑效果 - 梦幻系颜色
         function createLightsabers() {
             const container = document.getElementById('lightsaberContainer');
             
-            // 定义光剑颜色 - 少女电波系颜色
+            // 定义光剑颜色 - 梦幻系颜色
             const saberColors = [
-                { color: '#ff6ad5', shadow: '#ff6ad5' }, /* 粉色 */
-                { color: '#8466ff', shadow: '#8466ff' }, /* 紫色 */
-                { color: '#00ffa2', shadow: '#00ffa2' }, /* 绿色 */
-                { color: '#ff66c4', shadow: '#ff66c4' }, /* 樱花粉 */
                 { color: '#61efff', shadow: '#61efff' }, /* 天蓝色 */
+                { color: '#b78aff', shadow: '#b78aff' }, /* 梦幻淡紫 */
+                { color: '#ff6ad5', shadow: '#ff6ad5' }, /* 粉色 */
+                { color: '#00ffa2', shadow: '#00ffa2' }, /* 绿色 */
                 { color: '#ffef5c', shadow: '#ffef5c' }  /* 鹅黄色 */
             ];
             
@@ -697,8 +744,14 @@
                 // 随机速度 - 从低到高处速度较慢
                 const duration = 2 + Math.random() * 1.5;
                 
-                // 随机颜色
-                const colorIndex = Math.floor(Math.random() * saberColors.length);
+                // 随机颜色 - 偏向蓝紫色系
+                let colorIndex;
+                const colorRand = Math.random();
+                if (colorRand < 0.7) { // 70%的几率是蓝紫色系
+                    colorIndex = Math.floor(Math.random() * 2); // 只使用前两种颜色（蓝色和紫色）
+                } else {
+                    colorIndex = Math.floor(Math.random() * saberColors.length);
+                }
                 const selectedColor = saberColors[colorIndex];
                 
                 // 计算移动距离，基于角度和屏幕尺寸
@@ -759,7 +812,7 @@
             setTimeout(startLightsaberShow, 1000); // 给页面加载一点时间
         }
         
-        // 创建额外的扫描线效果 - 粉色扫描线
+        // 创建额外的扫描线效果 - 天蓝色扫描线
         function createExtraScanlines() {
             // 创建随机闪烁扫描线
             setInterval(() => {
