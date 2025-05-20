@@ -6,12 +6,12 @@
 }
 
 :root {
-    /* 科幻主题色彩 - 粉紫色调 */
+    /* 蒸汽波主题色彩 - 霓虹色调与强烈对比 */
     --primary-color: #ff00ff;      /* 霓虹粉 */
     --secondary-color: #00ffff;    /* 霓虹青 */
     --accent-color: #fe01b1;       /* 亮粉红 */
     --accent-color2: #9933ff;      /* 亮紫色 */
-    --text-color: #ffffff;         /* 白色文本 */
+    --text-color: #ffffff;         /* 白色文本，增加可读性 */
     --bg-color: #0b0b1e;           /* 深蓝黑色背景 */
     --dark-color: #120458;         /* 深紫色 */
     --grid-color: rgba(0, 255, 255, 0.2); /* 网格线颜色 */
@@ -68,10 +68,76 @@ a:hover {
     background-color: var(--control-bg);
     border: 1px solid var(--secondary-color);
     border-radius: 5px;
-    box-shadow: 0 0 15px var(--glow-color);
+    box-shadow: 0 0 15px var(--glow-color), inset 0 0 10px rgba(0, 255, 255, 0.3);
 }
 
-/* 彩虹按钮效果 */
+.console-element::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 5px;
+    background: linear-gradient(90deg, 
+        transparent 0%, 
+        var(--secondary-color) 50%, 
+        transparent 100%);
+    opacity: 0.7;
+}
+
+/* 电报机按钮效果 */
+.telegraph-button {
+    position: relative;
+    z-index: 1;
+    background: var(--button-bg);
+    color: var(--text-color);
+    border: 2px solid var(--secondary-color);
+    border-radius: 5px;
+    padding: 12px 25px;
+    font-family: 'VCR OSD Mono', monospace;
+    font-weight: bold;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    overflow: hidden;
+    box-shadow: 0 0 15px rgba(0, 255, 255, 0.4), inset 0 0 5px rgba(0, 255, 255, 0.4);
+    transition: all 0.3s cubic-bezier(0.23, 1, 0.32, 1);
+    cursor: pointer;
+    text-shadow: 0 0 5px var(--secondary-color);
+}
+
+.telegraph-button::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(
+        90deg, 
+        transparent 0%, 
+        rgba(0, 255, 255, 0.4) 50%, 
+        transparent 100%
+    );
+    z-index: -1;
+    transition: left 0.5s ease;
+}
+
+.telegraph-button:hover {
+    color: var(--secondary-color);
+    transform: translateY(-3px);
+    box-shadow: 0 0 25px rgba(0, 255, 255, 0.6), inset 0 0 10px rgba(0, 255, 255, 0.4);
+}
+
+.telegraph-button:hover::before {
+    left: 100%;
+}
+
+.telegraph-button:active {
+    transform: translateY(2px);
+    box-shadow: 0 0 10px rgba(0, 255, 255, 0.3);
+}
+
+/* 彩虹按钮 */
 .rainbow-button {
     background: linear-gradient(90deg, #ff00ff, #00ffff, #9933ff, #fe01b1);
     background-size: 300% 100%;
@@ -111,13 +177,14 @@ a:hover {
     transform: translateY(1px);
 }
 
-/* 头部样式 */
+/* 头部样式 - 飞船控制台风格 */
 header {
     background-color: var(--dark-color);
     border-bottom: 3px solid var(--secondary-color);
     padding: 2rem 0;
     margin-bottom: 3rem;
     position: relative;
+    overflow: hidden;
     box-shadow: 0 0 30px rgba(0, 255, 255, 0.5);
 }
 
@@ -132,7 +199,8 @@ header h1 {
     text-shadow: 
         0 0 5px var(--primary-color),
         0 0 10px var(--primary-color),
-        0 0 15px var(--primary-color);
+        0 0 15px var(--primary-color),
+        0 0 20px var(--primary-color);
     animation: neon-pulse 1.5s infinite alternate;
 }
 
@@ -141,14 +209,16 @@ header h1 {
         text-shadow: 
             0 0 5px var(--primary-color),
             0 0 10px var(--primary-color),
-            0 0 15px var(--primary-color);
+            0 0 15px var(--primary-color),
+            0 0 20px var(--primary-color);
     }
     100% {
         text-shadow: 
             0 0 5px var(--primary-color),
             0 0 10px var(--primary-color),
             0 0 15px var(--primary-color),
-            0 0 20px var(--primary-color);
+            0 0 20px var(--primary-color),
+            0 0 30px var(--primary-color);
     }
 }
 
@@ -161,6 +231,7 @@ header p {
     font-size: 1.2rem;
     color: var(--secondary-color);
     margin-bottom: 1.5rem;
+    font-style: italic;
     text-shadow: 0 0 5px var(--secondary-color);
     letter-spacing: 1px;
 }
@@ -195,7 +266,7 @@ header nav ul li a:hover {
     box-shadow: 0 0 15px rgba(0, 255, 255, 0.5);
 }
 
-/* 主内容区 */
+/* 主内容区 - 电报机控制台 */
 main {
     min-height: 70vh;
     padding: 2rem 0 4rem;
@@ -224,7 +295,7 @@ h2::after {
     box-shadow: 0 0 10px var(--secondary-color);
 }
 
-/* 播客列表 */
+/* 电报机/控制台面板列表 */
 .episodes-list {
     display: grid;
     gap: 2rem;
@@ -238,13 +309,50 @@ h2::after {
     border-radius: 5px;
     padding: 1.8rem;
     box-shadow: 0 0 20px rgba(0, 255, 255, 0.3);
-    transition: all 0.4s ease;
+    transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
     text-align: left;
     position: relative;
+    overflow: hidden;
+}
+
+.episode-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: 
+        linear-gradient(0deg, transparent 90%, var(--secondary-color) 100%),
+        linear-gradient(90deg, transparent 90%, var(--secondary-color) 100%);
+    opacity: 0.2;
+    pointer-events: none;
+}
+
+.episode-card::after {
+    content: '';
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    width: 10px;
+    height: 10px;
+    background-color: var(--secondary-color);
+    border-radius: 50%;
+    box-shadow: 0 0 10px var(--secondary-color);
+    animation: blink 2s infinite alternate;
+}
+
+@keyframes blink {
+    0%, 80% {
+        opacity: 1;
+    }
+    90%, 100% {
+        opacity: 0.2;
+    }
 }
 
 .episode-card:hover {
-    transform: translateY(-8px);
+    transform: translateY(-8px) scale(1.02);
     box-shadow: 0 0 30px rgba(0, 255, 255, 0.5);
 }
 
@@ -296,7 +404,38 @@ h2::after {
     text-shadow: 0 0 5px var(--secondary-color);
 }
 
-/* 单集页面详情 */
+/* 电报机发光指示灯效果 */
+.indicator-light {
+    display: inline-block;
+    width: 15px;
+    height: 15px;
+    border-radius: 50%;
+    margin-right: 10px;
+    vertical-align: middle;
+    background-color: var(--secondary-color);
+    box-shadow: 0 0 10px var(--secondary-color);
+    animation: indicator-pulse 2s infinite alternate;
+}
+
+@keyframes indicator-pulse {
+    0% {
+        opacity: 0.6;
+        box-shadow: 0 0 5px var(--secondary-color);
+    }
+    100% {
+        opacity: 1;
+        box-shadow: 0 0 15px var(--secondary-color);
+    }
+}
+
+.locked-indicator {
+    color: var(--primary-color);
+    margin-left: 5px;
+    font-size: 0.9rem;
+    text-shadow: 0 0 5px var(--primary-color);
+}
+
+/* 单集页面 - 电报机/控制台详情 */
 .episode-detail {
     background: var(--control-bg);
     border: 2px solid var(--secondary-color);
@@ -320,7 +459,7 @@ h2::after {
     box-shadow: 0 0 10px var(--secondary-color);
 }
 
-/* 音频播放器 */
+/* 控制台样式音频播放器 */
 .audio-player {
     margin: 2rem 0;
     background: rgba(0, 0, 0, 0.3);
@@ -334,9 +473,10 @@ h2::after {
     width: 100%;
     margin-bottom: 1rem;
     border-radius: 3px;
+    filter: hue-rotate(180deg); /* 改变播放器颜色以匹配主题 */
 }
 
-/* 密码保护表单 */
+/* 电报机密码终端 */
 .password-protection {
     background: rgba(0, 0, 0, 0.3);
     padding: 2.5rem;
@@ -345,7 +485,7 @@ h2::after {
     margin: 2rem auto;
     text-align: center;
     max-width: 500px;
-    box-shadow: 0 0 20px rgba(0, 255, 255, 0.3);
+    box-shadow: 0 0 20px rgba(0, 255, 255, 0.3), inset 0 0 15px rgba(0, 0, 0, 0.5);
 }
 
 .form-group {
@@ -380,22 +520,7 @@ h2::after {
 .form-group textarea:focus {
     outline: none;
     border-color: var(--primary-color);
-    box-shadow: 0 0 15px rgba(255, 0, 255, 0.4);
-}
-
-.form-group input[type="file"] {
-    padding: 0.5rem;
-    background: transparent;
-    border: none;
-    box-shadow: none;
-}
-
-.form-group small {
-    display: block;
-    margin-top: 0.5rem;
-    font-size: 0.8rem;
-    color: var(--secondary-color);
-    opacity: 0.7;
+    box-shadow: 0 0 15px rgba(255, 0, 255, 0.4), inset 0 0 10px rgba(0, 0, 0, 0.7);
 }
 
 .error-message {
@@ -405,7 +530,56 @@ h2::after {
     text-shadow: 0 0 5px #ff2d55;
 }
 
-/* 上传表单 */
+/* 终端共享链接 */
+.sharing-options {
+    margin-top: 3rem;
+    padding-top: 2rem;
+    border-top: 1px solid var(--secondary-color);
+    text-align: center;
+}
+
+.sharing-options h3 {
+    margin-bottom: 1rem;
+    color: var(--secondary-color);
+    text-shadow: 0 0 5px var(--secondary-color);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.sharing-options input {
+    width: 100%;
+    padding: 0.8rem;
+    margin-bottom: 1rem;
+    background: rgba(0, 0, 0, 0.5);
+    border: 1px solid var(--secondary-color);
+    border-radius: 3px;
+    font-family: 'VCR OSD Mono', monospace;
+    font-size: 0.9rem;
+    color: var(--text-color);
+    box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.5);
+}
+
+.back-link {
+    display: inline-block;
+    margin-top: 2.5rem;
+    color: var(--secondary-color);
+    font-weight: 600;
+    position: relative;
+    padding: 0.5rem 1rem;
+    border-radius: 3px;
+    transition: all 0.3s ease;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    border: 1px solid transparent;
+}
+
+.back-link:hover {
+    background-color: rgba(0, 255, 255, 0.1);
+    border: 1px solid var(--secondary-color);
+    box-shadow: 0 0 10px rgba(0, 255, 255, 0.3);
+}
+
+/* 终端风格上传界面 */
 .upload-form {
     max-width: 700px;
     margin: 0 auto 3rem auto;
@@ -434,6 +608,72 @@ h2::after {
     text-align: center;
 }
 
+/* 订阅终端指南 */
+.subscription-guide {
+    margin: 4rem auto 0 auto;
+    padding: 2.5rem;
+    background: rgba(0, 0, 0, 0.3);
+    border: 2px solid var(--secondary-color);
+    border-radius: 5px;
+    max-width: 800px;
+    text-align: left;
+    box-shadow: 0 0 20px rgba(0, 255, 255, 0.3), inset 0 0 15px rgba(0, 0, 0, 0.5);
+}
+
+.subscription-guide h3 {
+    margin-bottom: 1.5rem;
+    color: var(--secondary-color);
+    font-size: 1.5rem;
+    text-align: center;
+    text-shadow: 0 0 5px var(--secondary-color);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.subscription-guide code {
+    background: rgba(0, 0, 0, 0.5);
+    padding: 0.3rem 0.6rem;
+    border-radius: 3px;
+    font-size: 0.9rem;
+    color: var(--primary-color);
+    border: 1px solid rgba(255, 0, 255, 0.3);
+    font-family: 'VCR OSD Mono', monospace;
+    text-shadow: 0 0 5px var(--primary-color);
+}
+
+/* 控制台风格页脚 */
+footer {
+    background: var(--dark-color);
+    color: var(--text-color);
+    padding: 3rem 0;
+    margin-top: 5rem;
+    position: relative;
+    border-top: 3px solid var(--secondary-color);
+    box-shadow: 0 0 30px rgba(0, 255, 255, 0.5);
+}
+
+footer a {
+    color: var(--secondary-color);
+    font-weight: 600;
+    transition: all 0.3s ease;
+    text-shadow: 0 0 5px var(--secondary-color);
+}
+
+footer a:hover {
+    color: var(--primary-color);
+    text-shadow: 0 0 8px var(--primary-color);
+}
+
+/* 上传状态显示区域 */
+#upload-status {
+    margin-top: 1rem;
+    padding: 0.8rem;
+    background: rgba(0, 0, 0, 0.3);
+    border-radius: 3px;
+    color: var(--secondary-color);
+    font-size: 0.9rem;
+}
+
 /* Cloudinary上传按钮 */
 #upload_widget {
     background: linear-gradient(90deg, #ff00ff, #00ffff, #9933ff, #fe01b1);
@@ -457,24 +697,49 @@ h2::after {
     box-shadow: 0 0 20px rgba(255, 0, 255, 0.7);
 }
 
-#upload-status {
-    margin-top: 1rem;
-    padding: 0.8rem;
-    background: rgba(0, 0, 0, 0.3);
-    border-radius: 3px;
-    color: var(--secondary-color);
-    font-size: 0.9rem;
+/* 飞船控制台LED灯效果 */
+.control-lights {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    margin: 1.5rem 0;
 }
 
-/* 页脚 */
-footer {
-    background: var(--dark-color);
-    color: var(--text-color);
-    padding: 3rem 0;
-    margin-top: 5rem;
-    position: relative;
-    border-top: 3px solid var(--secondary-color);
-    box-shadow: 0 0 30px rgba(0, 255, 255, 0.5);
+.control-light {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background-color: rgba(255, 255, 255, 0.8);
+    box-shadow: 0 0 8px currentColor;
+}
+
+.control-light.red {
+    color: #ff2d55;
+    animation: blink-light 2.5s infinite alternate;
+}
+
+.control-light.green {
+    color: #00ff9d;
+    animation: blink-light 3.7s infinite alternate-reverse;
+}
+
+.control-light.blue {
+    color: #00ccff;
+    animation: blink-light 1.8s infinite alternate;
+}
+
+.control-light.purple {
+    color: #da00ff;
+    animation: blink-light 4.2s infinite alternate-reverse;
+}
+
+@keyframes blink-light {
+    0%, 80% {
+        opacity: 1;
+    }
+    90%, 100% {
+        opacity: 0.4;
+    }
 }
 
 /* 响应式调整 */
@@ -505,7 +770,7 @@ footer {
     }
 }
 
-/* 微妙的静态效果 */
+/* 旧电视静电效果 */
 body::before {
     content: '';
     position: fixed;
@@ -515,6 +780,34 @@ body::before {
     height: 100%;
     background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyMDAiIGhlaWdodD0iMjAwIj48ZmlsdGVyIGlkPSJhIiB4PSIwIiB5PSIwIj48ZmVUdXJidWxlbmNlIHR5cGU9ImZyYWN0YWxOb2lzZSIgYmFzZUZyZXF1ZW5jeT0iLjc1IiBzdGl0Y2hUaWxlcz0ic3RpdGNoIi8+PGZlQ29sb3JNYXRyaXggdHlwZT0ic2F0dXJhdGUiIHZhbHVlcz0iMCIvPjwvZmlsdGVyPjxwYXRoIGZpbHRlcj0idXJsKCNhKSIgb3BhY2l0eT0iLjA1IiBkPSJNMCAwaDIwMHYyMDBIMHoiLz48L3N2Zz4=');
     pointer-events: none;
-    opacity: 0.2;
+    opacity: 0.3;
     z-index: 1000;
+}
+
+/* 扫描线效果 */
+body::after {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(
+        to bottom,
+        rgba(0, 0, 0, 0) 0%,
+        rgba(0, 255, 255, 0.07) 50%,
+        rgba(0, 0, 0, 0) 100%
+    );
+    pointer-events: none;
+    animation: scanline 8s linear infinite;
+    z-index: 1001;
+}
+
+@keyframes scanline {
+    0% {
+        transform: translateY(-100%);
+    }
+    100% {
+        transform: translateY(100%);
+    }
 }

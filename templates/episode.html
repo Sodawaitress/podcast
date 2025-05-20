@@ -7,42 +7,50 @@
         <h2>{{ episode.title }}</h2>
         
         <div class="episode-meta">
-            <span class="date">发布于: {{ episode.pub_date.strftime('%Y-%m-%d') }}</span>
+            <span>发布于: {{ episode.pub_date }}</span>
+            {% if episode.duration %}
+            <span>时长: {{ episode.duration//60 }}:{{ '%02d'|format(episode.duration%60) }}</span>
+            {% endif %}
         </div>
         
-        <!-- 密码保护检查 -->
-        {% if episode.password and not authenticated %}
-            <div class="password-protection">
-                <h3>此内容受密码保护</h3>
-                <form method="post">
-                    <div class="form-group">
-                        <label for="password">请输入密码访问此集:</label>
-                        <input type="password" id="password" name="password" required>
-                    </div>
-                    {% if error %}
-                        <div class="error-message">{{ error }}</div>
-                    {% endif %}
-                    <button type="submit" class="button">解锁内容</button>
-                </form>
-            </div>
+        {% if authenticated %}
+        <div class="episode-description">{{ episode.description|safe }}</div>
+        
+        <div class="audio-player">
+            <audio controls>
+                {% if episode.audio_file.startswith('http') %}
+                <source src="{{ episode.audio_file }}" type="audio/mpeg">
+                {% else %}
+                <source src="{{ url_for('media', filename=episode.audio_file) }}" type="audio/mpeg">
+                {% endif %}
+                您的浏览器不支持HTML5音频播放。
+            </audio>
+        </div>
+        
+        <div class="sharing-options">
+            <h3>分享这一集</h3>
+            <input type="text" value="{{ url_for('episode', episode_id=episode.id, _external=True) }}" readonly onclick="this.select();">
+        </div>
         {% else %}
-            <!-- 播客内容 -->
-            <div class="episode-description">
-                {{ episode.description|safe }}
-            </div>
+        <div class="password-protection">
+            <div class="indicator-light"></div> 
+            <h3>这一集受密码保护</h3>
             
-            <div class="audio-player">
-                <audio controls>
-                    <source src="{{ url_for('media', filename=episode.audio_file) }}" type="audio/mpeg">
-                    您的浏览器不支持音频播放器。
-                </audio>
-                
-                <div class="download-links">
-                    <a href="{{ url_for('media', filename=episode.audio_file) }}" download class="button">下载音频 (MP3)</a>
+            <form method="post">
+                <div class="form-group">
+                    <label for="password">请输入密码:</label>
+                    <input type="password" id="password" name="password" required>
                 </div>
-            </div>
+                
+                {% if error %}
+                <div class="error-message">{{ error }}</div>
+                {% endif %}
+                
+                <button type="submit" class="rainbow-button">解锁内容</button>
+            </form>
+        </div>
         {% endif %}
         
-        <a href="{{ url_for('index') }}" class="back-link">← 返回播客列表</a>
+        <a href="{{ url_for('index') }}" class="back-link">← 返回列表</a>
     </div>
 {% endblock %}
