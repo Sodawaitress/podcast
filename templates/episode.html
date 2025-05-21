@@ -91,25 +91,758 @@
                 </div>
             </div>
             
-            <div class="terminal-controls">
-                <button class="terminal-button blue" onclick="copyHologramUrl()">
-                    <div class="button-led"></div>
-                    <span class="button-label">坐标锁定</span>
-                    <span class="button-desc">复制链接</span>
-                </button>
+            <div class="imperial-audio-device">
+                <div class="device-header">
+                    <div class="device-title">帝国通讯录音 - {{ episode.title }}</div>
+                    <div class="device-status">
+                        <div class="status-light"></div>
+                        <span class="status-text">就绪</span>
+                    </div>
+                </div>
                 
-                <button class="terminal-button purple" onclick="encryptUrl()">
-                    <div class="button-led"></div>
-                    <span class="button-label">加密传输</span>
-                    <span class="button-desc">短链接</span>
-                </button>
+                <div class="audio-visualization">
+                    <!-- 音频波形显示区域 -->
+                    <div class="waveform-container">
+                        <div class="waveform" id="waveform">
+                            <div class="waveform-grid"></div>
+                            <div class="waveform-line"></div>
+                            <!-- 波形条 -->
+                            <div class="bars-container" id="bars-container"></div>
+                        </div>
+                    </div>
+                </div>
                 
-                <button class="terminal-button green" onclick="broadcastEpisode()">
-                    <div class="button-led"></div>
-                    <span class="button-label">星际广播</span>
-                    <span class="button-desc">分享</span>
-                </button>
+                <div class="imperial-controls">
+                    <!-- 彩虹行星效果播放按钮 -->
+                    <div class="play-button-container">
+                        <button id="playButton" class="play-button rainbowplanet">
+                            <span class="planet-effect"></span>
+                            <div class="concentric-circles">
+                                <div class="circle-outer"></div>
+                                <div class="circle-middle"></div>
+                                <div class="circle-inner"></div>
+                                <div class="button-center">
+                                    <div class="play-icon"></div>
+                                </div>
+                            </div>
+                        </button>
+                    </div>
+                    
+                    <!-- 进度控制 -->
+                    <div class="progress-controls">
+                        <div class="time-display current-time">00:00</div>
+                        
+                        <!-- 带彩虹行星效果的进度条 -->
+                        <div class="progress-container">
+                            <div class="progress-track">
+                                <div class="progress-fill" id="progressFill">
+                                    <div class="rainbow-glow"></div>
+                                </div>
+                                <div class="progress-handle" id="progressHandle">
+                                    <div class="handle-glow"></div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="time-display total-time">
+                            {% if episode.duration %}
+                            {{ episode.duration//60 }}:{{ '%02d'|format(episode.duration%60) }}
+                            {% else %}
+                            --:--
+                            {% endif %}
+                        </div>
+                    </div>
+                    
+                    <!-- 音量控制 -->
+                    <div class="volume-control">
+                        <div class="volume-icon">
+                            <div class="volume-wave"></div>
+                        </div>
+                        <div class="volume-slider">
+                            <div class="volume-track">
+                                <div class="volume-fill"></div>
+                                <div class="volume-handle"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- 隐藏的原始音频元素 -->
+                <audio id="audioElement" style="display: none;">
+                    {% if episode.audio_file.startswith('http') %}
+                    <source src="{{ episode.audio_file }}" type="audio/mpeg">
+                    {% else %}
+                    <source src="{{ url_for('media', filename=episode.audio_file) }}" type="audio/mpeg">
+                    {% endif %}
+                    您的浏览器不支持HTML5音频播放。
+                </audio>
             </div>
+            
+            <style>
+            /* 音频播放器整体容器 */
+            .imperial-audio-device {
+                background: rgba(5, 6, 26, 0.8);
+                border: 2px solid var(--primary-color);
+                border-radius: 8px;
+                padding: 20px;
+                margin: 30px 0;
+                position: relative;
+                overflow: hidden;
+                box-shadow: 0 0 20px rgba(0, 204, 255, 0.3);
+            }
+            
+            /* 设备顶部信息 */
+            .device-header {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                margin-bottom: 15px;
+                border-bottom: 1px solid rgba(0, 204, 255, 0.3);
+                padding-bottom: 10px;
+            }
+            
+            .device-title {
+                color: var(--primary-color);
+                font-size: 16px;
+                font-weight: bold;
+                letter-spacing: 1px;
+                text-shadow: 0 0 5px rgba(0, 204, 255, 0.5);
+            }
+            
+            .device-status {
+                display: flex;
+                align-items: center;
+            }
+            
+            .status-light {
+                width: 8px;
+                height: 8px;
+                border-radius: 50%;
+                background-color: #00ff9d;
+                box-shadow: 0 0 8px rgba(0, 255, 157, 0.7);
+                margin-right: 8px;
+            }
+            
+            .status-text {
+                color: #00ff9d;
+                font-size: 12px;
+            }
+            
+            /* 音频可视化区域 */
+            .audio-visualization {
+                margin: 20px 0;
+                height: 100px;
+                position: relative;
+            }
+            
+            .waveform-container {
+                height: 100%;
+                width: 100%;
+                position: relative;
+                overflow: hidden;
+            }
+            
+            .waveform {
+                height: 100%;
+                width: 100%;
+                position: relative;
+                background: rgba(0, 0, 0, 0.3);
+                border: 1px solid var(--primary-color);
+                border-radius: 4px;
+                box-shadow: 0 0 10px rgba(0, 204, 255, 0.2) inset;
+            }
+            
+            .waveform-grid {
+                position: absolute;
+                width: 100%;
+                height: 100%;
+                background-image: 
+                    linear-gradient(to right, rgba(0, 204, 255, 0.15) 1px, transparent 1px),
+                    linear-gradient(to bottom, rgba(0, 204, 255, 0.15) 1px, transparent 1px);
+                background-size: 20px 20px;
+                z-index: 1;
+            }
+            
+            .waveform-line {
+                position: absolute;
+                top: 0;
+                left: 50%;
+                height: 100%;
+                width: 1px;
+                background-color: rgba(0, 204, 255, 0.5);
+                box-shadow: 0 0 10px rgba(0, 204, 255, 0.7);
+                z-index: 3;
+            }
+            
+            /* 波形条 */
+            .bars-container {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                height: 100%;
+                padding: 0 5px;
+                position: relative;
+                z-index: 2;
+            }
+            
+            .audio-bar {
+                width: 3px;
+                background-color: var(--primary-color);
+                box-shadow: 0 0 5px rgba(0, 204, 255, 0.7);
+                border-radius: 1.5px;
+                transition: height 0.1s ease;
+            }
+            
+            /* 控制区域 */
+            .imperial-controls {
+                display: flex;
+                align-items: center;
+                margin-top: 20px;
+            }
+            
+            /* 彩虹行星效果播放按钮 */
+            .play-button-container {
+                margin-right: 15px;
+            }
+            
+            .play-button {
+                width: 60px;
+                height: 60px;
+                border-radius: 50%;
+                position: relative;
+                cursor: pointer;
+                background: none;
+                border: none;
+                padding: 0;
+                outline: none;
+            }
+            
+            .play-button.rainbowplanet {
+                border: 2px solid var(--primary-color);
+                background: var(--dark-color);
+                box-shadow: 0 0 10px rgba(0, 204, 255, 0.3);
+                transition: all 0.3s ease;
+            }
+            
+            .play-button.rainbowplanet:hover {
+                transform: scale(1.05);
+                box-shadow: 0 0 15px rgba(0, 204, 255, 0.5);
+            }
+            
+            /* 彩虹行星效果层 */
+            .planet-effect {
+                position: absolute;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                border-radius: 50%;
+                opacity: 0;
+                z-index: 1;
+                transition: opacity 0.3s ease;
+                background: 
+                    radial-gradient(
+                        circle at center,
+                        rgba(247, 140, 170, 0.9) 0%,
+                        rgba(85, 205, 252, 0.8) 30%,
+                        rgba(247, 140, 170, 0.7) 60%,
+                        transparent 100%
+                    ),
+                    linear-gradient(
+                        0deg,
+                        rgba(255, 100, 100, 0.8) 0%,
+                        rgba(255, 160, 80, 0.8) 16.6%,
+                        rgba(255, 240, 70, 0.8) 33.3%,
+                        rgba(100, 230, 100, 0.8) 50%,
+                        rgba(80, 170, 255, 0.8) 66.6%,
+                        rgba(180, 100, 255, 0.8) 83.3%,
+                        rgba(247, 140, 170, 0.8) 100%
+                    );
+            }
+            
+            .play-button.rainbowplanet:hover .planet-effect {
+                opacity: 0.9;
+            }
+            
+            /* 同心圆结构 */
+            .concentric-circles {
+                position: relative;
+                width: 100%;
+                height: 100%;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                z-index: 2;
+            }
+            
+            .circle-outer {
+                position: absolute;
+                width: 54px;
+                height: 54px;
+                border-radius: 50%;
+                border: 1px solid rgba(0, 204, 255, 0.4);
+                transition: all 0.3s ease;
+            }
+            
+            .circle-middle {
+                position: absolute;
+                width: 42px;
+                height: 42px;
+                border-radius: 50%;
+                border: 1px solid rgba(0, 204, 255, 0.6);
+                transition: all 0.3s ease;
+            }
+            
+            .circle-inner {
+                position: absolute;
+                width: 30px;
+                height: 30px;
+                border-radius: 50%;
+                border: 1px solid rgba(0, 204, 255, 0.8);
+                transition: all 0.3s ease;
+            }
+            
+            .button-center {
+                position: absolute;
+                width: 20px;
+                height: 20px;
+                border-radius: 50%;
+                background: var(--primary-color);
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                box-shadow: 0 0 10px rgba(0, 204, 255, 0.7);
+                transition: all 0.3s ease;
+            }
+            
+            /* 播放/暂停图标 */
+            .play-icon {
+                width: 0;
+                height: 0;
+                border-style: solid;
+                border-width: 5px 0 5px 8px;
+                border-color: transparent transparent transparent var(--bg-color);
+                margin-left: 2px;
+            }
+            
+            .play-button.playing .play-icon {
+                width: 8px;
+                height: 8px;
+                border: none;
+                margin-left: 0;
+                position: relative;
+            }
+            
+            .play-button.playing .play-icon:before,
+            .play-button.playing .play-icon:after {
+                content: '';
+                position: absolute;
+                background: var(--bg-color);
+                width: 3px;
+                height: 8px;
+                top: 0;
+            }
+            
+            .play-button.playing .play-icon:before {
+                left: 0;
+            }
+            
+            .play-button.playing .play-icon:after {
+                right: 0;
+            }
+            
+            /* 旋转效果 */
+            @keyframes spin-slow {
+                0% { transform: rotate(0deg); }
+                100% { transform: rotate(360deg); }
+            }
+            
+            @keyframes spin-reverse {
+                0% { transform: rotate(0deg); }
+                100% { transform: rotate(-360deg); }
+            }
+            
+            .play-button.playing .circle-outer {
+                animation: spin-slow 20s linear infinite;
+            }
+            
+            .play-button.playing .circle-middle {
+                animation: spin-reverse 15s linear infinite;
+            }
+            
+            .play-button.playing .circle-inner {
+                animation: spin-slow 10s linear infinite;
+            }
+            
+            /* 进度控制 */
+            .progress-controls {
+                flex: 1;
+                display: flex;
+                align-items: center;
+                margin: 0 15px;
+            }
+            
+            .time-display {
+                color: var(--primary-color);
+                font-family: 'Droid Sans Mono', monospace;
+                font-size: 14px;
+                min-width: 45px;
+                text-align: center;
+            }
+            
+            .progress-container {
+                flex: 1;
+                margin: 0 10px;
+                height: 20px;
+                display: flex;
+                align-items: center;
+            }
+            
+            .progress-track {
+                height: 6px;
+                width: 100%;
+                background: rgba(0, 0, 0, 0.5);
+                border-radius: 3px;
+                position: relative;
+                border: 1px solid rgba(0, 204, 255, 0.3);
+                box-shadow: 0 0 5px rgba(0, 204, 255, 0.2) inset;
+                cursor: pointer;
+            }
+            
+            .progress-fill {
+                height: 100%;
+                width: 0%;
+                background: linear-gradient(
+                    to right,
+                    var(--primary-color) 0%,
+                    #00ff9d 50%,
+                    var(--primary-color) 100%
+                );
+                border-radius: 3px;
+                position: relative;
+                transition: width 0.1s linear;
+            }
+            
+            .rainbow-glow {
+                position: absolute;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                border-radius: 3px;
+                box-shadow: 0 0 10px rgba(0, 204, 255, 0.7);
+                animation: rainbow-pulse 2s infinite alternate;
+            }
+            
+            @keyframes rainbow-pulse {
+                0% {
+                    box-shadow: 0 0 5px rgba(0, 204, 255, 0.7);
+                }
+                50% {
+                    box-shadow: 0 0 10px rgba(0, 255, 157, 0.7);
+                }
+                100% {
+                    box-shadow: 0 0 15px rgba(153, 102, 255, 0.7);
+                }
+            }
+            
+            .progress-handle {
+                width: 14px;
+                height: 14px;
+                border-radius: 50%;
+                background: var(--primary-color);
+                position: absolute;
+                top: 50%;
+                left: 0%;
+                transform: translate(-50%, -50%);
+                cursor: pointer;
+            }
+            
+            .handle-glow {
+                position: absolute;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                border-radius: 50%;
+                box-shadow: 0 0 10px rgba(0, 204, 255, 0.7);
+            }
+            
+            /* 音量控制 */
+            .volume-control {
+                display: flex;
+                align-items: center;
+                margin-left: 15px;
+            }
+            
+            .volume-icon {
+                width: 20px;
+                height: 20px;
+                position: relative;
+                margin-right: 8px;
+            }
+            
+            .volume-icon:before {
+                content: '';
+                position: absolute;
+                left: 0;
+                top: 6px;
+                width: 8px;
+                height: 8px;
+                background: var(--primary-color);
+                clip-path: polygon(0 0, 40% 0, 100% 30%, 100% 70%, 40% 100%, 0 100%);
+            }
+            
+            .volume-wave {
+                position: absolute;
+                right: 0;
+                top: 5px;
+                width: 12px;
+                height: 10px;
+                border-radius: 0 50% 50% 0;
+                border-right: 2px solid var(--primary-color);
+                border-top: 2px solid transparent;
+                border-bottom: 2px solid transparent;
+            }
+            
+            .volume-wave:before {
+                content: '';
+                position: absolute;
+                right: -4px;
+                top: -4px;
+                width: 16px;
+                height: 14px;
+                border-radius: 0 50% 50% 0;
+                border-right: 1px solid rgba(0, 204, 255, 0.5);
+                border-top: 1px solid transparent;
+                border-bottom: 1px solid transparent;
+            }
+            
+            .volume-slider {
+                width: 80px;
+                height: 20px;
+                display: flex;
+                align-items: center;
+            }
+            
+            .volume-track {
+                height: 4px;
+                width: 100%;
+                background: rgba(0, 0, 0, 0.5);
+                border-radius: 2px;
+                position: relative;
+                border: 1px solid rgba(0, 204, 255, 0.3);
+                cursor: pointer;
+            }
+            
+            .volume-fill {
+                height: 100%;
+                width: 70%;
+                background: var(--primary-color);
+                border-radius: 2px;
+            }
+            
+            .volume-handle {
+                width: 10px;
+                height: 10px;
+                border-radius: 50%;
+                background: var(--primary-color);
+                position: absolute;
+                top: 50%;
+                left: 70%;
+                transform: translate(-50%, -50%);
+                box-shadow: 0 0 5px rgba(0, 204, 255, 0.7);
+                cursor: pointer;
+            }
+            
+            /* 响应式调整 */
+            @media (max-width: 768px) {
+                .imperial-controls {
+                    flex-direction: column;
+                    align-items: center;
+                }
+                
+                .play-button-container {
+                    margin-right: 0;
+                    margin-bottom: 15px;
+                }
+                
+                .progress-controls {
+                    width: 100%;
+                    margin: 15px 0;
+                }
+                
+                .volume-control {
+                    margin-left: 0;
+                    margin-top: 10px;
+                }
+            }
+            </style>
+            
+            <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                // 获取音频元素
+                const audio = document.getElementById('audioElement');
+                
+                // 获取控制按钮和进度条
+                const playButton = document.getElementById('playButton');
+                const progressFill = document.getElementById('progressFill');
+                const progressHandle = document.getElementById('progressHandle');
+                const progressTrack = document.querySelector('.progress-track');
+                const currentTimeDisplay = document.querySelector('.current-time');
+                
+                // 波形条容器
+                const barsContainer = document.getElementById('bars-container');
+                
+                // 创建波形条
+                const createWaveformBars = () => {
+                    const barCount = 50; // 条的数量
+                    barsContainer.innerHTML = '';
+                    
+                    for (let i = 0; i < barCount; i++) {
+                        const bar = document.createElement('div');
+                        bar.className = 'audio-bar';
+                        bar.style.height = Math.random() * 70 + 10 + '%';
+                        barsContainer.appendChild(bar);
+                    }
+                };
+                createWaveformBars();
+                
+                // 模拟音频可视化效果
+                const animateWaveform = (playing) => {
+                    const bars = barsContainer.querySelectorAll('.audio-bar');
+                    
+                    if (playing) {
+                        const animate = () => {
+                            bars.forEach(bar => {
+                                const height = Math.random() * 70 + 10;
+                                bar.style.height = height + '%';
+                            });
+                            
+                            if (audio.paused) return;
+                            requestAnimationFrame(animate);
+                        };
+                        
+                        animate();
+                    } else {
+                        // 暂停时静止显示
+                        bars.forEach(bar => {
+                            bar.style.height = '30%';
+                        });
+                    }
+                };
+                
+                // 播放/暂停切换
+                playButton.addEventListener('click', function() {
+                    if (audio.paused) {
+                        audio.play();
+                        playButton.classList.add('playing');
+                        animateWaveform(true);
+                        document.querySelector('.status-text').textContent = '播放中';
+                    } else {
+                        audio.pause();
+                        playButton.classList.remove('playing');
+                        animateWaveform(false);
+                        document.querySelector('.status-text').textContent = '已暂停';
+                    }
+                });
+                
+                // 更新进度条
+                audio.addEventListener('timeupdate', function() {
+                    const currentTime = audio.currentTime;
+                    const duration = audio.duration;
+                    const progressPercent = (currentTime / duration) * 100;
+                    
+                    // 更新进度条填充
+                    progressFill.style.width = progressPercent + '%';
+                    
+                    // 更新拖动手柄位置
+                    progressHandle.style.left = progressPercent + '%';
+                    
+                    // 更新时间显示
+                    const currentMinutes = Math.floor(currentTime / 60);
+                    const currentSeconds = Math.floor(currentTime % 60);
+                    currentTimeDisplay.textContent = 
+                        (currentMinutes < 10 ? '0' : '') + currentMinutes + 
+                        ':' + 
+                        (currentSeconds < 10 ? '0' : '') + currentSeconds;
+                });
+                
+                // 点击进度条跳转
+                progressTrack.addEventListener('click', function(e) {
+                    const trackRect = progressTrack.getBoundingClientRect();
+                    const clickPosition = e.clientX - trackRect.left;
+                    const progressPercent = (clickPosition / trackRect.width) * 100;
+                    
+                    // 更新音频当前时间
+                    audio.currentTime = (progressPercent / 100) * audio.duration;
+                });
+                
+                // 音频结束时重置
+                audio.addEventListener('ended', function() {
+                    playButton.classList.remove('playing');
+                    animateWaveform(false);
+                    document.querySelector('.status-text').textContent = '已完成';
+                });
+                
+                // 进度条拖动功能
+                let isDragging = false;
+                
+                progressHandle.addEventListener('mousedown', function(e) {
+                    isDragging = true;
+                    e.preventDefault(); // 防止选中文本
+                });
+                
+                document.addEventListener('mousemove', function(e) {
+                    if (!isDragging) return;
+                    
+                    const trackRect = progressTrack.getBoundingClientRect();
+                    let clickPosition = e.clientX - trackRect.left;
+                    
+                    // 限制在轨道范围内
+                    if (clickPosition < 0) clickPosition = 0;
+                    if (clickPosition > trackRect.width) clickPosition = trackRect.width;
+                    
+                    const progressPercent = (clickPosition / trackRect.width) * 100;
+                    
+                    // 更新进度条填充和手柄位置
+                    progressFill.style.width = progressPercent + '%';
+                    progressHandle.style.left = progressPercent + '%';
+                });
+                
+                document.addEventListener('mouseup', function() {
+                    if (!isDragging) return;
+                    
+                    const trackRect = progressTrack.getBoundingClientRect();
+                    const handleRect = progressHandle.getBoundingClientRect();
+                    const handlePosition = handleRect.left + handleRect.width / 2 - trackRect.left;
+                    const progressPercent = (handlePosition / trackRect.width) * 100;
+                    
+                    // 设置音频当前时间
+                    audio.currentTime = (progressPercent / 100) * audio.duration;
+                    
+                    isDragging = false;
+                });
+                
+                // 音量控制
+                const volumeTrack = document.querySelector('.volume-track');
+                const volumeFill = document.querySelector('.volume-fill');
+                const volumeHandle = document.querySelector('.volume-handle');
+                
+                volumeTrack.addEventListener('click', function(e) {
+                    const trackRect = volumeTrack.getBoundingClientRect();
+                    const clickPosition = e.clientX - trackRect.left;
+                    const volumePercent = (clickPosition / trackRect.width) * 100;
+                    
+                    // 更新音量填充和手柄位置
+                    volumeFill.style.width = volumePercent + '%';
+                    volumeHandle.style.left = volumePercent + '%';
+                    
+                    // 设置音频音量 (0-1)
+                    audio.volume = volumePercent / 100;
+                });
+            });
+            </script>
             
             <!-- 分享选项面板，默认隐藏 -->
             <div class="share-panel" id="sharePanel">
