@@ -71,7 +71,7 @@
         </div>
         
         <div class="sharing-options hologram-terminal">
-            <h3 class="terminal-title">岛屿通讯终端 - 信息传输</h3>
+            <h3 class="terminal-title">蒂国通讯终端 - 信息传输</h3>
             
             <div class="hologram-container">
                 <div class="hologram-effect"></div>
@@ -79,7 +79,7 @@
                     <div class="hologram-ring top"></div>
                     <div class="hologram-ring middle"></div>
                     <div class="hologram-ring bottom"></div>
-                    <input type="text" class="hologram-url" value="{{ url_for('episode', episode_id=episode.id, _external=True) }}" readonly onclick="this.select();">
+                    <input type="text" id="hologram-url" class="hologram-url" value="{{ url_for('episode', episode_id=episode.id, _external=True) }}" readonly onclick="this.select();">
                 </div>
             </div>
             
@@ -87,17 +87,51 @@
                 <button class="terminal-button blue" onclick="copyHologramUrl()">
                     <div class="button-led"></div>
                     <span class="button-label">坐标锁定</span>
+                    <span class="button-desc">复制链接</span>
                 </button>
                 
-                <button class="terminal-button purple">
+                <button class="terminal-button purple" onclick="encryptUrl()">
                     <div class="button-led"></div>
                     <span class="button-label">加密传输</span>
+                    <span class="button-desc">短链接</span>
                 </button>
                 
-                <button class="terminal-button green">
+                <button class="terminal-button green" onclick="broadcastEpisode()">
                     <div class="button-led"></div>
                     <span class="button-label">星际广播</span>
+                    <span class="button-desc">分享</span>
                 </button>
+            </div>
+            
+            <!-- 分享选项面板，默认隐藏 -->
+            <div class="share-panel" id="sharePanel">
+                <div class="share-panel-header">选择广播频道</div>
+                <div class="share-options">
+                    <!-- 微信分享 -->
+                    <button class="share-option" onclick="shareToApp('wechat')">
+                        <div class="share-icon wechat">微信</div>
+                        <span>微信</span>
+                    </button>
+                    
+                    <!-- 微博分享 -->
+                    <button class="share-option" onclick="shareToApp('weibo')">
+                        <div class="share-icon weibo">微博</div>
+                        <span>微博</span>
+                    </button>
+                    
+                    <!-- QQ分享 -->
+                    <button class="share-option" onclick="shareToApp('qq')">
+                        <div class="share-icon qq">QQ</div>
+                        <span>QQ</span>
+                    </button>
+                    
+                    <!-- 更多选项 -->
+                    <button class="share-option" onclick="shareToApp('more')">
+                        <div class="share-icon more">更多</div>
+                        <span>更多</span>
+                    </button>
+                </div>
+                <button class="close-panel" onclick="closeSharePanel()">关闭</button>
             </div>
             
             <div class="radar-container">
@@ -117,17 +151,14 @@
         </div>
         
         <script>
+        // 复制链接功能
         function copyHologramUrl() {
-            var urlElement = document.querySelector('.hologram-url');
+            var urlElement = document.getElementById('hologram-url');
             urlElement.select();
             document.execCommand('copy');
             
             // 更新状态指示器
-            var statusLed = document.querySelector('.status-led');
-            var statusText = document.querySelector('.status-text');
-            
-            statusLed.classList.add('active');
-            statusText.textContent = '传输完成';
+            updateStatus('传输完成', 'success');
             
             // 添加全息投影激活效果
             var hologramEffect = document.querySelector('.hologram-effect');
@@ -135,10 +166,158 @@
             
             // 3秒后恢复
             setTimeout(function() {
-                statusLed.classList.remove('active');
+                var statusLed = document.querySelector('.status-led');
+                var statusText = document.querySelector('.status-text');
+                
+                statusLed.className = 'status-led';
                 statusText.textContent = '传输就绪';
                 hologramEffect.classList.remove('transmitting');
             }, 3000);
+        }
+        
+        // 生成短链接功能
+        function encryptUrl() {
+            var urlElement = document.getElementById('hologram-url');
+            var originalUrl = urlElement.value;
+            
+            // 更新状态为"处理中"
+            updateStatus('加密处理中', 'processing');
+            
+            // 模拟短链接生成过程 - 在实际应用中，这里应该调用短链接API
+            setTimeout(function() {
+                // 这里只是模拟生成短链接，实际应用中应替换为真实API调用
+                // 例如: 调用t.cn, bit.ly等短链接服务
+                var shortUrl = "https://t.cn/" + generateRandomString(7);
+                
+                // 更新输入框值为短链接
+                urlElement.value = shortUrl;
+                
+                // 更新状态为"加密完成"
+                updateStatus('加密完成', 'success');
+                
+                // 添加全息投影激活效果
+                var hologramEffect = document.querySelector('.hologram-effect');
+                hologramEffect.classList.add('encrypted');
+                
+                // 5秒后恢复
+                setTimeout(function() {
+                    // 点击按钮可以在原始链接和短链接之间切换
+                    urlElement.setAttribute('data-original-url', originalUrl);
+                    urlElement.setAttribute('data-short-url', shortUrl);
+                    urlElement.setAttribute('data-is-short', 'true');
+                    
+                    var statusLed = document.querySelector('.status-led');
+                    var statusText = document.querySelector('.status-text');
+                    
+                    statusLed.className = 'status-led';
+                    statusText.textContent = '传输就绪';
+                    hologramEffect.classList.remove('encrypted');
+                }, 3000);
+            }, 1500);
+        }
+        
+        // 生成随机字符串作为短链接代码
+        function generateRandomString(length) {
+            var chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+            var result = '';
+            for (var i = 0; i < length; i++) {
+                result += chars.charAt(Math.floor(Math.random() * chars.length));
+            }
+            return result;
+        }
+        
+        // 显示分享面板
+        function broadcastEpisode() {
+            var sharePanel = document.getElementById('sharePanel');
+            sharePanel.classList.add('active');
+            
+            // 更新状态
+            updateStatus('广播准备中', 'alert');
+        }
+        
+        // 关闭分享面板
+        function closeSharePanel() {
+            var sharePanel = document.getElementById('sharePanel');
+            sharePanel.classList.remove('active');
+            
+            // 恢复状态
+            var statusLed = document.querySelector('.status-led');
+            var statusText = document.querySelector('.status-text');
+            
+            statusLed.className = 'status-led';
+            statusText.textContent = '传输就绪';
+        }
+        
+        // 分享到指定应用
+        function shareToApp(app) {
+            var urlElement = document.getElementById('hologram-url');
+            var shareUrl = urlElement.value;
+            var title = "{{ episode.title }}"; // 使用实际的播客标题
+            
+            var shareUrls = {
+                'wechat': 'javascript:alert("请使用微信扫描二维码分享");', // 微信需要二维码
+                'weibo': 'http://service.weibo.com/share/share.php?url=' + encodeURIComponent(shareUrl) + '&title=' + encodeURIComponent(title),
+                'qq': 'http://connect.qq.com/widget/shareqq/index.html?url=' + encodeURIComponent(shareUrl) + '&title=' + encodeURIComponent(title),
+                'more': 'javascript:navigator.share && navigator.share({title: "' + title + '", url: "' + shareUrl + '"})'
+            };
+            
+            if (app === 'more' && navigator.share) {
+                navigator.share({
+                    title: title,
+                    url: shareUrl
+                }).catch(function(error) {
+                    console.log('分享出错:', error);
+                });
+            } else if (app === 'wechat') {
+                // 为微信创建二维码
+                showQRCode(shareUrl);
+            } else {
+                window.open(shareUrls[app], '_blank');
+            }
+            
+            // 更新状态
+            updateStatus('广播成功', 'success');
+            
+            // 3秒后关闭分享面板
+            setTimeout(function() {
+                closeSharePanel();
+            }, 3000);
+        }
+        
+        // 显示二维码
+        function showQRCode(url) {
+            // 这里应该实现显示二维码的功能
+            // 可以使用qrcode.js等库生成二维码
+            alert("请扫描二维码分享到微信\n链接: " + url);
+            
+            // 在实际实现中，应该创建一个二维码图像并显示
+            // 例如:
+            /*
+            var qrcodeContainer = document.createElement('div');
+            qrcodeContainer.className = 'qrcode-container';
+            qrcodeContainer.innerHTML = '<div id="qrcode"></div><button onclick="closeQRCode()">关闭</button>';
+            document.body.appendChild(qrcodeContainer);
+            
+            // 使用qrcode.js生成二维码
+            new QRCode(document.getElementById("qrcode"), url);
+            */
+        }
+        
+        // 更新状态指示器
+        function updateStatus(message, type) {
+            var statusLed = document.querySelector('.status-led');
+            var statusText = document.querySelector('.status-text');
+            
+            statusLed.className = 'status-led';
+            statusText.textContent = message;
+            
+            if (type === 'success') {
+                statusLed.classList.add('success');
+            } else if (type === 'alert') {
+                statusLed.classList.add('alert');
+            } else if (type === 'processing') {
+                statusLed.classList.add('processing');
+            }
         }
         </script>
         
@@ -204,6 +383,16 @@
             animation: pulse-transmit 0.5s infinite alternate;
         }
         
+        .hologram-effect.encrypted {
+            background: radial-gradient(
+                ellipse at center,
+                rgba(153, 102, 255, 0.3) 0%,
+                rgba(153, 102, 255, 0.2) 40%,
+                transparent 70%
+            );
+            animation: pulse-encrypt 0.8s infinite alternate;
+        }
+        
         @keyframes pulse {
             0% {
                 opacity: 0.5;
@@ -219,6 +408,15 @@
             }
             100% {
                 opacity: 1;
+            }
+        }
+        
+        @keyframes pulse-encrypt {
+            0% {
+                opacity: 0.6;
+            }
+            100% {
+                opacity: 0.9;
             }
         }
         
@@ -302,6 +500,7 @@
             display: flex;
             justify-content: space-around;
             margin: 25px 0;
+            flex-wrap: wrap; /* 适应小屏幕 */
         }
         
         /* 按钮样式 */
@@ -318,6 +517,7 @@
             align-items: center;
             cursor: pointer;
             transition: all 0.3s ease;
+            margin: 5px;
         }
         
         .terminal-button::before {
@@ -364,6 +564,13 @@
             text-align: center;
         }
         
+        /* 按钮描述 */
+        .button-desc {
+            font-size: 10px;
+            color: rgba(255, 255, 255, 0.7);
+            margin-top: 5px;
+        }
+        
         /* 蓝色按钮 */
         .terminal-button.blue {
             border-color: var(--primary-color);
@@ -401,6 +608,99 @@
         }
         .terminal-button.green:hover {
             box-shadow: 0 0 15px rgba(0, 255, 157, 0.4);
+        }
+        
+        /* 分享面板 */
+        .share-panel {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            right: 0;
+            background: rgba(5, 6, 26, 0.95);
+            border: 2px solid var(--accent-color);
+            border-radius: 8px;
+            padding: 20px;
+            transition: transform 0.3s ease;
+            transform: translateY(0);
+            z-index: 100;
+            box-shadow: 0 0 20px rgba(0, 255, 157, 0.3);
+        }
+        
+        .share-panel.active {
+            transform: translateY(-100%);
+        }
+        
+        .share-panel-header {
+            color: var(--accent-color);
+            text-align: center;
+            margin-bottom: 15px;
+            font-weight: bold;
+        }
+        
+        .share-options {
+            display: flex;
+            justify-content: space-around;
+            flex-wrap: wrap;
+        }
+        
+        .share-option {
+            background: none;
+            border: none;
+            color: white;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            cursor: pointer;
+            margin: 10px;
+            transition: all 0.3s ease;
+        }
+        
+        .share-option:hover {
+            transform: scale(1.1);
+        }
+        
+        .share-icon {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 5px;
+            color: white;
+            font-weight: bold;
+        }
+        
+        .share-icon.wechat {
+            background-color: #07C160;
+        }
+        
+        .share-icon.weibo {
+            background-color: #E6162D;
+        }
+        
+        .share-icon.qq {
+            background-color: #12B7F5;
+        }
+        
+        .share-icon.more {
+            background-color: #666;
+        }
+        
+        .close-panel {
+            display: block;
+            margin: 20px auto 0;
+            padding: 8px 15px;
+            background: rgba(0, 0, 0, 0.5);
+            border: 1px solid var(--accent-color);
+            color: var(--accent-color);
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .close-panel:hover {
+            background: rgba(0, 255, 157, 0.1);
         }
         
         /* 雷达扫描区 */
@@ -499,14 +799,47 @@
             transition: all 0.3s ease;
         }
         
-        .status-led.active {
+        .status-led.success {
             background: var(--accent-color);
             box-shadow: 0 0 10px var(--accent-color);
+        }
+        
+        .status-led.alert {
+            background: #FF9900;
+            box-shadow: 0 0 10px #FF9900;
+        }
+        
+        .status-led.processing {
+            background: #9966ff;
+            box-shadow: 0 0 10px #9966ff;
+            animation: processing 1s infinite;
+        }
+        
+        @keyframes processing {
+            0%, 100% {
+                opacity: 0.7;
+            }
+            50% {
+                opacity: 1;
+            }
         }
         
         .status-text {
             color: var(--primary-color);
             font-size: 14px;
+        }
+        
+        /* 响应式调整 */
+        @media (max-width: 768px) {
+            .terminal-controls {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .radar-scan {
+                width: 120px;
+                height: 120px;
+            }
         }
         </style>
         {% else %}
