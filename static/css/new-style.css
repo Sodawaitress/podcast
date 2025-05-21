@@ -309,37 +309,75 @@ header {
     box-shadow: 0 0 30px rgba(0, 255, 255, 0.5);
 }
 
-/* 霓虹灯标题效果 */
 header h1 {
     margin: 0 0 0.5rem 0;
-    font-size: 3rem;
-    color: var(--primary-color);
+    font-size: 2.8rem;
+    color: #00ccff; /* 天蓝色字体 */
     font-weight: 700;
     text-transform: uppercase;
     letter-spacing: 3px;
+    /* 多层文字阴影创建边框与渐变效果 */
     text-shadow: 
-        0 0 5px var(--primary-color),
-        0 0 10px var(--primary-color),
-        0 0 15px var(--primary-color),
-        0 0 20px var(--primary-color);
-    animation: neon-pulse 1.5s infinite alternate;
+        /* 夜空蓝色边框效果 */
+        -1px -1px 0 #004466,  
+        1px -1px 0 #004466,
+        -1px 1px 0 #004466,
+        1px 1px 0 #004466,
+        
+        /* 天蓝到夜空蓝的渐变过渡层 */
+        -2px -2px 0 #005577,
+        2px -2px 0 #005577,
+        -2px 2px 0 #005577,
+        2px 2px 0 #005577,
+        
+        /* 粉紫色背景光晕效果 - 三层递增 */
+        0 0 10px rgba(255, 158, 204, 0.7),
+        0 0 20px rgba(255, 158, 204, 0.5),
+        0 0 30px rgba(255, 158, 204, 0.7);
+    
+    /* 添加动画效果 */
+    animation: title-glow 3s infinite alternate;
 }
 
-@keyframes neon-pulse {
+/* 添加标题光晕动画 */
+@keyframes title-glow {
     0% {
         text-shadow: 
-            0 0 5px var(--primary-color),
-            0 0 10px var(--primary-color),
-            0 0 15px var(--primary-color),
-            0 0 20px var(--primary-color);
+            /* 边框效果 - 保持不变 */
+            -1px -1px 0 #004466,  
+            1px -1px 0 #004466,
+            -1px 1px 0 #004466,
+            1px 1px 0 #004466,
+            
+            /* 渐变过渡层 - 保持不变 */
+            -2px -2px 0 #005577,
+            2px -2px 0 #005577,
+            -2px 2px 0 #005577,
+            2px 2px 0 #005577,
+            
+            /* 粉紫色光晕 - 初始状态 */
+            0 0 10px rgba(255, 158, 204, 0.7),
+            0 0 15px rgba(255, 158, 204, 0.5),
+            0 0 20px rgba(255, 158, 204, 0.4);
     }
     100% {
         text-shadow: 
-            0 0 5px var(--primary-color),
-            0 0 10px var(--primary-color),
-            0 0 15px var(--primary-color),
-            0 0 20px var(--primary-color),
-            0 0 30px var(--primary-color);
+            /* 边框效果 - 保持不变 */
+            -1px -1px 0 #004466,  
+            1px -1px 0 #004466,
+            -1px 1px 0 #004466,
+            1px 1px 0 #004466,
+            
+            /* 渐变过渡层 - 保持不变 */
+            -2px -2px 0 #005577,
+            2px -2px 0 #005577,
+            -2px 2px 0 #005577,
+            2px 2px 0 #005577,
+            
+            /* 粉紫色光晕 - 增强状态 */
+            0 0 15px rgba(255, 158, 204, 0.8),
+            0 0 25px rgba(255, 158, 204, 0.6),
+            0 0 35px rgba(255, 158, 204, 0.7);
     }
 }
 
