@@ -27,18 +27,17 @@
             </audio>
         </div>
         
-        <!-- 上一集/下一集控制按钮 -->
-        <div style="display: flex; justify-content: center; margin: 30px auto; width: 150px;">
-            <!-- 左侧按钮 - 上一集 -->
+        <!-- 上一集/下一集控制按钮 - 没有文字标签 -->
+        <div style="display: flex; justify-content: center; margin: 30px auto; width: 130px;">
             {% if prev_url %}
             <a href="{{ prev_url }}" style="text-decoration: none;">
             {% else %}
             <a href="#" style="text-decoration: none; pointer-events: none; opacity: 0.5;">
             {% endif %}
-                <button type="button" style="background: none; border: none; cursor: pointer; padding: 0; margin-right: 4px;">
-                    <div style="position: relative; width: 70px; height: 60px; overflow: hidden;">
-                        <!-- 左半圆 -->
-                        <div style="position: absolute; right: 0; top: 0; width: 60px; height: 60px; border-radius: 30px 0 0 30px; border: 2px solid var(--primary-color); border-right: none; background: var(--dark-color);">
+                <button type="button" style="background: none; border: none; cursor: pointer; padding: 0; margin-right: 5px;">
+                    <div style="position: relative; width: 60px; height: 60px; overflow: hidden;">
+                        <!-- 左半圆 - 完整闭合的线条 -->
+                        <div style="position: absolute; right: 0; top: 0; width: 60px; height: 60px; border-radius: 30px 0 0 30px; border: 2px solid var(--primary-color); border-right: none; background: var(--dark-color); box-shadow: 0 0 10px rgba(0, 204, 255, 0.3); transition: all 0.3s ease;">
                             <div style="position: absolute; right: 4px; top: 4px; width: 50px; height: 50px; border-radius: 25px 0 0 25px; border: 1px solid rgba(0, 204, 255, 0.4); border-right: none;"></div>
                             <div style="position: absolute; right: 12px; top: 12px; width: 34px; height: 34px; border-radius: 17px 0 0 17px; border: 1px solid rgba(0, 204, 255, 0.6); border-right: none;"></div>
                             <div style="position: absolute; right: 20px; top: 20px; width: 18px; height: 18px; border-radius: 9px 0 0 9px; border: 1px solid rgba(0, 204, 255, 0.8); border-right: none;"></div>
@@ -49,16 +48,15 @@
                 </button>
             </a>
             
-            <!-- 右侧按钮 - 下一集 -->
             {% if next_url %}
             <a href="{{ next_url }}" style="text-decoration: none;">
             {% else %}
             <a href="#" style="text-decoration: none; pointer-events: none; opacity: 0.5;">
             {% endif %}
-                <button type="button" style="background: none; border: none; cursor: pointer; padding: 0; margin-left: 4px;">
-                    <div style="position: relative; width: 70px; height: 60px; overflow: hidden;">
-                        <!-- 右半圆 -->
-                        <div style="position: absolute; left: 0; top: 0; width: 60px; height: 60px; border-radius: 0 30px 30px 0; border: 2px solid var(--primary-color); border-left: none; background: var(--dark-color);">
+                <button type="button" style="background: none; border: none; cursor: pointer; padding: 0; margin-left: 5px;">
+                    <div style="position: relative; width: 60px; height: 60px; overflow: hidden;">
+                        <!-- 右半圆 - 完整闭合的线条 -->
+                        <div style="position: absolute; left: 0; top: 0; width: 60px; height: 60px; border-radius: 0 30px 30px 0; border: 2px solid var(--primary-color); border-left: none; background: var(--dark-color); box-shadow: 0 0 10px rgba(0, 204, 255, 0.3); transition: all 0.3s ease;">
                             <div style="position: absolute; left: 4px; top: 4px; width: 50px; height: 50px; border-radius: 0 25px 25px 0; border: 1px solid rgba(0, 204, 255, 0.4); border-left: none;"></div>
                             <div style="position: absolute; left: 12px; top: 12px; width: 34px; height: 34px; border-radius: 0 17px 17px 0; border: 1px solid rgba(0, 204, 255, 0.6); border-left: none;"></div>
                             <div style="position: absolute; left: 20px; top: 20px; width: 18px; height: 18px; border-radius: 0 9px 9px 0; border: 1px solid rgba(0, 204, 255, 0.8); border-left: none;"></div>
@@ -68,11 +66,6 @@
                     </div>
                 </button>
             </a>
-        </div>
-        
-        <div style="text-align: center; margin-top: -15px; margin-bottom: 25px;">
-            <span style="display: inline-block; width: 70px; text-align: center; color: var(--primary-color); font-size: 0.85rem; margin-right: 4px;">上一集</span>
-            <span style="display: inline-block; width: 70px; text-align: center; color: var(--primary-color); font-size: 0.85rem; margin-left: 4px;">下一集</span>
         </div>
         
         <div class="sharing-options">
@@ -94,7 +87,7 @@
                 <div class="error-message">{{ error }}</div>
                 {% endif %}
                 
-                <!-- 紫色解锁按钮 -->
+                <!-- 紫色解锁按钮 - 无文字提示 -->
                 <div style="display: flex; justify-content: center; margin: 20px 0;">
                     <button type="submit" style="background: none; border: none; cursor: pointer; padding: 0;">
                         <div class="rainbowplanet-concentric" style="border: 2px solid #9966ff;">
@@ -108,14 +101,13 @@
                                 </div>
                             </div>
                         </div>
-                        <div style="text-align: center; margin-top: 8px; color: #9966ff;">解锁内容</div>
                     </button>
                 </div>
             </form>
         </div>
         {% endif %}
         
-        <!-- 返回列表按钮 - 较小的蓝色按钮 -->
+        <!-- 返回列表按钮 - 较小的蓝色按钮，无文字提示 -->
         <div style="display: flex; justify-content: center; margin-top: 40px;">
             <a href="{{ url_for('index') }}" style="text-decoration: none;">
                 <button type="button" style="background: none; border: none; cursor: pointer; padding: 0;">
@@ -130,9 +122,59 @@
                             </div>
                         </div>
                     </div>
-                    <div style="text-align: center; margin-top: 8px; color: var(--primary-color);">返回列表</div>
                 </button>
             </a>
         </div>
     </div>
+
+    <!-- 添加交互动画的脚本 -->
+    <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // 获取所有半圆按钮
+        var leftButtons = document.querySelectorAll('[style*="border-radius: 30px 0 0 30px"]');
+        var rightButtons = document.querySelectorAll('[style*="border-radius: 0 30px 30px 0"]');
+        
+        // 为左半圆按钮添加悬停效果
+        leftButtons.forEach(function(button) {
+            button.parentElement.parentElement.addEventListener('mouseenter', function() {
+                button.style.transform = 'scale(1.05)';
+                button.style.boxShadow = '0 0 15px rgba(0, 204, 255, 0.5), 0 0 30px rgba(0, 204, 255, 0.3)';
+            });
+            
+            button.parentElement.parentElement.addEventListener('mouseleave', function() {
+                button.style.transform = 'scale(1)';
+                button.style.boxShadow = '0 0 10px rgba(0, 204, 255, 0.3)';
+            });
+            
+            button.parentElement.parentElement.addEventListener('mousedown', function() {
+                button.style.transform = 'scale(0.95)';
+            });
+            
+            button.parentElement.parentElement.addEventListener('mouseup', function() {
+                button.style.transform = 'scale(1.05)';
+            });
+        });
+        
+        // 为右半圆按钮添加悬停效果
+        rightButtons.forEach(function(button) {
+            button.parentElement.parentElement.addEventListener('mouseenter', function() {
+                button.style.transform = 'scale(1.05)';
+                button.style.boxShadow = '0 0 15px rgba(0, 204, 255, 0.5), 0 0 30px rgba(0, 204, 255, 0.3)';
+            });
+            
+            button.parentElement.parentElement.addEventListener('mouseleave', function() {
+                button.style.transform = 'scale(1)';
+                button.style.boxShadow = '0 0 10px rgba(0, 204, 255, 0.3)';
+            });
+            
+            button.parentElement.parentElement.addEventListener('mousedown', function() {
+                button.style.transform = 'scale(0.95)';
+            });
+            
+            button.parentElement.parentElement.addEventListener('mouseup', function() {
+                button.style.transform = 'scale(1.05)';
+            });
+        });
+    });
+    </script>
 {% endblock %}

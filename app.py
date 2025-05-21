@@ -143,18 +143,34 @@ def admin_login():
     
     return render_template('admin_login.html', error=error)
 
-# 单集页面
 @app.route('/episode/<int:episode_id>')
 def episode(episode_id):
     # 查找ID匹配的播客
     matching_episode = None
-    for ep in EPISODES:
+    prev_url = None
+    next_url = None
+    
+    # 找到当前播客
+    for i, ep in enumerate(EPISODES):
         if ep['id'] == episode_id:
             matching_episode = ep
+            
+            # 计算上一集的URL
+            if i > 0:
+                prev_url = url_for('episode', episode_id=EPISODES[i-1]['id'])
+            
+            # 计算下一集的URL
+            if i < len(EPISODES) - 1:
+                next_url = url_for('episode', episode_id=EPISODES[i+1]['id'])
+            
             break
             
     if matching_episode:
-        return render_template('episode.html', episode=matching_episode, authenticated=True)
+        return render_template('episode.html', 
+                              episode=matching_episode, 
+                              authenticated=True,
+                              prev_url=prev_url,
+                              next_url=next_url)
     return render_template('error.html', error="播客不存在", error_code="404"), 404
 
 # 删除播客
