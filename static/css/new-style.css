@@ -1049,3 +1049,30 @@ body::after {
 .button:hover::after {
     opacity: 1;
 }
+/* 星战控制台按钮样式 */
+.starwars-control {
+    transition: all 0.3s ease;
+}
+
+.control-ring {
+    box-shadow: 0 0 8px rgba(0, 204, 255, 0.3) inset;
+    transition: all 0.3s ease;
+}
+
+.play-triangle {
+    filter: drop-shadow(0 0 3px rgba(0, 204, 255, 0.5));
+    transition: all 0.3s ease;
+}
+
+/* 悬停效果 */
+.rainbowplanet-button:hover .control-ring {
+    background: rgba(0, 128, 192, 0.5);
+    box-shadow: 0 0 15px rgba(0, 204, 255, 0.5) inset;
+    border-color: rgba(0, 204, 255, 0.9);
+}
+
+.rainbowplanet-button:hover .play-triangle {
+    border-color: transparent transparent transparent rgba(255, 255, 255, 0.9);
+    filter: drop-shadow(0 0 5px rgba(255, 255, 255, 0.7));
+    transform: scale(1.1);
+}
