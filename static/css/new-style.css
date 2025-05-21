@@ -1155,24 +1155,8 @@ body::after {
     100% { top: 100%; }
 }
 
-/* 悬停效果 - 与rainbowplanet兼容 */
-.rainbowplanet-button:hover .holo-center {
-    background: rgba(0, 128, 192, 0.4);
-    box-shadow: 0 0 15px rgba(0, 204, 255, 0.6);
-}
-
-.rainbowplanet-button:hover .play-icon {
-    border-color: transparent transparent transparent rgba(255, 255, 255, 0.9);
-    filter: drop-shadow(0 0 5px rgba(255, 255, 255, 0.7));
-    transform: scale(1.1);
-}
-
-.rainbowplanet-button:hover .holo-ring {
-    border-color: rgba(0, 204, 255, 0.7);
-    box-shadow: 0 0 8px rgba(0, 204, 255, 0.5);
-}
-/* 星战风格同心圆按钮 */
-.starwars-button {
+/* 结合彩虹星球和同心圆效果的按钮 */
+.rainbowplanet-concentric {
     display: inline-flex;
     align-items: center;
     justify-content: center;
@@ -1185,9 +1169,11 @@ body::after {
     margin: 0 auto;
     transition: all 0.3s ease;
     font-size: 0; /* 移除文字 */
+    overflow: hidden;
+    z-index: 10;
 }
 
-/* 星战同心圆效果 */
+/* 同心圆效果 */
 .concentric-circles {
     position: relative;
     width: 54px;
@@ -1195,6 +1181,7 @@ body::after {
     display: flex;
     align-items: center;
     justify-content: center;
+    z-index: 3; /* 确保在彩虹星球效果之上 */
 }
 
 /* 外层同心圆 */
@@ -1269,37 +1256,31 @@ body::after {
     100% { transform: rotate(-360deg); }
 }
 
-/* 气态行星效果 - 悬停时显示 */
-.planet-effect {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    border-radius: 50%;
-    background: 
-        radial-gradient(
-            circle at center,
-            rgba(247, 140, 170, 0.9) 0%,    /* 跨粉色中心 */
-            rgba(85, 205, 252, 0.8) 30%,    /* 跨蓝色过渡 */
-            rgba(247, 140, 170, 0.7) 60%,   /* 跨粉色晕染 */
-            transparent 100%                 /* 透明边缘 */
-        ),
-        linear-gradient(
-            0deg,
-            rgba(255, 100, 100, 0.8) 0%,     /* 红色区域 */
-            rgba(255, 160, 80, 0.8) 16.6%,   /* 橙色区域 */
-            rgba(255, 240, 70, 0.8) 33.3%,   /* 黄色区域 */
-            rgba(100, 230, 100, 0.8) 50%,    /* 绿色区域 */
-            rgba(80, 170, 255, 0.8) 66.6%,   /* 蓝色区域 */
-            rgba(180, 100, 255, 0.8) 83.3%,  /* 紫色区域 */
-            rgba(247, 140, 170, 0.8) 100%    /* 跨粉色区域 */
-        );
-    opacity: 0;
-    z-index: 1;
-    transition: opacity 0.3s ease;
+/* 悬停效果 */
+.rainbowplanet-concentric:hover .circle-outer {
+    border-color: transparent;
+    box-shadow: 0 0 15px rgba(0, 204, 255, 0.6);
 }
 
+.rainbowplanet-concentric:hover .circle-middle {
+    border-color: rgba(255, 255, 255, 0.5);
+}
+
+.rainbowplanet-concentric:hover .circle-inner {
+    border-color: rgba(255, 255, 255, 0.7);
+    box-shadow: inset 0 0 15px rgba(0, 204, 255, 0.5);
+}
+
+.rainbowplanet-concentric:hover .button-center {
+    background: rgba(0, 128, 192, 0.4);
+    box-shadow: 0 0 15px rgba(0, 204, 255, 0.6);
+}
+
+.rainbowplanet-concentric:hover .play-icon {
+    border-color: transparent transparent transparent rgba(255, 255, 255, 0.9);
+    filter: drop-shadow(0 0 5px rgba(255, 255, 255, 0.7));
+    transform: scale(1.1);
+}
 
 /* 确保按钮居中显示 */
 .button-container {
