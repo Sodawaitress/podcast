@@ -30,12 +30,78 @@
                     <div class="waveform" id="waveform">
                         <div class="waveform-grid"></div>
                         <div class="waveform-line"></div>
+                        <!-- 波形条 -->
+                        <div class="bars-container" id="bars-container"></div>
                     </div>
                 </div>
-                <div class="audio-spectrum">
-                    <div class="spectrum-bar" style="height: 40%;"></div>
+            </div>
+            
+            <div class="imperial-controls">
+                <!-- 彩虹行星效果播放按钮 -->
+                <div class="play-button-container">
+                    <button id="playButton" class="play-button rainbowplanet">
+                        <span class="planet-effect"></span>
+                        <div class="concentric-circles">
+                            <div class="circle-outer"></div>
+                            <div class="circle-middle"></div>
+                            <div class="circle-inner"></div>
+                            <div class="button-center">
+                                <div class="play-icon"></div>
+                            </div>
+                        </div>
+                    </button>
+                </div>
+                
+                <!-- 进度控制 -->
+                <div class="progress-controls">
+                    <div class="time-display current-time">00:00</div>
+                    
+                    <!-- 带彩虹行星效果的进度条 -->
+                    <div class="progress-container">
+                        <div class="progress-track">
+                            <div class="progress-fill" id="progressFill">
+                                <div class="rainbow-glow"></div>
+                            </div>
+                            <div class="progress-handle" id="progressHandle">
+                                <div class="handle-glow"></div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="time-display total-time">
+                        {% if episode.duration %}
+                        {{ episode.duration//60 }}:{{ '%02d'|format(episode.duration%60) }}
+                        {% else %}
+                        --:--
+                        {% endif %}
+                    </div>
+                </div>
+                
+                <!-- 音量控制 -->
+                <div class="volume-control">
+                    <div class="volume-icon">
+                        <div class="volume-wave"></div>
+                    </div>
+                    <div class="volume-slider">
+                        <div class="volume-track">
+                            <div class="volume-fill"></div>
+                            <div class="volume-handle"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 隐藏的原始音频元素 -->
+            <audio id="audioElement" style="display: none;">
+                {% if episode.audio_file.startswith('http') %}
+                <source src="{{ episode.audio_file }}" type="audio/mpeg">
+                {% else %}
+                <source src="{{ url_for('media', filename=episode.audio_file) }}" type="audio/mpeg">
+                {% endif %}
+                您的浏览器不支持HTML5音频播放。
+            </audio>
+        </div>
         
-        <!-- 上一集/下一集控制按钮 - 完全闭合的线条，无三角形 -->
         <div style="display: flex; justify-content: center; margin: 30px auto; width: 130px;">
             {% if prev_url %}
             <a href="{{ prev_url }}" style="text-decoration: none;">
