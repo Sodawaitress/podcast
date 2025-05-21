@@ -751,6 +751,73 @@
         }
     </style>
 </head>
+<!-- 气态行星按钮效果的JavaScript -->
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+      // 找到所有带有 .rainbowplanet-button类的按钮
+      var buttons = document.querySelectorAll(' .rainbowplanet-button');
+      
+      // 为每个按钮添加悬停效果
+      buttons.forEach(function(button) {
+        // 设置按钮的初始样式
+        button.style.position = 'relative';
+        button.style.overflow = 'hidden';
+        button.style.zIndex = '10';
+        
+        // 创建行星效果层
+        var planetEffect = document.createElement('div');
+        planetEffect.style.position = 'absolute';
+        planetEffect.style.top = '0';
+        planetEffect.style.left = '0';
+        planetEffect.style.width = '100%';
+        planetEffect.style.height = '100%';
+        planetEffect.style.zIndex = '-1';
+        planetEffect.style.opacity = '0';
+        planetEffect.style.transition = 'opacity 0.3s ease';
+        planetEffect.style.borderRadius = '3px';
+        
+        // 设置气态行星背景
+        planetEffect.style.background = 
+          'radial-gradient(' +
+            'circle at center,' +
+            'rgba(247, 140, 170, 0.9) 0%,' +
+            'rgba(85, 205, 252, 0.8) 30%,' +
+            'rgba(247, 140, 170, 0.7) 60%,' +
+            'transparent 100%' +
+          '),' +
+          'linear-gradient(' +
+            '0deg,' +
+            'rgba(255, 100, 100, 0.8) 0%,' +
+            'rgba(255, 160, 80, 0.8) 16.6%,' +
+            'rgba(255, 240, 70, 0.8) 33.3%,' +
+            'rgba(100, 230, 100, 0.8) 50%,' +
+            'rgba(80, 170, 255, 0.8) 66.6%,' +
+            'rgba(180, 100, 255, 0.8) 83.3%,' +
+            'rgba(247, 140, 170, 0.8) 100%' +
+          ')';
+        
+        // 将效果层添加到按钮中
+        button.appendChild(planetEffect);
+        
+        // 鼠标悬停时显示效果
+        button.addEventListener('mouseenter', function() {
+          planetEffect.style.opacity = '1';
+          button.style.color = 'white';
+          button.style.borderColor = 'rgba(255, 255, 255, 0.9)';
+          button.style.textShadow = '0 0 5px rgba(255, 255, 255, 0.9)';
+        });
+        
+        // 鼠标离开时隐藏效果
+        button.addEventListener('mouseleave', function() {
+          planetEffect.style.opacity = '0';
+          // 恢复原始样式（可根据需要调整）
+          button.style.color = '';
+          button.style.borderColor = '';
+          button.style.textShadow = '';
+        });
+      });
+    });
+    </script>
 <body>
     <!-- 星空和光剑背景 -->
     <div class="stars" id="starsContainer"></div>
