@@ -1076,3 +1076,98 @@ body::after {
     filter: drop-shadow(0 0 5px rgba(255, 255, 255, 0.7));
     transform: scale(1.1);
 }
+/* 全息投影播放按钮 */
+.holo-player {
+    width: 44px;
+    height: 44px;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* 全息环效果 */
+.holo-ring {
+    position: absolute;
+    border-radius: 50%;
+    border: 1px solid rgba(0, 204, 255, 0.4);
+    box-shadow: 0 0 5px rgba(0, 204, 255, 0.3);
+}
+
+.ring1 {
+    width: 44px;
+    height: 44px;
+    animation: rotate-ring 12s linear infinite;
+}
+
+.ring2 {
+    width: 32px;
+    height: 32px;
+    animation: rotate-ring 9s linear infinite reverse;
+}
+
+@keyframes rotate-ring {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* 中心和播放图标 */
+.holo-center {
+    width: 22px;
+    height: 22px;
+    background: rgba(0, 102, 153, 0.3); /* 稍深的蓝色 */
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 0 8px rgba(0, 204, 255, 0.4);
+    position: relative;
+    z-index: 2;
+    transition: all 0.3s ease;
+}
+
+.play-icon {
+    width: 0;
+    height: 0;
+    border-style: solid;
+    border-width: 6px 0 6px 10px;
+    border-color: transparent transparent transparent rgba(0, 204, 255, 0.8);
+    margin-left: 1px;
+    filter: drop-shadow(0 0 3px rgba(0, 204, 255, 0.5));
+    transition: all 0.3s ease;
+}
+
+/* 扫描线效果 */
+.holo-center::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 2px;
+    background: rgba(0, 204, 255, 0.7);
+    animation: holo-scan 2s infinite linear;
+    z-index: 1;
+}
+
+@keyframes holo-scan {
+    0% { top: 0; }
+    100% { top: 100%; }
+}
+
+/* 悬停效果 - 与rainbowplanet兼容 */
+.rainbowplanet-button:hover .holo-center {
+    background: rgba(0, 128, 192, 0.4);
+    box-shadow: 0 0 15px rgba(0, 204, 255, 0.6);
+}
+
+.rainbowplanet-button:hover .play-icon {
+    border-color: transparent transparent transparent rgba(255, 255, 255, 0.9);
+    filter: drop-shadow(0 0 5px rgba(255, 255, 255, 0.7));
+    transform: scale(1.1);
+}
+
+.rainbowplanet-button:hover .holo-ring {
+    border-color: rgba(0, 204, 255, 0.7);
+    box-shadow: 0 0 8px rgba(0, 204, 255, 0.5);
+}
