@@ -57,28 +57,37 @@
         }
 
         body {
-            font-family: 'Droid Sans Mono', 'Courier New', monospace;
-            line-height: 1.6;
-            color: var(--text-color);
-            background-color: var(--bg-color);
-            text-align: center;
-            background-image: 
-                linear-gradient(0deg, rgba(2, 4, 16, 0.9) 0%, rgba(5, 6, 26, 0.95) 100%),
-                repeating-linear-gradient(0deg, transparent 0px, transparent 39px, var(--grid-color) 39px, var(--grid-color) 40px),
-                repeating-linear-gradient(90deg, transparent 0px, transparent 39px, var(--grid-color) 39px, var(--grid-color) 40px),
-                repeating-linear-gradient(0deg, transparent 0px, transparent 9px, rgba(0, 204, 255, 0.05) 9px, rgba(0, 204, 255, 0.05) 10px),
-                repeating-linear-gradient(90deg, transparent 0px, transparent 9px, rgba(0, 204, 255, 0.05) 9px, rgba(0, 204, 255, 0.05) 10px),
-                radial-gradient(
-                    circle at 50% 50%,
-                    rgba(0, 204, 255, 0.1) 0%,
-                    rgba(0, 204, 255, 0.05) 10%,
-                    transparent 60%
-                );
-            background-size: 100% 100%, 40px 40px, 40px 40px, 10px 10px, 10px 10px, 100% 100%;
-            background-attachment: fixed;
-            overflow-x: hidden;
-            position: relative;
-        }
+    font-family: 'Droid Sans Mono', 'Courier New', monospace;
+    line-height: 1.6;
+    color: var(--text-color);
+    background-color: var(--bg-color);
+    text-align: center;
+    background-image: 
+        linear-gradient(0deg, rgba(2, 4, 16, 0.9) 0%, rgba(5, 6, 26, 0.95) 100%),
+        /* 主网格 - 更加星战风格 */
+        repeating-linear-gradient(0deg, transparent 0px, transparent 39px, var(--grid-color) 39px, var(--grid-color) 40px),
+        repeating-linear-gradient(90deg, transparent 0px, transparent 39px, var(--grid-color) 39px, var(--grid-color) 40px),
+        /* 次级网格 - 淡化的小格子 */
+        repeating-linear-gradient(0deg, transparent 0px, transparent 9px, rgba(0, 204, 255, 0.05) 9px, rgba(0, 204, 255, 0.05) 10px),
+        repeating-linear-gradient(90deg, transparent 0px, transparent 9px, rgba(0, 204, 255, 0.05) 9px, rgba(0, 204, 255, 0.05) 10px),
+        /* 添加星战风格的视觉透视网格效果 */
+        radial-gradient(
+            circle at 50% 50%,
+            rgba(0, 204, 255, 0.1) 0%,
+            rgba(0, 204, 255, 0.05) 10%,
+            transparent 60%
+        );
+    background-size: 100% 100%, 40px 40px, 40px 40px, 10px 10px, 10px 10px, 100% 100%;
+    background-attachment: fixed;
+    overflow-x: hidden;
+    position: relative;
+}
+
+/* 更新网格颜色变量 - 可选，如果原变量设置不满足需求 */
+:root {
+    /* 网格颜色 - 微调使其更符合星战风格 */
+    --grid-color: rgba(0, 204, 255, 0.2); /* 稍微加强蓝色网格线 */
+}
 
         /* 标题使用Star Wars风格字体 */
         h1, h2, h3, nav {
@@ -87,96 +96,127 @@
         }
 
         header h1 {
-            margin: 0 0 0.5rem 0;
-            font-size: 2.8rem;
-            color: #00ccff;
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: 3px;
-            text-shadow: 
-                -1px -1px 0 #004466,  
-                1px -1px 0 #004466,
-                -1px 1px 0 #004466,
-                1px 1px 0 #004466,
-                -2px -2px 0 #005577,
-                2px -2px 0 #005577,
-                -2px 2px 0 #005577,
-                2px 2px 0 #005577,
-                0 0 10px rgba(255, 158, 204, 0.7),
-                0 0 20px rgba(255, 158, 204, 0.5),
-                0 0 30px rgba(255, 158, 204, 0.7);
-            animation: title-glow 3s infinite alternate;
-        }
+    margin: 0 0 0.5rem 0;
+    font-size: 2.8rem;
+    color: #00ccff; /* 天蓝色字体 */
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 3px;
+    /* 多层文字阴影创建边框与渐变效果 */
+    text-shadow: 
+        /* 夜空蓝色边框效果 */
+        -1px -1px 0 #004466,  
+        1px -1px 0 #004466,
+        -1px 1px 0 #004466,
+        1px 1px 0 #004466,
+        
+        /* 天蓝到夜空蓝的渐变过渡层 */
+        -2px -2px 0 #005577,
+        2px -2px 0 #005577,
+        -2px 2px 0 #005577,
+        2px 2px 0 #005577,
+        
+        /* 粉紫色背景光晕效果 - 三层递增 */
+        0 0 10px rgba(255, 158, 204, 0.7),
+        0 0 20px rgba(255, 158, 204, 0.5),
+        0 0 30px rgba(255, 158, 204, 0.7);
+    
+    /* 添加动画效果 */
+    animation: title-glow 3s infinite alternate;
+}
 
-        @keyframes title-glow {
-            0% {
-                text-shadow: 
-                    -1px -1px 0 #004466,  
-                    1px -1px 0 #004466,
-                    -1px 1px 0 #004466,
-                    1px 1px 0 #004466,
-                    -2px -2px 0 #005577,
-                    2px -2px 0 #005577,
-                    -2px 2px 0 #005577,
-                    2px 2px 0 #005577,
-                    0 0 10px rgba(255, 158, 204, 0.7),
-                    0 0 15px rgba(255, 158, 204, 0.5),
-                    0 0 20px rgba(255, 158, 204, 0.4);
-            }
-            100% {
-                text-shadow: 
-                    -1px -1px 0 #004466,  
-                    1px -1px 0 #004466,
-                    -1px 1px 0 #004466,
-                    1px 1px 0 #004466,
-                    -2px -2px 0 #005577,
-                    2px -2px 0 #005577,
-                    -2px 2px 0 #005577,
-                    2px 2px 0 #005577,
-                    0 0 15px rgba(255, 158, 204, 0.8),
-                    0 0 25px rgba(255, 158, 204, 0.6),
-                    0 0 35px rgba(255, 158, 204, 0.7);
-                }
-            }
+/* 添加标题光晕动画 */
+@keyframes title-glow {
+    0% {
+        text-shadow: 
+            /* 边框效果 - 保持不变 */
+            -1px -1px 0 #004466,  
+            1px -1px 0 #004466,
+            -1px 1px 0 #004466,
+            1px 1px 0 #004466,
+            
+            /* 渐变过渡层 - 保持不变 */
+            -2px -2px 0 #005577,
+            2px -2px 0 #005577,
+            -2px 2px 0 #005577,
+            2px 2px 0 #005577,
+            
+            /* 粉紫色光晕 - 初始状态 */
+            0 0 10px rgba(255, 158, 204, 0.7),
+            0 0 15px rgba(255, 158, 204, 0.5),
+            0 0 20px rgba(255, 158, 204, 0.4);
+    }
+    100% {
+        text-shadow: 
+            /* 边框效果 - 保持不变 */
+            -1px -1px 0 #004466,  
+            1px -1px 0 #004466,
+            -1px 1px 0 #004466,
+            1px 1px 0 #004466,
+            
+            /* 渐变过渡层 - 保持不变 */
+            -2px -2px 0 #005577,
+            2px -2px 0 #005577,
+            -2px 2px 0 #005577,
+            2px 2px 0 #005577,
+            
+            /* 粉紫色光晕 - 增强状态 */
+            0 0 15px rgba(255, 158, 204, 0.8),
+            0 0 25px rgba(255, 158, 204, 0.6),
+            0 0 35px rgba(255, 158, 204, 0.7);
+    }
+}
 
+        /* 其他标题也使用相同风格 */
         h2, h3 {
             color: var(--primary-color);
             text-shadow: 
+                /* 深蓝色边框效果 */
                 -1px -1px 0 var(--deep-blue),  
                 1px -1px 0 var(--deep-blue),
                 -1px 1px 0 var(--deep-blue),
                 1px 1px 0 var(--deep-blue),
+                
+                /* 嫩粉色光晕效果，强度稍弱 */
                 0 0 8px var(--soft-pink),
                 0 0 15px var(--soft-pink);
         }
 
+
         header nav a {
-            font-size: 1.2rem;
-            text-transform: uppercase;
-            transition: all 0.3s ease;
-            letter-spacing: 2px;
-            padding: 5px 10px;
-            border: 1px solid transparent;
-            color: var(--primary-color);
-            text-shadow: 
-                -1px -1px 0 var(--deep-blue),  
-                1px -1px 0 var(--deep-blue),
-                -1px 1px 0 var(--deep-blue),
-                1px 1px 0 var(--deep-blue),
-                0 0 5px var(--soft-pink);
-        }
+        font-size: 1.2rem;
+        text-transform: uppercase;
+        transition: all 0.3s ease;
+        letter-spacing: 2px;
+        padding: 5px 10px;
+        border: 1px solid transparent;
+        color: var(--primary-color);
+        text-shadow: 
+            /* 深蓝色边框效果 */
+            -1px -1px 0 var(--deep-blue),  
+            1px -1px 0 var(--deep-blue),
+            -1px 1px 0 var(--deep-blue),
+            1px 1px 0 var(--deep-blue),
+            
+            /* 嫩粉色光晕效果，更轻微 */
+            0 0 5px var(--soft-pink);
+    }           
 
         header nav a:hover {
             border: 1px solid var(--primary-color);
             text-shadow: 
+                /* 深蓝色边框效果 */
                 -1px -1px 0 var(--deep-blue),  
                 1px -1px 0 var(--deep-blue),
                 -1px 1px 0 var(--deep-blue),
                 1px 1px 0 var(--deep-blue),
+                
+                /* 嫩粉色光晕效果，更强 */
                 0 0 8px var(--soft-pink),
                 0 0 15px var(--soft-pink);
             box-shadow: 0 0 10px rgba(255, 158, 184, 0.5);
         }
+        /* 同心圆彩虹行星按钮 - 将此CSS添加到base.html的<style>标签内 */
 
         /* 基础按钮容器 */
         .button-container {
@@ -203,44 +243,1153 @@
             z-index: 10;
         }
 
-        /* 彩虹行星效果 */
+        /* 彩虹行星效果 - 默认隐藏 */
         .rainbowplanet-concentric .planet-effect {
             position: absolute;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background: linear-gradient(45deg, 
-                var(--primary-color),
-                var(--accent-color),
-                var(--accent-color2),
-                var(--primary-color)
-            );
+            opacity: 0;
+            z-index: 1;
+            transition: opacity 0.3s ease;
+            border-radius: 50%;
+            /* 彩虹行星渐变底色 */
+            background: 
+                radial-gradient(
+                    circle at center,
+                    rgba(247, 140, 170, 0.9) 0%,
+                    rgba(85, 205, 252, 0.8) 30%,
+                    rgba(247, 140, 170, 0.7) 60%,
+                    transparent 100%
+                ),
+                linear-gradient(
+                    0deg,
+                    rgba(255, 100, 100, 0.8) 0%,
+                    rgba(255, 160, 80, 0.8) 16.6%,
+                    rgba(255, 240, 70, 0.8) 33.3%,
+                    rgba(100, 230, 100, 0.8) 50%,
+                    rgba(80, 170, 255, 0.8) 66.6%,
+                    rgba(180, 100, 255, 0.8) 83.3%,
+                    rgba(247, 140, 170, 0.8) 100%
+                );
+        }
+
+        /* 同心圆结构 */
+        .concentric-circles {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 2;
+        }
+
+        /* 外层圆 */
+        .circle-outer {
+            position: absolute;
+            width: 54px;
+            height: 54px;
+            border-radius: 50%;
+            border: 1px solid rgba(0, 204, 255, 0.4);
+            transition: all 0.3s ease;
+        }
+
+        /* 中层圆 */
+        .circle-middle {
+            position: absolute;
+            width: 42px;
+            height: 42px;
+            border-radius: 50%;
+            border: 1px solid rgba(0, 204, 255, 0.6);
+            transition: all 0.3s ease;
+        }
+
+        /* 内层圆 */
+        .circle-inner {
+            position: absolute;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            border: 1px solid rgba(0, 204, 255, 0.8);
+            transition: all 0.3s ease;
+        }
+
+        /* 中心点 */
+        .button-center {
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: var(--primary-color);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            box-shadow: 0 0 10px rgba(0, 204, 255, 0.7);
+            transition: all 0.3s ease;
+        }
+
+        /* 播放图标 */
+        .play-icon {
+            width: 0;
+            height: 0;
+            border-style: solid;
+            border-width: 5px 0 5px 8px;
+            border-color: transparent transparent transparent var(--bg-color);
+            margin-left: 2px; /* 稍微偏右以视觉居中 */
+        }
+
+        /* 按钮悬停效果 */
+        .rainbowplanet-concentric:hover {
+            transform: scale(1.05);
+            box-shadow: 
+                0 0 15px rgba(0, 204, 255, 0.5),
+                0 0 30px rgba(0, 204, 255, 0.3);
+        }
+
+        /* 悬停时显示彩虹行星效果 */
+        .rainbowplanet-concentric:hover .planet-effect {
+            opacity: 0.9; /* 增强彩虹行星效果的不透明度 */
+        }
+
+        /* 悬停时同心圆淡出 */
+        .rainbowplanet-concentric:hover .circle-outer,
+        .rainbowplanet-concentric:hover .circle-middle,
+        .rainbowplanet-concentric:hover .circle-inner {
             opacity: 0;
             transition: opacity 0.3s ease;
         }
 
-        .rainbowplanet-concentric:hover .planet-effect {
-            opacity: 0.3;
+        /* 悬停时中心点淡出 */
+        .rainbowplanet-concentric:hover .button-center {
+            transform: scale(0.95);
+            opacity: 0;
+            transition: all 0.3s ease;
+        }
+
+        /* 同心圆旋转动画 */
+        @keyframes spin-slow {
+            0% {
+                transform: rotate(0deg);
+            }
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+
+        /* 额外增强的卡片样式 */
+        .episode-card {
+            background: rgba(5, 6, 26, 0.7);
+            border: 2px solid var(--primary-color);
+            border-radius: 8px;
+            padding: 20px;
+            position: relative;
+            transition: all 0.3s ease;
+            box-shadow: 0 0 15px rgba(0, 204, 255, 0.2);
+            overflow: hidden;
+            z-index: 5;
+            cursor: pointer;
+        }
+
+        .episode-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 
+                0 0 20px rgba(0, 204, 255, 0.3),
+                0 0 40px rgba(0, 204, 255, 0.1);
+            border-color: rgba(0, 204, 255, 0.8);
+        }
+
+        .episode-meta {
+            font-size: 0.9rem;
+            margin-bottom: 12px;
+            opacity: 0.9;
+        }
+
+        .episode-description {
+            font-size: 1rem;
+            line-height: 1.6;
+            margin-bottom: 20px;
+            color: rgba(255, 255, 255, 0.9);
+        }
+
+        /* 订阅指南样式 */
+        .subscription-guide {
+            margin-top: 3rem;
+            padding: 2rem;
+            background: rgba(5, 6, 26, 0.8);
+            border: 2px solid var(--primary-color);
+            border-radius: 8px;
+            text-align: center;
+            box-shadow: 0 0 20px rgba(0, 204, 255, 0.2);
+        }
+
+        .subscription-guide h3 {
+            margin-bottom: 1rem;
+        }
+
+        .subscription-guide code {
+            display: inline-block;
+            padding: 10px 15px;
+            background: rgba(0, 0, 0, 0.5);
+            border: 1px solid var(--primary-color);
+            border-radius: 5px;
+            color: var(--accent-color);
+            font-family: 'Droid Sans Mono', monospace;
+            margin: 1rem 0;
+        }
+        /* 自然气态行星按钮 - 中心涡旋，自然晕染 */
+        .rainbowplanet-button {
+            background: var(--dark-color);
+            color: var(--primary-color);
+            border: 2px solid var(--primary-color);
+            border-radius: 5px;
+            padding: 12px 25px;
+            font-family: 'Droid Sans Mono', monospace;
+            font-weight: bold;
+            cursor: pointer;
+            position: relative;
+            z-index: 10;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            overflow: hidden;
+            
+            /* 文字阴影效果 */
+            text-shadow: 
+                -1px -1px 0 var(--deep-blue),  
+                1px -1px 0 var(--deep-blue),
+                -1px 1px 0 var(--deep-blue),
+                1px 1px 0 var(--deep-blue),
+                0 0 5px var(--soft-pink);
+            
+            /* 盒子阴影 */
+            box-shadow: 0 0 15px rgba(0, 204, 255, 0.3);
+            
+            /* 简单的过渡效果，无动画 */
+            transition: all 0.3s ease;
+        }
+
+        /* 悬停时效果 - 彩虹气态行星效果 */
+        .rainbowplanet-button:hover {
+            color: white;
+            border-color: rgba(255, 255, 255, 0.9);
+            text-shadow: 0 0 5px rgba(255, 255, 255, 0.9);
+        }
+
+        /* 气态行星效果层 - 自然晕染的彩虹条纹 */
+        .rainbowplanet-button::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background:
+                /* 气态行星的水平条纹 - 彩虹色彩自然晕染 */
+                linear-gradient(
+                    0deg,
+                    rgba(255, 100, 100, 0.8) 0%,     /* 红色区域 */
+                    rgba(255, 160, 80, 0.8) 16.6%,   /* 橙色区域 */
+                    rgba(255, 240, 70, 0.8) 33.3%,   /* 黄色区域 */
+                    rgba(100, 230, 100, 0.8) 50%,    /* 绿色区域 */
+                    rgba(80, 170, 255, 0.8) 66.6%,   /* 蓝色区域 */
+                    rgba(180, 100, 255, 0.8) 83.3%,  /* 紫色区域 */
+                    rgba(247, 140, 170, 0.8) 100%    /* 跨粉色区域 */
+                );
+            opacity: 0;
+            z-index: -1;
+            transition: opacity 0.3s ease;
+            border-radius: 3px;
+        }
+
+        /* 中心涡旋效果层 */
+        .rainbowplanet-button::after {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background:
+                /* 中心涡旋效果 - 跨性别色彩 */
+                radial-gradient(
+                    circle at center,
+                    rgba(247, 140, 170, 0.9) 0%,    /* 跨粉色中心 */
+                    rgba(85, 205, 252, 0.8) 30%,    /* 跨蓝色过渡 */
+                    rgba(247, 140, 170, 0.7) 60%,   /* 跨粉色晕染 */
+                    transparent 100%                 /* 透明边缘，融入条纹 */
+                ),
+                /* 气态行星的水平条纹 - 彩虹色彩自然晕染 */
+                linear-gradient(
+                    0deg,
+                    rgba(255, 100, 100, 0.8) 0%,     /* 红色区域 */
+                    rgba(255, 160, 80, 0.8) 16.6%,   /* 橙色区域 */
+                    rgba(255, 240, 70, 0.8) 33.3%,   /* 黄色区域 */
+                    rgba(100, 230, 100, 0.8) 50%,    /* 绿色区域 */
+                    rgba(80, 170, 255, 0.8) 66.6%,   /* 蓝色区域 */
+                    rgba(180, 100, 255, 0.8) 83.3%,  /* 紫色区域 */
+                    rgba(247, 140, 170, 0.8) 100%    /* 跨粉色区域 */
+                );
+            opacity: 0;
+            z-index: -1;
+            border-radius: 3px;
+            transition: opacity 0.3s ease;
+        }
+
+        /* 错误信息样式 */
+        .error-message {
+            color: var(--accent-color2);
+            margin: 15px 0;
+            font-weight: bold;
+            text-shadow: 0 0 5px rgba(255, 51, 102, 0.5);
+        }
+
+        /* 管理列表样式 */
+        .admin-episodes-list {
+            margin-top: 4rem;
+        }
+
+        .admin-episodes-list h2 {
+            margin-bottom: 2rem;
+        }
+
+        .episodes-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+
+        /* 控制灯效果 */
+        .control-lights {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin: 1.5rem 0;
+        }
+
+        .control-light {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background-color: rgba(255, 255, 255, 0.8);
+        }
+
+        .control-light.red {
+            background-color: #ff3366; /* 红色 */
+        }
+
+        .control-light.green {
+            background-color: #00ff9d; /* 绿色 */
+        }
+
+        .control-light.blue {
+            background-color: #00ccff; /* 蓝色 */
+        }
+
+        .control-light.purple {
+            background-color: #9966ff; /* 紫色 */
+        }
+
+        /* 主内容区 */
+        main {
+            min-height: 70vh;
+            padding: 2rem 0 4rem;
+            position: relative;
+            z-index: 5; /* 确保内容在星空之上 */
+        }
+
+        h2 {
+            margin-bottom: 2rem;
+            padding-bottom: 1rem;
+            font-size: 2rem;
+            color: var(--primary-color);
+            position: relative;
+            display: inline-block;
+        }
+        
+
+        /* 上传表单 */
+        .upload-form {
+            max-width: 700px;
+            margin: 0 auto 3rem auto;
+            background: var(--control-bg);
+            padding: 3rem;
+            border: 2px solid var(--primary-color);
+            border-radius: 5px;
+            text-align: left;
+            position: relative;
+            z-index: 10;
+            box-shadow: 0 0 20px rgba(0, 204, 255, 0.2);
+        }
+
+        .form-group {
+            margin-bottom: 1.8rem;
+            position: relative;
+            z-index: 10;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.7rem;
+            font-weight: 600;
+            color: var(--primary-color);
+        }
+
+        .form-group input,
+        .form-group textarea {
+            width: 100%;
+            padding: 1rem;
+            background: rgba(2, 4, 16, 0.7);
+            border: 1px solid var(--primary-color);
+            border-radius: 3px;
+            color: var(--text-color);
+            font-family: 'VCR OSD Mono', monospace;
+            font-size: 1rem;
+            position: relative;
+            z-index: 10;
+        }
+
+        /* 页脚 */
+        footer {
+            background: var(--dark-color);
+            color: var(--text-color);
+            padding: 3rem 0;
+            margin-top: 5rem;
+            border-top: 3px solid var(--primary-color);
+            position: relative;
+            z-index: 5;
+        }
+
+        /* 静态效果 */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            opacity: 0.2;
+            z-index: 0;
+        }
+        
+        /* 星星动画 */
+        .stars {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: -10;
+        }
+
+        .star {
+            position: absolute;
+            width: 3px; /* 更大的星星 */
+            height: 3px;
+            background-color: #fff;
+            border-radius: 50%;
+            animation: twinkle var(--duration, 4s) infinite ease-in-out;
+            opacity: 0.7;
+        }
+
+        /* 添加一些更大、更亮的星星 */
+        .star.large {
+            width: 4px;
+            height: 4px;
+            box-shadow: 0 0 8px rgba(255, 255, 255, 0.8);
+        }
+
+        .star.extra-large {
+            width: 5px;
+            height: 5px;
+            box-shadow: 0 0 12px rgba(255, 255, 255, 0.9);
+        }
+        
+        /* 彩色星星 - 少量点缀 */
+        .star.blue {
+            background-color: #00ccff;
+            box-shadow: 0 0 8px rgba(0, 204, 255, 0.8);
+        }
+        
+        .star.green {
+            background-color: #00ff9d;
+            box-shadow: 0 0 8px rgba(0, 255, 157, 0.8);
+        }
+        
+        .star.red {
+            background-color: #ff3366;
+            box-shadow: 0 0 8px rgba(255, 51, 102, 0.8);
+        }
+
+        @keyframes twinkle {
+            0%, 100% {
+                opacity: 0.3;
+                transform: scale(0.8);
+            }
+            50% {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        /* 光剑流星容器 */
+        .lightsaber-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: -5;
+            overflow: hidden;
+        }
+        
+        /* 光剑样式更新 - 添加更多粉色光剑 */
+        .lightsaber {
+            position: absolute;
+            height: 4px;
+            background-color: var(--primary-color); /* 默认蓝色光剑 */
+            border-radius: 2px;
+            box-shadow: 
+                0 0 5px var(--color, var(--primary-color)),
+                0 0 10px var(--color, var(--primary-color)),
+                0 0 20px var(--color, var(--primary-color));
+            transform-origin: left center;
+            transform: rotate(var(--angle, -45deg));
+            opacity: 0;
+            animation: lightsaber-fly var(--duration, 2s) linear;
+            animation-fill-mode: forwards;
+        }
+
+        /* 光剑柄 */
+        .lightsaber::before {
+            content: '';
+            position: absolute;
+            left: -10px;
+            top: -3px;
+            width: 10px;
+            height: 10px;
+            background-color: #777;
+            border-radius: 2px;
+            box-shadow: 0 0 3px rgba(0, 0, 0, 0.5);
+        }
+
+        /* 光剑光芒 */
+        .lightsaber::after {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(
+                90deg, 
+                rgba(255, 255, 255, 0.8) 0%, 
+                var(--color, rgba(0, 204, 255, 0.3)) 70%, 
+                transparent 100%
+            );
+            border-radius: 2px;
+            filter: blur(2px);
+        }
+
+        /* 光剑飞行动画 - 更自然的动画，保持角度不变 */
+        @keyframes lightsaber-fly {
+            0% {
+                opacity: 0;
+                width: 0;
+            }
+            5% {
+                opacity: 1;
+                width: var(--length, 100px);
+            }
+            10%, 80% {
+                opacity: 1;
+            }
+            100% {
+                opacity: 0;
+                transform: translate(var(--travel-x, 1000px), var(--travel-y, -500px)) rotate(var(--angle, -45deg));
+            }
+        }
+        
+        /* 增强的扫描线效果 - 星战风格 */
+        /* 主扫描线 - 更加明显的动画效果 */
+        .scanline {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 8px; /* 更粗的扫描线 */
+            background: linear-gradient(
+                to right,
+                rgba(0, 0, 0, 0) 0%,
+                var(--scanline-color) 20%,
+                var(--scanline-color) 80%,
+                rgba(0, 0, 0, 0) 100%
+            );
+            opacity: 0.5;
+            z-index: 1002;
+            pointer-events: none;
+            animation: scanline 3s linear infinite; /* 加快速度 */
+            box-shadow: 0 0 25px rgba(0, 204, 255, 0.7); /* 更强的发光效果 */
+        }
+
+        /* 主扫描线动画 */
+        @keyframes scanline {
+            0% {
+                transform: translateY(-100%);
+            }
+            100% {
+                transform: translateY(100vh);
+            }
+        }
+
+        /* 扫描线噪点效果 */
+        .scanline-noise {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADIAAAAyCAYAAAAeP4ixAAAABGdBTUEAALGPC/xhBQAAACBjSFJNAAB6JgAAgIQAAPoAAACA6AAAdTAAAOpgAAA6mAAAF3CculE8AAAABmJLR0QA/wD/AP+gvaeTAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAB3RJTUUH5gUUDQcnQPAVVAAABP9JREFUaN7tmkmMVUUUhr9/aGxpbBUVJxAVFNGIYCKKcUDBmBgVEzWauCQmutAgccHKhYkrE1cuXDl0YZQY4gLjANE44IgDDoCIiCIqarfQDSrjf4pzX3Lz+nW//hD7wu0kL5X77qlzq875z6lzqwruQbSCW4A1wDHAZuBZYH3RhdqKvDwH2jbgTb1PB5YDI5lDKCrRvwP12S5gInAxMBa4GHgXmEKJWA/MALZL5ufAN8D3wHrgSOB8YBRwA/AscBLwDnBhGSQ2AXcDV6r/e+AI4FzgJGACMB4YIcIfK/n7pONcNVCbaJFyywWrVfQ94B89pwO3ApcBnTVsdsi8dyq2c4EjgTeA6/KQaK9jggXKfZXG5Dl991zcnAFsUFujFpnWpIaOAj5SrJ+W4VErszYBD6cMbk/wn+XAfOCKhMHKgB8wN7VBY3qzEZkB/Kw0CdPZpJzPwg4R6Qb+TMztkIFjgLMyiGShjEj4VcC1wDrF+GAxnIXn6SLTSuBr3iNBsLiYCawG/gIuB76qkMhhGptBdifwKuZWW4Eu4LgsIk+JxP3Ar8CDQjQ5pJPrqbOGLz+r3PynuVWBxZRm5mvgYWBoBvGiWCSZVZiLPZbX2AUqxj9UG12q2ZKEQtEJvA9crPfHgOeBv+slslhRG+6yEtNXQTnY5oxIyPWXSD5gGaaGu9rnRYVn7XcYNiTI3KHaqwNZWAP8AUwWhhXVLlIEHxJYoeeCR+L31FjA0sCPwGRvAG59DwFLK2S38sD8RH9XWXn1Dj4rMff6Q4Y/DnwC7Eow5VZMde9V/zvUt5cY0qbvNwGPAEcp09yplT4XJBbyVngYOBY4Tr9dMshI4DZ9Hw1cBdxTs5KDcr3AXDVu2WbUsBBYqOB1h16VnlOhS7Ve9P0b8BR7X4j2QK/I39nIIoVgGiZ3H8PqbkWFLAZQqf2rCpkuXeiR5CYClwBH17FmlxIc6YlN2m4lsA1TxxsLmzMSk8dn6X2qCnYH5l4dOdfrUZuNXd8CkC8Vvw/UVwjHY+p9FPA68BTmXqNyrlcDDkm8b5UBozL6T8b2XJ2ZA1NE4hb1zVXbK0I2A78lyGzVGumYUEVmhd7XaqPWmRofiXnBBdgO6VKRCVgWEzwWc7UJmGtOqpBpYFn0YHbvWRxNjWNLdsdCWfBEFsOexVLpbcX0dsCjMq5Twb5JWTBGBdcZQaKpTBAZUwA2KZF6MYnUGnY39wh8DUwWxgYdmZ6pECt0Ov1Ig9pWDMR0q33Oe6y7ScaHK8uTcZgMaokMRh/Gzw3GYoVuPcgbI5PDjvRGYWPi3cCOG7Bi1+FcrYSEO22OSdBgPnZVEHADVujCrv2/OjJdi+0Nw67pOjUV4fqMwhYOSMk0i8iBGEZkHw4Xjgf1FU7e+JjCWpFmCFEL/tTfSWxTQf6HsQNK7v8NWRhI+NMx+bKJ2SdL4FbcTRe1DmI+WNEuB9VE1mDXeEcDFwBnYAecoDz8AlupW7H99TZMg+wAfo+bPg8+IpLRzO7BoFjQ0o6TOfUPt2Rfs/hdMmXK5MCTwL2NMKAZIt7GsMc/UR1M5oRCxJeQLFwFfCgifeIPBnJO4TaF11O7LQduAm4EHgd+Kro/LRxreQNKkbkDuAw7RP0FfImpqm+BN4BHsbPWh7GbkOuA67HKPx94AHOhzNr5B2I8EldpT6nYAAAAAElFTkSuQmCC');
+            opacity: 0.02;
+            z-index: 1001;
+            pointer-events: none;
+            animation: noise 0.5s steps(8) infinite;
+        }
+
+        @keyframes noise {
+            0%, 100% { 
+                transform: translateX(0px); 
+            }
+            10% { 
+                transform: translateX(-1px); 
+            }
+            20% { 
+                transform: translateX(1px); 
+            }
+            30% { 
+                transform: translateX(-2px); 
+            }
+            40% { 
+                transform: translateX(3px); 
+            }
+            50% { 
+                transform: translateX(-3px); 
+            }
+            60% { 
+                transform: translateX(2px); 
+            }
+            70% { 
+                transform: translateX(-1px); 
+            }
+            80% { 
+                transform: translateX(0px); 
+            }
+            90% { 
+                transform: translateX(1px); 
+            }
+        }
+
+        /* 辅助扫描线组 - 更明显的效果 */
+        .scanlines {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1001;
+            background: repeating-linear-gradient(
+                to bottom,
+                transparent 0px,
+                transparent 1px,
+                var(--scanline-bg) 1px,
+                var(--scanline-bg) 2px
+            );
+            opacity: 1;
+        }
+
+        /* 随机闪烁扫描线效果 */
+        .flicker-scanline {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0;
+            pointer-events: none;
+            z-index: 1003;
+            background: linear-gradient(
+                transparent 0%,
+                rgba(0, 204, 255, 0.15) 50%,
+                transparent 100%
+            );
+            animation: flicker 8s steps(1) infinite;
+        }
+
+        /* 闪烁效果动画 */
+        @keyframes flicker {
+            0%, 92%, 94%, 96%, 98%, 100% {
+                opacity: 0;
+            }
+            91%, 93%, 95%, 97%, 99% {
+                opacity: 1;
+            }
+        }
+
+        /* 胶片划痕效果 */
+        .film-scratch {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            opacity: 0;
+            z-index: 1005;
+            background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAABJJJREFUWEe1l1uoVVUUhj/nGDl6jiJKR81QwiRCKcSXHizNh8hKe+khJcUifCgqs4LOg9FLUBQFGZVRpGWUHS0rxcxK6GJWhBWRhXaxzCTrYt6O5xzXOsw91tpz77X3OUc9MPfea8wx/v8f/xhjzpL+5SUNoWsasB8YByzu5f+S/uNa5XrUKjAJ+B34oVX5JX/Z1TtJpwAPAdOBocB+YLWkg4X3PA68ABwJvC5pvoo8AG+QdDBz+zvgRUmHGwLwDfcAbwlGAacC3cAPwBxJB5Lv5wFvA4cC04D3JZ1aDoAkPwlspJnAe7UAJAVuk7TK+P8c8CJwPPAE8FLh+xnA+8DPwM3A18DNwEdFA/gGr8QSYAGwUNLfqeYOIABdACwDXiumITNnNLBb0p+F+WOAtcDZwDJJTxcBeId7wCrgWuALYGZyLGcB3wLH9QHjXWArMCSQYqWktUUAPODOAVYH7RkGDgdWAzcEizsAF4GDvt6/ewj4BxgR1vMlfVcEwIM+DLwTVLgN2B5+7wVuAz4ENkn6KwfAKcBG4KTw/DxJXxYBcHu+BTwajuMk4ApgDXCbpP+yLZM0GPgImBi+nytpc9IXkiaSMcBHRQCyQPKg2x3SzgPK8/1X4CpJn8cAvCMC7wJTMwC8LzzcpbCkVxhGkiYD10u6swyAdLQMB04GfpG0K/luQgjCidFx9KHiIMkDd2FyDA8C84GtkoaXA2CKNR14ALgX+AJ4WtJHEYAJwMfAiSFNfwDuBECSmytFSQOAacCtQDdwXDgN4TgfC6+f7umTFAHwYNwMjA2vXyFpbVQgE6CeSvMk7SoCIB3NzrJDwmfbJJ2RANgV7H9UWHOJpE4vTtlI9gOcDYzMfLOtEQCtUq8MgAXAi8DJwGpJd7aqQPYCJDXsKB3jgTXB4Z6XU4G/gaMqAJA1IX/hVmBcuIs5r1+SNGEISVNDIN4fvO9hWIpDQvVzW7CmA9gWbHdFODrrMoHrEfBIKXAZcJCkXyUNDABuBC4PwbYpHMU+KXAm8EwIJK+CUyUdaAuApN7Z8QLgHVu4x4d0iYHofx0XnnsTskZST6GqogDlEiNIejQEoxehzTmbD6kmaUgoQmPC77XB+36X9FMZAO3I7Gr5JmYDruweb57rSyU9lQAwGvgovOM8vifoMTcNv1dKui8GUFcBSXNDFjzqjfLCZACYCHwCuP83Ax+EuoCJizOiHVX6CqBqEJ4GvBoq4jRJ70YFejrZEj5a4PwJvBGC2B2y347d1XAu9DVAPQ0luT+2AW77mNt27F7zrWExB+F1YJOkL2IAVi68JcgySVYDtFuEJE0DRoc2fVi272cATJa0NQZgvrgxpGVtq9+X9JGki4PrXp60KV6vZXj8pqRtRQBMV18vBJKLT89yD4q4BzA/TCXgamCypM8Kd0JLRXfe7Lw3rPcXsKjYUUsC8KDkbZjXdX/cKumXFECqkbVoswqfu48XS3Jfa5k/HpB56+Up6Z7fVaz9dQF4EZqYfJCtB+rKXwuAB6X1Auvt/2u1E0DNYPy/AdhbEwNe/wGwzPFjJhh/fAAAAABJRU5ErkJggg==');
+            background-repeat: repeat-y;
+            background-position: center;
+            animation: scratch 10s infinite;
+        }
+
+        @keyframes scratch {
+            0%, 92%, 100% {
+                opacity: 0;
+            }
+            90%, 91%, 93%, 94% {
+                opacity: 0.15;
+            }
+        }
+
+        /* 渐变边缘效果 */
+        .crt-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                radial-gradient(
+                    ellipse at center,
+                    rgba(2, 4, 16, 0) 0%,
+                    rgba(2, 4, 16, 0.4) 90%,
+                    rgba(2, 4, 16, 0.6) 100%
+                );
+            pointer-events: none;
+            z-index: 1000;
+        }
+        
+        /* 卡片标题样式 */
+        .episode-card h3 {
+            color: var(--primary-color);
+            text-shadow: 
+                /* 深蓝色边框效果 */
+                -1px -1px 0 var(--deep-blue),  
+                1px -1px 0 var(--deep-blue),
+                -1px 1px 0 var(--deep-blue),
+                1px 1px 0 var(--deep-blue),
+                
+                /* 嫩粉色光晕效果 */
+                0 0 6px var(--soft-pink),
+                0 0 12px var(--soft-pink);
+            transition: all 0.3s ease;
+        }
+
+        /* 卡片悬停时标题样式增强 */
+        .episode-card:hover h3 {
+            text-shadow: 
+                /* 深蓝色边框效果 */
+                -1px -1px 0 var(--deep-blue),  
+                1px -1px 0 var(--deep-blue),
+                -1px 1px 0 var(--deep-blue),
+                1px 1px 0 var(--deep-blue),
+                
+                /* 嫩粉色光晕效果，更强 */
+                0 0 8px var(--soft-pink),
+                0 0 15px var(--soft-pink),
+                0 0 25px var(--soft-pink);
+        }
+
+        
+        .episode-card h3 {
+            color: var(--secondary-color);
+        }
+        
+
+        
+        .episode-meta {
+            color: var(--primary-color);
+        }
+        
+        .button {
+            border: 1px solid var(--primary-color);
+            color: var(--secondary-color);
+            background: rgba(2, 4, 16, 0.7);
+            transition: all 0.3s ease;
+        }
+        
+        .button:hover {
+            background: rgba(0, 204, 255, 0.1);
+            box-shadow: 0 0 15px rgba(0, 204, 255, 0.3);
         }
     </style>
 </head>
+<!-- 气态行星按钮效果的JavaScript -->
+<script>
+    var buttons = document.querySelectorAll('.rainbowplanet-button');
+      
+      // 为每个按钮添加悬停效果
+      buttons.forEach(function(button) {
+        // 设置按钮的初始样式
+        button.style.position = 'relative';
+        button.style.overflow = 'hidden';
+        button.style.zIndex = '10';
+        
+        // 创建行星效果层
+        var planetEffect = document.createElement('div');
+        planetEffect.style.position = 'absolute';
+        planetEffect.style.top = '0';
+        planetEffect.style.left = '0';
+        planetEffect.style.width = '100%';
+        planetEffect.style.height = '100%';
+        planetEffect.style.zIndex = '-1';
+        planetEffect.style.opacity = '0';
+        planetEffect.style.transition = 'opacity 0.3s ease';
+        planetEffect.style.borderRadius = '3px';
+        
+        // 设置气态行星背景
+        planetEffect.style.background = 
+          'radial-gradient(' +
+            'circle at center,' +
+            'rgba(247, 140, 170, 0.9) 0%,' +
+            'rgba(85, 205, 252, 0.8) 30%,' +
+            'rgba(247, 140, 170, 0.7) 60%,' +
+            'transparent 100%' +
+          '),' +
+          'linear-gradient(' +
+            '0deg,' +
+            'rgba(255, 100, 100, 0.8) 0%,' +
+            'rgba(255, 160, 80, 0.8) 16.6%,' +
+            'rgba(255, 240, 70, 0.8) 33.3%,' +
+            'rgba(100, 230, 100, 0.8) 50%,' +
+            'rgba(80, 170, 255, 0.8) 66.6%,' +
+            'rgba(180, 100, 255, 0.8) 83.3%,' +
+            'rgba(247, 140, 170, 0.8) 100%' +
+          ')';
+        
+        // 将效果层添加到按钮中
+        button.appendChild(planetEffect);
+        
+        // 鼠标悬停时显示效果
+        button.addEventListener('mouseenter', function() {
+          planetEffect.style.opacity = '1';
+          button.style.color = 'white';
+          button.style.borderColor = 'rgba(255, 255, 255, 0.9)';
+          button.style.textShadow = '0 0 5px rgba(255, 255, 255, 0.9)';
+        });
+        
+        // 鼠标离开时隐藏效果
+        button.addEventListener('mouseleave', function() {
+          planetEffect.style.opacity = '0';
+          // 恢复原始样式（可根据需要调整）
+          button.style.color = '';
+          button.style.borderColor = '';
+          button.style.textShadow = '';
+        });
+               }); // 这里缺少了闭合buttons.forEach循环的括号
+    </script>
+    
 <body>
+    <!-- 星空和光剑背景 -->
+    <div class="stars" id="starsContainer"></div>
+    <div class="lightsaber-container" id="lightsaberContainer"></div>
+    
+    <!-- 增强的扫描线和胶片效果 -->
+    <div class="scanline"></div>
+    <div class="scanlines"></div>
+    <div class="scanline-noise"></div>
+    <div class="flicker-scanline"></div>
+    <div class="film-scratch"></div>
+    <div class="crt-overlay"></div>
+    
     <header>
-        <h1>{{ site_name }}</h1>
+        <div class="container">
+            <h1><a href="{{ url_for('index') }}">{{ site_name }}</a></h1>
+            <p>{{ site_description }}</p>
+            
+            <div class="control-lights">
+                <div class="control-light red"></div>
+                <div class="control-light green"></div>
+                <div class="control-light blue"></div>
+                <div class="control-light purple"></div>
+            </div>
+            
+         
         <nav>
-            <a href="{{ url_for('index') }}">首页</a>
-            <a href="{{ url_for('about') }}">关于</a>
-            <a href="{{ url_for('contact') }}">联系</a>
+            <ul>
+                <li><a href="{{ url_for('index') }}">首页</a></li>
+                <li><a href="{{ url_for('admin_login') }}">上传</a></li>
+            </ul>
         </nav>
+        </div>
     </header>
-
+    
     <main>
-        {% block content %}{% endblock %}
+        <div class="container">
+            {% block content %}{% endblock %}
+        </div>
     </main>
-
+    
     <footer>
-        <p>&copy; {{ current_year }} {{ site_name }}. All rights reserved.</p>
+        <div class="container">
+            <p>&copy; {{ current_year }} {{ site_name }}. 版权所有.</p>
+        </div>
     </footer>
+
+    <!-- 多种扫描线效果脚本 -->
+    <script>
+        // 创建随机扫描线
+        function createRandomScanlines() {
+            setInterval(() => {
+                // 创建随机扫描线
+                if (Math.random() > 0.7) { // 30%的几率创建随机扫描线
+                    const randomScan = document.createElement('div');
+                    randomScan.style.position = 'fixed';
+                    randomScan.style.top = `${Math.random() * 100}%`;
+                    randomScan.style.left = '0';
+                    randomScan.style.width = '100%';
+                    randomScan.style.height = `${1 + Math.random() * 3}px`;
+                    randomScan.style.backgroundColor = 'rgba(0, 204, 255, 0.5)';
+                    randomScan.style.boxShadow = '0 0 10px rgba(0, 204, 255, 0.7)';
+                    randomScan.style.opacity = 0.5 + Math.random() * 0.5;
+                    randomScan.style.zIndex = '1004';
+                    randomScan.style.pointerEvents = 'none';
+                    
+                    document.body.appendChild(randomScan);
+                    
+                    // 随机速度
+                    const duration = 100 + Math.random() * 400;
+                    
+                    // 动画效果
+                    setTimeout(() => {
+                        randomScan.style.transition = `opacity ${duration}ms`;
+                        randomScan.style.opacity = '0';
+                        
+                        // 移除元素
+                        setTimeout(() => {
+                            document.body.removeChild(randomScan);
+                        }, duration);
+                    }, 100 + Math.random() * 200);
+                }
+            }, 200);
+        }
+        
+        // 创建星空背景 - 主要白色星星
+        function createStars() {
+            const starsContainer = document.getElementById('starsContainer');
+            const starCount = 200; // 星星总数量
+            
+            for (let i = 0; i < starCount; i++) {
+                const star = document.createElement('div');
+                star.className = 'star';
+                
+                // 随机位置
+                const x = Math.random() * 100;
+                const y = Math.random() * 100;
+                 
+                // 随机大小和颜色
+                const sizeCategory = Math.random();
+                const colorCategory = Math.random();
+                let size, extraClass = '';
+                
+                // 大小分类
+                if (sizeCategory > 0.85) { // 15%的几率是超大星星
+                    extraClass = 'extra-large';
+                    size = 5;
+                } else if (sizeCategory > 0.6) { // 25%的几率是大星星
+                    extraClass = 'large';
+                    size = 4;
+                } else { // 60%是普通星星
+                    size = 2 + Math.random() * 1.5;
+                }
+                
+                // 颜色分类 - 大多数是白色, 少量彩色
+                if (colorCategory > 0.85) { // 只有15%是彩色星星
+                    const colorProb = Math.random();
+                    let colorClass;
+                    
+                    if (colorProb < 0.6) { // 60%蓝色
+                        colorClass = 'blue';
+                    } else if (colorProb < 0.9) { // 30%绿色
+                        colorClass = 'green';
+                    } else { // 10%红色
+                        colorClass = 'red';
+                    }
+                    
+                    extraClass += ' ' + colorClass;
+                }
+                
+                if (extraClass) {
+                    star.className = 'star ' + extraClass.trim();
+                }
+                
+                // 随机闪烁速度
+                const duration = 2 + Math.random() * 5;
+                
+                // 大星星闪烁得更慢一些
+                const actualDuration = extraClass.includes('large') ? duration * 1.5 : duration;
+                
+                // 随机延迟
+                const delay = Math.random() * 5;
+                
+                star.style.cssText = `
+                    left: ${x}%;
+                    top: ${y}%;
+                    width: ${size}px;
+                    height: ${size}px;
+                    --duration: ${actualDuration}s;
+                    animation-delay: -${delay}s;
+                `;
+                
+                starsContainer.appendChild(star);
+            }
+        }
+        
+        // 创建光剑效果 - 星战风格颜色
+        function createLightsabers() {
+            const container = document.getElementById('lightsaberContainer');
+            
+            // 定义光剑颜色 - 星战风格
+            const saberColors = [
+                { color: '#00ccff', shadow: '#00ccff' }, /* 蓝色 */
+                { color: '#00ff9d', shadow: '#00ff9d' }, /* 绿色 */
+                { color: '#ff3366', shadow: '#ff3366' }, /* 红色 */
+                { color: '#ffffff', shadow: '#ffffff' }  /* 白色 */
+            ];
+            
+            // 创建光剑元素（初始不可见）
+            for (let i = 0; i < 6; i++) {
+                const lightsaber = document.createElement('div');
+                lightsaber.className = 'lightsaber';
+                container.appendChild(lightsaber);
+            }
+            
+            // 随机发射光剑
+            function shootRandomLightsaber() {
+                // 获取所有光剑元素
+                const sabers = document.querySelectorAll('.lightsaber');
+                
+                // 随机选择一个光剑
+                const index = Math.floor(Math.random() * sabers.length);
+                const saber = sabers[index];
+                
+                // 如果光剑当前正在动画，跳过
+                if (saber.style.opacity !== '0' && 
+                    saber.style.animationName) {
+                    return;
+                }
+                
+                // 随机确定发射位置 - 主要从左侧和底部发射
+                // 随机决定是从左侧还是底部发射
+                const fromLeft = Math.random() > 0.3; // 70%的几率从左侧发射
+                
+                let startLeft, startTop;
+                let angle;
+                
+                if (fromLeft) {
+                    // 从左侧发射 - y可以是整个左侧，x是左边缘
+                    startLeft = 0;
+                    startTop = 10 + Math.random() * 80; // 从左侧 10%-90% 的位置发射
+                    // 从左侧发射时，角度范围从 -10 到 -80 度 (右上方向)
+                    angle = -(10 + Math.random() * 70);
+                } else {
+                    // 从底部发射 - x可以是底部左半部分，y是底边
+                    startLeft = Math.random() * 40; // 从底部 0-40% 的位置发射
+                    startTop = 100; // 底部
+                    // 从底部发射时，角度范围从 -45 到 -135 度 (左上方向)
+                    angle = -(45 + Math.random() * 90);
+                }
+                
+                // 随机长度
+                const length = 100 + Math.random() * 200;
+                
+                // 随机速度 - 从低到高处速度较慢
+                const duration = 2 + Math.random() * 1.5;
+                
+                // 随机颜色
+                const colorIndex = Math.floor(Math.random() * saberColors.length);
+                const selectedColor = saberColors[colorIndex];
+                
+                // 计算移动距离，基于角度和屏幕尺寸
+                const angleRad = angle * (Math.PI / 180);
+                const screenWidth = window.innerWidth;
+                const screenHeight = window.innerHeight;
+                
+                // 计算光剑沿着角度方向移动的距离
+                // 使用屏幕对角线长度确保光剑能够完全穿过屏幕
+                const diagonalLength = Math.sqrt(Math.pow(screenWidth, 2) + Math.pow(screenHeight, 2));
+                const travelDistance = diagonalLength * 1.5; // 确保足够长
+                
+                // 计算x和y方向的移动距离
+                const travelX = Math.cos(angleRad) * travelDistance;
+                const travelY = Math.sin(angleRad) * travelDistance;
+                
+                // 设置光剑样式
+                saber.style.cssText = `
+                    top: ${startTop}%;
+                    left: ${startLeft}%;
+                    --angle: ${angle}deg;
+                    --length: ${length}px;
+                    --duration: ${duration}s;
+                    --travel-x: ${travelX}px;
+                    --travel-y: ${travelY}px;
+                    --color: ${selectedColor.color};
+                    box-shadow: 
+                        0 0 5px ${selectedColor.shadow},
+                        0 0 10px ${selectedColor.shadow},
+                        0 0 20px ${selectedColor.shadow};
+                    background-color: ${selectedColor.color};
+                    opacity: 0;
+                    transform: rotate(${angle}deg);
+                `;
+                
+                // 重置并启动动画
+                saber.style.animation = 'none';
+                void saber.offsetWidth; // 触发重绘
+                saber.style.animation = `lightsaber-fly ${duration}s linear forwards`;
+                
+                // 动画结束后重置
+                saber.addEventListener('animationend', function() {
+                    saber.style.opacity = '0';
+                }, { once: true });
+            }
+            
+            // 定期随机发射光剑
+            function startLightsaberShow() {
+                // 随机发射一个光剑
+                shootRandomLightsaber();
+                
+                // 随机等待2-6秒后再发射下一个
+                const nextDelay = 2000 + Math.random() * 4000;
+                setTimeout(startLightsaberShow, nextDelay);
+            }
+            
+            // 启动光剑表演
+            setTimeout(startLightsaberShow, 1000); // 给页面加载一点时间
+        }
+        
+        // 页面加载完成后初始化
+        window.addEventListener('DOMContentLoaded', () => {
+            createStars();
+            createLightsabers();
+            createRandomScanlines();
+        });
+    </script>
+    
+    {% block scripts %}{% endblock %}
 </body>
 </html>

@@ -6,364 +6,1123 @@
 }
 
 :root {
-    /* 星战风格配色 */
-    --primary-color: #00ccff;      /* 天蓝色 */
-    --secondary-color: #ffffff;    /* 白色 */
-    --accent-color: #00ff9d;       /* 亮绿色 */
-    --accent-color2: #ff3366;      /* 红色 */
-    --deep-blue: #004466;          /* 深蓝色 */
-    --soft-pink: #ff9eb8;          /* 嫩粉色 */
-    
-    /* 文本和背景 */
-    --text-color: #ffffff;         /* 白色文本 */
-    --bg-color: #020410;           /* 深空黑背景 */
-    --dark-color: #05061a;         /* 稍亮的深空黑 */
-    
-    /* 特效颜色 */
-    --grid-color: rgba(0, 204, 255, 0.15); /* 蓝色网格线 */
-    --glow-color: rgba(255, 158, 184, 0.7);  /* 粉色光晕 */
-    --control-bg: #05061a;         /* 控制面板背景 */
-    --button-bg: #04041a;          /* 深蓝按钮背景 */
-    
-    /* 扫描线颜色 */
-    --scanline-color: rgba(0, 204, 255, 0.7); /* 蓝色扫描线 */
-    --scanline-bg: rgba(0, 204, 255, 0.05);   /* 扫描线背景 */
+    /* 蒸汽波主题色彩 - 霓虹色调与强烈对比 */
+    --primary-color: #ff00ff;      /* 霓虹粉 */
+    --secondary-color: #00ffff;    /* 霓虹青 */
+    --accent-color: #fe01b1;       /* 亮粉红 */
+    --accent-color2: #9933ff;      /* 亮紫色 */
+    --text-color: #ffffff;         /* 白色文本，增加可读性 */
+    --bg-color: #0b0b1e;           /* 深蓝黑色背景 */
+    --dark-color: #120458;         /* 深紫色 */
+    --grid-color: rgba(0, 255, 255, 0.2); /* 网格线颜色 */
+    --glow-color: rgba(255, 0, 255, 0.7); /* 霓虹粉光晕 */
+    --control-bg: #1a1141;         /* 控制面板背景 */
+    --button-bg: #1d1646;          /* 按钮背景 */
 }
 
 @font-face {
-    font-family: 'Star Jedi';
-    src: url('https://cdn.jsdelivr.net/gh/ProjectMoon/StarJedi@master/Fonts/StarJedi-DGRW.ttf') format('truetype');
-    font-weight: normal;
-    font-style: normal;
-}
-
-@font-face {
-    font-family: 'Droid Sans Mono';
-    src: url('https://fonts.gstatic.com/s/droidsansmono/v7/ns-m2xQYezAtqh7ai59hJYdJ2JT0J65PSe7wdxAnx_I.woff2') format('woff2');
+    font-family: 'VCR OSD Mono';
+    src: url('https://cdn.jsdelivr.net/npm/@typopro/web-vcr-osd-mono@3.7.5/TypoPRO-VCROSDMono.woff2') format('woff2');
     font-weight: normal;
     font-style: normal;
 }
 
 body {
-    font-family: 'Droid Sans Mono', 'Courier New', monospace;
+    font-family: 'VCR OSD Mono', 'Courier New', monospace;
     line-height: 1.6;
     color: var(--text-color);
     background-color: var(--bg-color);
     text-align: center;
     background-image: 
-        linear-gradient(0deg, rgba(2, 4, 16, 0.9) 0%, rgba(5, 6, 26, 0.95) 100%),
-        repeating-linear-gradient(0deg, transparent 0px, transparent 39px, var(--grid-color) 39px, var(--grid-color) 40px),
-        repeating-linear-gradient(90deg, transparent 0px, transparent 39px, var(--grid-color) 39px, var(--grid-color) 40px),
-        repeating-linear-gradient(0deg, transparent 0px, transparent 9px, rgba(0, 204, 255, 0.05) 9px, rgba(0, 204, 255, 0.05) 10px),
-        repeating-linear-gradient(90deg, transparent 0px, transparent 9px, rgba(0, 204, 255, 0.05) 9px, rgba(0, 204, 255, 0.05) 10px),
-        radial-gradient(
-            circle at 50% 50%,
-            rgba(0, 204, 255, 0.1) 0%,
-            rgba(0, 204, 255, 0.05) 10%,
-            transparent 60%
-        );
-    background-size: 100% 100%, 40px 40px, 40px 40px, 10px 10px, 10px 10px, 100% 100%;
+        linear-gradient(0deg, rgba(18, 4, 88, 0.8) 0%, rgba(11, 11, 30, 0.9) 100%),
+        repeating-linear-gradient(0deg, var(--grid-color) 0px, var(--grid-color) 1px, transparent 1px, transparent 20px),
+        repeating-linear-gradient(90deg, var(--grid-color) 0px, var(--grid-color) 1px, transparent 1px, transparent 20px);
     background-attachment: fixed;
     overflow-x: hidden;
     position: relative;
 }
 
-/* 标题使用Star Wars风格字体 */
-h1, h2, h3, nav {
-    font-family: 'Star Jedi', 'Arial', sans-serif;
-    letter-spacing: 2px;
+/* 修正 z-index 的光剑风格CSS */
+/* 星星容器 */
+.stars {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: -10; /* 降低z-index，确保不会覆盖内容 */
+}
+
+/* 星星样式 */
+.star {
+    position: absolute;
+    width: 2px;
+    height: 2px;
+    background-color: #fff;
+    border-radius: 50%;
+    animation: twinkle var(--duration, 4s) infinite ease-in-out;
+    opacity: 0.6;
+}
+
+@keyframes twinkle {
+    0%, 100% {
+        opacity: 0.2;
+        transform: scale(0.8);
+    }
+    50% {
+        opacity: 0.8;
+        transform: scale(1);
+    }
+}
+
+/* 光剑流星容器 */
+.lightsaber-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: -5; /* 降低z-index，确保不会覆盖内容 */
+    overflow: hidden;
+}
+
+/* 光剑样式 */
+.lightsaber {
+    position: absolute;
+    height: 4px;
+    background-color: #0ff; /* 默认青色 */
+    border-radius: 2px;
+    box-shadow: 
+        0 0 5px var(--color, #0ff),
+        0 0 10px var(--color, #0ff),
+        0 0 20px var(--color, #0ff);
+    transform-origin: left center;
+    transform: rotate(var(--angle, -45deg));
+    opacity: 0;
+    animation: lightsaber-fly var(--duration, 2s) linear;
+    animation-fill-mode: forwards;
+}
+
+/* 光剑柄 */
+.lightsaber::before {
+    content: '';
+    position: absolute;
+    left: -10px;
+    top: -3px;
+    width: 10px;
+    height: 10px;
+    background-color: #777;
+    border-radius: 2px;
+    box-shadow: 0 0 3px rgba(0, 0, 0, 0.5);
+}
+
+/* 光剑光芒 */
+.lightsaber::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(
+        90deg, 
+        rgba(255, 255, 255, 0.8) 0%, 
+        var(--color, rgba(0, 255, 255, 0.3)) 70%, 
+        transparent 100%
+    );
+    border-radius: 2px;
+    filter: blur(2px);
+}
+
+/* 光剑飞行动画 */
+@keyframes lightsaber-fly {
+    0% {
+        opacity: 0;
+        width: 0;
+    }
+    5% {
+        opacity: 1;
+        width: var(--length, 100px);
+    }
+    90% {
+        opacity: 1;
+    }
+    100% {
+        opacity: 0;
+        transform: translateX(var(--travel-x, 1000px)) translateY(var(--travel-y, 500px)) rotate(var(--angle, -45deg));
+    }
+}
+
+
+
+/* 确保上传表单正确显示 */
+.upload-form {
+    position: relative; /* 添加相对定位 */
+    z-index: 10; /* 确保表单在星空和光剑上面 */
+    max-width: 700px;
+    margin: 0 auto 3rem auto;
+    background: var(--control-bg);
+    padding: 3rem;
+    border: 2px solid var(--secondary-color);
+    border-radius: 5px;
+    box-shadow: 0 0 30px rgba(0, 255, 255, 0.3);
+    text-align: left;
+}
+
+/* 确保按钮和表单元素在顶层 */
+.rainbow-button, 
+input, 
+textarea, 
+button, 
+select {
+    position: relative;
+    z-index: 15;
+}
+
+/* 控制台风格的元素 */
+.console-element {
+    position: relative;
+    margin: 20px 0;
+    padding: 20px;
+    background-color: var(--control-bg);
+    border: 1px solid var(--secondary-color);
+    border-radius: 5px;
+    box-shadow: 0 0 15px var(--glow-color), inset 0 0 10px rgba(0, 255, 255, 0.3);
+}
+
+.console-element::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 5px;
+    background: linear-gradient(90deg, 
+        transparent 0%, 
+        var(--secondary-color) 50%, 
+        transparent 100%);
+    opacity: 0.7;
+}
+
+/* 电报机按钮效果 */
+.telegraph-button {
+    position: relative;
+    z-index: 1;
+    background: var(--button-bg);
+    color: var(--text-color);
+    border: 2px solid var(--secondary-color);
+    border-radius: 5px;
+    padding: 12px 25px;
+    font-family: 'VCR OSD Mono', monospace;
+    font-weight: bold;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    overflow: hidden;
+    box-shadow: 0 0 15px rgba(0, 255, 255, 0.4), inset 0 0 5px rgba(0, 255, 255, 0.4);
+    transition: all 0.3s cubic-bezier(0.23, 1, 0.32, 1);
+    cursor: pointer;
+    text-shadow: 0 0 5px var(--secondary-color);
+}
+
+.telegraph-button::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(
+        90deg, 
+        transparent 0%, 
+        rgba(0, 255, 255, 0.4) 50%, 
+        transparent 100%
+    );
+    z-index: -1;
+    transition: left 0.5s ease;
+}
+
+.telegraph-button:hover {
+    color: var(--secondary-color);
+    transform: translateY(-3px);
+    box-shadow: 0 0 25px rgba(0, 255, 255, 0.6), inset 0 0 10px rgba(0, 255, 255, 0.4);
+}
+
+.telegraph-button:hover::before {
+    left: 100%;
+}
+
+.telegraph-button:active {
+    transform: translateY(2px);
+    box-shadow: 0 0 10px rgba(0, 255, 255, 0.3);
+}
+
+/* 彩虹按钮 */
+.rainbow-button {
+    background: linear-gradient(90deg, #ff00ff, #00ffff, #9933ff, #fe01b1);
+    background-size: 300% 100%;
+    border: none;
+    border-radius: 5px;
+    color: var(--text-color);
+    padding: 12px 25px;
+    font-family: 'VCR OSD Mono', monospace;
+    font-weight: bold;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: all 0.4s ease;
+    text-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
+    box-shadow: 0 0 15px rgba(255, 0, 255, 0.4);
+    animation: gradient-shift 3s ease infinite;
+}
+
+@keyframes gradient-shift {
+    0% {
+        background-position: 0% 50%;
+    }
+    50% {
+        background-position: 100% 50%;
+    }
+    100% {
+        background-position: 0% 50%;
+    }
+}
+
+.rainbow-button:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 0 20px rgba(255, 0, 255, 0.7);
+}
+
+.rainbow-button:active {
+    transform: translateY(1px);
+}
+
+/* 头部样式 - 飞船控制台风格 */
+header {
+    background-color: var(--dark-color);
+    border-bottom: 3px solid var(--secondary-color);
+    padding: 2rem 0;
+    margin-bottom: 3rem;
+    position: relative;
+    overflow: hidden;
+    box-shadow: 0 0 30px rgba(0, 255, 255, 0.5);
 }
 
 header h1 {
     margin: 0 0 0.5rem 0;
     font-size: 2.8rem;
-    color: var(--primary-color);
+    color: #00ccff; /* 天蓝色字体 */
     font-weight: 700;
     text-transform: uppercase;
     letter-spacing: 3px;
+    /* 多层文字阴影创建边框与渐变效果 */
     text-shadow: 
-        -1px -1px 0 var(--deep-blue),  
-        1px -1px 0 var(--deep-blue),
-        -1px 1px 0 var(--deep-blue),
-        1px 1px 0 var(--deep-blue),
+        /* 夜空蓝色边框效果 */
+        -1px -1px 0 #004466,  
+        1px -1px 0 #004466,
+        -1px 1px 0 #004466,
+        1px 1px 0 #004466,
+        
+        /* 天蓝到夜空蓝的渐变过渡层 */
         -2px -2px 0 #005577,
         2px -2px 0 #005577,
         -2px 2px 0 #005577,
         2px 2px 0 #005577,
-        0 0 10px var(--glow-color),
-        0 0 20px var(--glow-color),
-        0 0 30px var(--glow-color);
+        
+        /* 粉紫色背景光晕效果 - 三层递增 */
+        0 0 10px rgba(255, 158, 204, 0.7),
+        0 0 20px rgba(255, 158, 204, 0.5),
+        0 0 30px rgba(255, 158, 204, 0.7);
+    
+    /* 添加动画效果 */
     animation: title-glow 3s infinite alternate;
 }
 
+/* 添加标题光晕动画 */
 @keyframes title-glow {
     0% {
         text-shadow: 
-            -1px -1px 0 var(--deep-blue),  
-            1px -1px 0 var(--deep-blue),
-            -1px 1px 0 var(--deep-blue),
-            1px 1px 0 var(--deep-blue),
+            /* 边框效果 - 保持不变 */
+            -1px -1px 0 #004466,  
+            1px -1px 0 #004466,
+            -1px 1px 0 #004466,
+            1px 1px 0 #004466,
+            
+            /* 渐变过渡层 - 保持不变 */
             -2px -2px 0 #005577,
             2px -2px 0 #005577,
             -2px 2px 0 #005577,
             2px 2px 0 #005577,
-            0 0 10px var(--glow-color),
-            0 0 15px var(--glow-color),
-            0 0 20px var(--glow-color);
+            
+            /* 粉紫色光晕 - 初始状态 */
+            0 0 10px rgba(255, 158, 204, 0.7),
+            0 0 15px rgba(255, 158, 204, 0.5),
+            0 0 20px rgba(255, 158, 204, 0.4);
     }
     100% {
         text-shadow: 
-            -1px -1px 0 var(--deep-blue),  
-            1px -1px 0 var(--deep-blue),
-            -1px 1px 0 var(--deep-blue),
-            1px 1px 0 var(--deep-blue),
+            /* 边框效果 - 保持不变 */
+            -1px -1px 0 #004466,  
+            1px -1px 0 #004466,
+            -1px 1px 0 #004466,
+            1px 1px 0 #004466,
+            
+            /* 渐变过渡层 - 保持不变 */
             -2px -2px 0 #005577,
             2px -2px 0 #005577,
             -2px 2px 0 #005577,
             2px 2px 0 #005577,
-            0 0 15px var(--glow-color),
-            0 0 25px var(--glow-color),
-            0 0 35px var(--glow-color);
+            
+            /* 粉紫色光晕 - 增强状态 */
+            0 0 15px rgba(255, 158, 204, 0.8),
+            0 0 25px rgba(255, 158, 204, 0.6),
+            0 0 35px rgba(255, 158, 204, 0.7);
     }
 }
 
-h2, h3 {
+header h1 a {
     color: var(--primary-color);
-    text-shadow: 
-        -1px -1px 0 var(--deep-blue),  
-        1px -1px 0 var(--deep-blue),
-        -1px 1px 0 var(--deep-blue),
-        1px 1px 0 var(--deep-blue),
-        0 0 8px var(--soft-pink),
-        0 0 15px var(--soft-pink);
+    text-decoration: none;
 }
 
-header nav a {
+header p {
     font-size: 1.2rem;
-    text-transform: uppercase;
+    color: var(--secondary-color);
+    margin-bottom: 1.5rem;
+    font-style: italic;
+    text-shadow: 0 0 5px var(--secondary-color);
+    letter-spacing: 1px;
+}
+
+header nav {
+    margin-top: 1.5rem;
+    border-top: 1px solid rgba(0, 255, 255, 0.3);
+    padding-top: 1.5rem;
+}
+
+header nav ul {
+    list-style: none;
+    display: flex;
+    justify-content: center;
+    gap: 2rem;
+}
+
+header nav ul li a {
+    font-weight: 600;
+    font-size: 1rem;
+    padding: 0.7rem 1.2rem;
+    border-radius: 3px;
     transition: all 0.3s ease;
-    letter-spacing: 2px;
-    padding: 5px 10px;
     border: 1px solid transparent;
-    color: var(--primary-color);
-    text-shadow: 
-        -1px -1px 0 var(--deep-blue),  
-        1px -1px 0 var(--deep-blue),
-        -1px 1px 0 var(--deep-blue),
-        1px 1px 0 var(--deep-blue),
-        0 0 5px var(--soft-pink);
+    text-transform: uppercase;
+    letter-spacing: 2px;
 }
 
-header nav a:hover {
-    border: 1px solid var(--primary-color);
-    text-shadow: 
-        -1px -1px 0 var(--deep-blue),  
-        1px -1px 0 var(--deep-blue),
-        -1px 1px 0 var(--deep-blue),
-        1px 1px 0 var(--deep-blue),
-        0 0 8px var(--soft-pink),
-        0 0 15px var(--soft-pink);
-    box-shadow: 0 0 10px rgba(255, 158, 184, 0.5);
+header nav ul li a:hover {
+    background-color: rgba(0, 255, 255, 0.1);
+    border: 1px solid var(--secondary-color);
+    box-shadow: 0 0 15px rgba(0, 255, 255, 0.5);
 }
 
-/* 音频播放器样式 */
-.imperial-audio-device {
-    background: var(--control-bg);
-    border: 2px solid var(--primary-color);
-    border-radius: 8px;
-    padding: 20px;
-    margin: 20px 0;
+/* 主内容区 - 电报机控制台 */
+main {
+    min-height: 70vh;
+    padding: 2rem 0 4rem;
+}
+
+h2 {
+    margin-bottom: 2rem;
+    padding-bottom: 1rem;
+    font-size: 2rem;
+    color: var(--secondary-color);
     position: relative;
-    box-shadow: 0 0 20px rgba(0, 204, 255, 0.2);
+    display: inline-block;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    text-shadow: 0 0 10px var(--secondary-color);
 }
 
-.device-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 20px;
+h2::after {
+    content: "";
+    position: absolute;
+    bottom: 0;
+    left: 10%;
+    width: 80%;
+    height: 3px;
+    background-color: var(--secondary-color);
+    box-shadow: 0 0 10px var(--secondary-color);
 }
 
-.device-title {
-    color: var(--primary-color);
-    font-size: 1.2rem;
-    text-shadow: 0 0 5px var(--glow-color);
+/* 电报机/控制台面板列表 */
+.episodes-list {
+    display: grid;
+    gap: 2rem;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    justify-content: center;
 }
 
-.device-status {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-}
-
-.status-light {
-    width: 10px;
-    height: 10px;
-    border-radius: 50%;
-    background-color: var(--accent-color);
-    box-shadow: 0 0 10px var(--accent-color);
-    animation: status-pulse 2s infinite;
-}
-
-@keyframes status-pulse {
-    0%, 100% {
-        opacity: 0.5;
-    }
-    50% {
-        opacity: 1;
-    }
-}
-
-.audio-visualization {
-    height: 100px;
-    background: rgba(0, 0, 0, 0.3);
-    border-radius: 4px;
-    margin-bottom: 20px;
+.episode-card {
+    background: var(--control-bg);
+    border: 2px solid var(--secondary-color);
+    border-radius: 5px;
+    padding: 1.8rem;
+    box-shadow: 0 0 20px rgba(0, 255, 255, 0.3);
+    transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+    text-align: left;
     position: relative;
     overflow: hidden;
 }
 
-.waveform-container {
-    width: 100%;
-    height: 100%;
-    position: relative;
-}
-
-.waveform {
-    width: 100%;
-    height: 100%;
-    position: relative;
-}
-
-.waveform-grid {
+.episode-card::before {
+    content: '';
     position: absolute;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-    background-image: 
-        linear-gradient(0deg, var(--grid-color) 1px, transparent 1px),
-        linear-gradient(90deg, var(--grid-color) 1px, transparent 1px);
-    background-size: 20px 20px;
+    background: 
+        linear-gradient(0deg, transparent 90%, var(--secondary-color) 100%),
+        linear-gradient(90deg, transparent 90%, var(--secondary-color) 100%);
+    opacity: 0.2;
+    pointer-events: none;
+}
+
+.episode-card::after {
+    content: '';
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    width: 10px;
+    height: 10px;
+    background-color: var(--secondary-color);
+    border-radius: 50%;
+    box-shadow: 0 0 10px var(--secondary-color);
+    animation: blink 2s infinite alternate;
+}
+
+@keyframes blink {
+    0%, 80% {
+        opacity: 1;
+    }
+    90%, 100% {
+        opacity: 0.2;
+    }
+}
+
+.episode-card:hover {
+    transform: translateY(-8px) scale(1.02);
+    box-shadow: 0 0 30px rgba(0, 255, 255, 0.5);
+}
+
+.episode-card h3 {
+    margin-bottom: 0.8rem;
+    font-size: 1.4rem;
+    color: var(--primary-color);
+    text-shadow: 0 0 5px var(--primary-color);
+    letter-spacing: 1px;
+}
+
+.episode-meta {
+    font-size: 0.9rem;
+    color: var(--secondary-color);
+    margin-bottom: 1rem;
+    display: flex;
+    gap: 1rem;
+    opacity: 0.8;
+}
+
+.episode-description {
+    margin-bottom: 1.5rem;
+    color: var(--text-color);
+    line-height: 1.7;
+    font-family: 'Courier New', monospace;
+    opacity: 0.9;
+}
+
+.button {
+    display: inline-block;
+    background: linear-gradient(45deg, var(--dark-color), var(--control-bg));
+    color: var(--secondary-color);
+    padding: 0.7rem 1.5rem;
+    border: 1px solid var(--secondary-color);
+    border-radius: 3px;
+    text-decoration: none;
+    font-size: 0.9rem;
+    font-family: 'VCR OSD Mono', monospace;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 0 10px rgba(0, 255, 255, 0.3);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.button:hover {
+    background: var(--control-bg);
+    box-shadow: 0 0 20px rgba(0, 255, 255, 0.6);
+    text-shadow: 0 0 5px var(--secondary-color);
+}
+
+/* 电报机发光指示灯效果 */
+.indicator-light {
+    display: inline-block;
+    width: 15px;
+    height: 15px;
+    border-radius: 50%;
+    margin-right: 10px;
+    vertical-align: middle;
+    background-color: var(--secondary-color);
+    box-shadow: 0 0 10px var(--secondary-color);
+    animation: indicator-pulse 2s infinite alternate;
+}
+
+@keyframes indicator-pulse {
+    0% {
+        opacity: 0.6;
+        box-shadow: 0 0 5px var(--secondary-color);
+    }
+    100% {
+        opacity: 1;
+        box-shadow: 0 0 15px var(--secondary-color);
+    }
+}
+
+.locked-indicator {
+    color: var(--primary-color);
+    margin-left: 5px;
+    font-size: 0.9rem;
+    text-shadow: 0 0 5px var(--primary-color);
+}
+
+/* 单集页面 - 电报机/控制台详情 */
+.episode-detail {
+    background: var(--control-bg);
+    border: 2px solid var(--secondary-color);
+    border-radius: 5px;
+    padding: 3rem;
+    box-shadow: 0 0 30px rgba(0, 255, 255, 0.3);
+    max-width: 800px;
+    margin: 0 auto;
+    text-align: left;
+    position: relative;
+}
+
+.episode-detail::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 5px;
+    background: var(--secondary-color);
+    box-shadow: 0 0 10px var(--secondary-color);
+}
+
+/* 控制台样式音频播放器 */
+.audio-player {
+    margin: 2rem 0;
+    background: rgba(0, 0, 0, 0.3);
+    padding: 1.5rem;
+    border: 1px solid var(--secondary-color);
+    border-radius: 5px;
+    box-shadow: inset 0 0 10px rgba(0, 255, 255, 0.2);
+}
+
+.audio-player audio {
+    width: 100%;
+    margin-bottom: 1rem;
+    border-radius: 3px;
+    filter: hue-rotate(180deg); /* 改变播放器颜色以匹配主题 */
+}
+
+/* 电报机密码终端 */
+.password-protection {
+    background: rgba(0, 0, 0, 0.3);
+    padding: 2.5rem;
+    border: 2px solid var(--secondary-color);
+    border-radius: 5px;
+    margin: 2rem auto;
+    text-align: center;
+    max-width: 500px;
+    box-shadow: 0 0 20px rgba(0, 255, 255, 0.3), inset 0 0 15px rgba(0, 0, 0, 0.5);
+}
+
+.form-group {
+    margin-bottom: 1.8rem;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 0.7rem;
+    font-weight: 600;
+    color: var(--secondary-color);
+    text-shadow: 0 0 5px var(--secondary-color);
+    letter-spacing: 1px;
+    text-transform: uppercase;
+}
+
+.form-group input,
+.form-group textarea {
+    width: 100%;
+    padding: 1rem;
+    background: rgba(0, 0, 0, 0.5);
+    border: 1px solid var(--secondary-color);
+    border-radius: 3px;
+    color: var(--text-color);
+    font-family: 'VCR OSD Mono', monospace;
+    font-size: 1rem;
+    transition: all 0.3s ease;
+    box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.5);
+}
+
+.form-group input:focus,
+.form-group textarea:focus {
+    outline: none;
+    border-color: var(--primary-color);
+    box-shadow: 0 0 15px rgba(255, 0, 255, 0.4), inset 0 0 10px rgba(0, 0, 0, 0.7);
+}
+
+.error-message {
+    color: #ff2d55;
+    margin: 0.8rem 0;
+    font-weight: 600;
+    text-shadow: 0 0 5px #ff2d55;
+}
+
+/* 终端共享链接 */
+.sharing-options {
+    margin-top: 3rem;
+    padding-top: 2rem;
+    border-top: 1px solid var(--secondary-color);
+    text-align: center;
+}
+
+.sharing-options h3 {
+    margin-bottom: 1rem;
+    color: var(--secondary-color);
+    text-shadow: 0 0 5px var(--secondary-color);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.sharing-options input {
+    width: 100%;
+    padding: 0.8rem;
+    margin-bottom: 1rem;
+    background: rgba(0, 0, 0, 0.5);
+    border: 1px solid var(--secondary-color);
+    border-radius: 3px;
+    font-family: 'VCR OSD Mono', monospace;
+    font-size: 0.9rem;
+    color: var(--text-color);
+    box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.5);
+}
+
+.back-link {
+    display: inline-block;
+    margin-top: 2.5rem;
+    color: var(--secondary-color);
+    font-weight: 600;
+    position: relative;
+    padding: 0.5rem 1rem;
+    border-radius: 3px;
+    transition: all 0.3s ease;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    border: 1px solid transparent;
+}
+
+.back-link:hover {
+    background-color: rgba(0, 255, 255, 0.1);
+    border: 1px solid var(--secondary-color);
+    box-shadow: 0 0 10px rgba(0, 255, 255, 0.3);
+}
+
+/* 终端风格上传界面 */
+.upload-form {
+    max-width: 700px;
+    margin: 0 auto 3rem auto;
+    background: var(--control-bg);
+    padding: 3rem;
+    border: 2px solid var(--secondary-color);
+    border-radius: 5px;
+    box-shadow: 0 0 30px rgba(0, 255, 255, 0.3);
+    text-align: left;
+    position: relative;
+}
+
+.upload-form::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 5px;
+    background: var(--secondary-color);
+    box-shadow: 0 0 10px var(--secondary-color);
+}
+
+.upload-form h2 {
+    margin-bottom: 2rem;
+    text-align: center;
+}
+
+/* 订阅终端指南 */
+.subscription-guide {
+    margin: 4rem auto 0 auto;
+    padding: 2.5rem;
+    background: rgba(0, 0, 0, 0.3);
+    border: 2px solid var(--secondary-color);
+    border-radius: 5px;
+    max-width: 800px;
+    text-align: left;
+    box-shadow: 0 0 20px rgba(0, 255, 255, 0.3), inset 0 0 15px rgba(0, 0, 0, 0.5);
+}
+
+.subscription-guide h3 {
+    margin-bottom: 1.5rem;
+    color: var(--secondary-color);
+    font-size: 1.5rem;
+    text-align: center;
+    text-shadow: 0 0 5px var(--secondary-color);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.subscription-guide code {
+    background: rgba(0, 0, 0, 0.5);
+    padding: 0.3rem 0.6rem;
+    border-radius: 3px;
+    font-size: 0.9rem;
+    color: var(--primary-color);
+    border: 1px solid rgba(255, 0, 255, 0.3);
+    font-family: 'VCR OSD Mono', monospace;
+    text-shadow: 0 0 5px var(--primary-color);
+}
+
+/* 控制台风格页脚 */
+footer {
+    background: var(--dark-color);
+    color: var(--text-color);
+    padding: 3rem 0;
+    margin-top: 5rem;
+    position: relative;
+    border-top: 3px solid var(--secondary-color);
+    box-shadow: 0 0 30px rgba(0, 255, 255, 0.5);
+}
+
+footer a {
+    color: var(--secondary-color);
+    font-weight: 600;
+    transition: all 0.3s ease;
+    text-shadow: 0 0 5px var(--secondary-color);
+}
+
+footer a:hover {
+    color: var(--primary-color);
+    text-shadow: 0 0 8px var(--primary-color);
+}
+
+/* 上传状态显示区域 */
+#upload-status {
+    margin-top: 1rem;
+    padding: 0.8rem;
+    background: rgba(0, 0, 0, 0.3);
+    border-radius: 3px;
+    color: var(--secondary-color);
+    font-size: 0.9rem;
+}
+
+/* Cloudinary上传按钮 */
+#upload_widget {
+    background: linear-gradient(90deg, #ff00ff, #00ffff, #9933ff, #fe01b1);
+    background-size: 300% 100%;
+    animation: gradient-shift 3s ease infinite;
+    border: none;
+    color: white;
+    padding: 12px 25px;
+    border-radius: 5px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 0 15px rgba(255, 0, 255, 0.4);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 10px;
+}
+
+#upload_widget:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 0 20px rgba(255, 0, 255, 0.7);
+}
+
+/* 飞船控制台LED灯效果 */
+.control-lights {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    margin: 1.5rem 0;
+}
+
+.control-light {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background-color: rgba(255, 255, 255, 0.8);
+    box-shadow: 0 0 8px currentColor;
+}
+
+.control-light.red {
+    color: #ff2d55;
+    animation: blink-light 2.5s infinite alternate;
+}
+
+.control-light.green {
+    color: #00ff9d;
+    animation: blink-light 3.7s infinite alternate-reverse;
+}
+
+.control-light.blue {
+    color: #00ccff;
+    animation: blink-light 1.8s infinite alternate;
+}
+
+.control-light.purple {
+    color: #da00ff;
+    animation: blink-light 4.2s infinite alternate-reverse;
+}
+
+@keyframes blink-light {
+    0%, 80% {
+        opacity: 1;
+    }
+    90%, 100% {
+        opacity: 0.4;
+    }
+}
+
+/* 响应式调整 */
+@media (max-width: 768px) {
+    .episodes-list {
+        grid-template-columns: 1fr;
+    }
+    
+    .episode-detail, .upload-form {
+        padding: 2rem;
+    }
+    
+    header h1 {
+        font-size: 2rem;
+    }
+    
+    header p {
+        font-size: 1rem;
+    }
+    
+    header nav ul {
+        flex-direction: column;
+        gap: 1rem;
+    }
+    
+    .console-element {
+        padding: 15px;
+    }
+}
+
+/* 旧电视静电效果 */
+body::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyMDAiIGhlaWdodD0iMjAwIj48ZmlsdGVyIGlkPSJhIiB4PSIwIiB5PSIwIj48ZmVUdXJidWxlbmNlIHR5cGU9ImZyYWN0YWxOb2lzZSIgYmFzZUZyZXF1ZW5jeT0iLjc1IiBzdGl0Y2hUaWxlcz0ic3RpdGNoIi8+PGZlQ29sb3JNYXRyaXggdHlwZT0ic2F0dXJhdGUiIHZhbHVlcz0iMCIvPjwvZmlsdGVyPjxwYXRoIGZpbHRlcj0idXJsKCNhKSIgb3BhY2l0eT0iLjA1IiBkPSJNMCAwaDIwMHYyMDBIMHoiLz48L3N2Zz4=');
+    pointer-events: none;
     opacity: 0.3;
+    z-index: 1000;
 }
 
-.waveform-line {
-    position: absolute;
-    top: 50%;
-    left: 0;
-    width: 100%;
-    height: 2px;
-    background: var(--primary-color);
-    transform: translateY(-50%);
-    opacity: 0.5;
-}
-
-.bars-container {
-    position: absolute;
+/* 扫描线效果 */
+body::after {
+    content: '';
+    position: fixed;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-    display: flex;
+    background: linear-gradient(
+        to bottom,
+        rgba(0, 0, 0, 0) 0%,
+        rgba(0, 255, 255, 0.07) 50%,
+        rgba(0, 0, 0, 0) 100%
+    );
+    pointer-events: none;
+    animation: scanline 8s linear infinite;
+    z-index: 1001;
+}
+
+@keyframes scanline {
+    0% {
+        transform: translateY(-100%);
+    }
+    100% {
+        transform: translateY(100%);
+    }
+}
+/* 将原有按钮样式改为圆形星球样式 */
+.button {
+    display: inline-flex;
     align-items: center;
-    justify-content: space-around;
-    padding: 0 10px;
-}
-
-.imperial-controls {
-    display: flex;
-    align-items: center;
-    gap: 20px;
-}
-
-.play-button-container {
-    flex-shrink: 0;
-}
-
-.play-button {
+    justify-content: center;
+    /* 变为圆形 */
     width: 60px;
     height: 60px;
     border-radius: 50%;
-    background: var(--dark-color);
     border: 2px solid var(--primary-color);
-    cursor: pointer;
+    color: var(--secondary-color);
+    background: rgba(2, 4, 16, 0.7);
+    transition: all 0.3s ease;
+    text-decoration: none;
+    /* 移除文字 */
+    font-size: 0;
     position: relative;
     overflow: hidden;
-    transition: all 0.3s ease;
 }
 
-.play-button:hover {
-    transform: scale(1.05);
-    box-shadow: 0 0 15px rgba(0, 204, 255, 0.5);
+/* 添加收听图标 */
+.button::before {
+    content: "\25B6"; /* Unicode */
+    font-size: 24px;
+    color: var(--secondary-color);
 }
 
-.planet-effect {
+/* 添加rainbowplanet星球效果 */
+.button {
+    position: relative;
+    overflow: hidden;
+    z-index: 10;
+}
+
+/* 悬停效果 */
+.button:hover {
+    border-color: rgba(255, 255, 255, 0.9);
+    transform: scale(1.1);
+    background: rgba(0, 204, 255, 0.1);
+    box-shadow: 0 0 15px rgba(0, 204, 255, 0.6);
+}
+
+/* 星球效果 - 为所有button添加行星效果 */
+.button::after {
+    content: "";
     position: absolute;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-    background: linear-gradient(45deg, 
-        var(--primary-color),
-        var(--accent-color),
-        var(--accent-color2),
-        var(--primary-color)
-    );
+    background:
+        /* 中心涡旋效果 - 跨性别色彩 */
+        radial-gradient(
+            circle at center,
+            rgba(247, 140, 170, 0.9) 0%,    /* 跨粉色中心 */
+            rgba(85, 205, 252, 0.8) 30%,    /* 跨蓝色过渡 */
+            rgba(247, 140, 170, 0.7) 60%,   /* 跨粉色晕染 */
+            transparent 100%                 /* 透明边缘，融入条纹 */
+        ),
+        /* 气态行星的水平条纹 - 彩虹色彩自然晕染 */
+        linear-gradient(
+            0deg,
+            rgba(255, 100, 100, 0.8) 0%,     /* 红色区域 */
+            rgba(255, 160, 80, 0.8) 16.6%,   /* 橙色区域 */
+            rgba(255, 240, 70, 0.8) 33.3%,   /* 黄色区域 */
+            rgba(100, 230, 100, 0.8) 50%,    /* 绿色区域 */
+            rgba(80, 170, 255, 0.8) 66.6%,   /* 蓝色区域 */
+            rgba(180, 100, 255, 0.8) 83.3%,  /* 紫色区域 */
+            rgba(247, 140, 170, 0.8) 100%    /* 跨粉色区域 */
+        );
     opacity: 0;
+    z-index: -1;
     transition: opacity 0.3s ease;
-}
-
-.play-button:hover .planet-effect {
-    opacity: 0.3;
-}
-
-.concentric-circles {
-    position: relative;
-    width: 100%;
-    height: 100%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
-.circle-outer,
-.circle-middle,
-.circle-inner {
-    position: absolute;
     border-radius: 50%;
-    border: 1px solid var(--primary-color);
+}
+
+.button:hover::after {
+    opacity: 1;
+}
+/* 星战控制台按钮样式 */
+.starwars-control {
     transition: all 0.3s ease;
 }
 
-.circle-outer {
-    width: 54px;
-    height: 54px;
-    border-color: rgba(0, 204, 255, 0.4);
+.control-ring {
+    box-shadow: 0 0 8px rgba(0, 204, 255, 0.3) inset;
+    transition: all 0.3s ease;
 }
 
-.circle-middle {
-    width: 42px;
-    height: 42px;
-    border-color: rgba(0, 204, 255, 0.6);
+.play-triangle {
+    filter: drop-shadow(0 0 3px rgba(0, 204, 255, 0.5));
+    transition: all 0.3s ease;
 }
 
-.circle-inner {
-    width: 30px;
-    height: 30px;
-    border-color: rgba(0, 204, 255, 0.8);
+/* 悬停效果 */
+.rainbowplanet-button:hover .control-ring {
+    background: rgba(0, 128, 192, 0.5);
+    box-shadow: 0 0 15px rgba(0, 204, 255, 0.5) inset;
+    border-color: rgba(0, 204, 255, 0.9);
 }
 
-.button-center {
-    position: absolute;
-    width: 20px;
-    height: 20px;
-    border-radius: 50%;
-    background: var(--primary-color);
+.rainbowplanet-button:hover .play-triangle {
+    border-color: transparent transparent transparent rgba(255, 255, 255, 0.9);
+    filter: drop-shadow(0 0 5px rgba(255, 255, 255, 0.7));
+    transform: scale(1.1);
+}
+/* 全息投影播放按钮 */
+.holo-player {
+    width: 44px;
+    height: 44px;
+    position: relative;
     display: flex;
-    justify-content: center;
     align-items: center;
-    box-shadow: 0 0 10px rgba(0, 204, 255, 0.7);
+    justify-content: center;
+}
+
+/* 全息环效果 */
+.holo-ring {
+    position: absolute;
+    border-radius: 50%;
+    border: 1px solid rgba(0, 204, 255, 0.4);
+    box-shadow: 0 0 5px rgba(0, 204, 255, 0.3);
+}
+
+.ring1 {
+    width: 44px;
+    height: 44px;
+    animation: rotate-ring 12s linear infinite;
+}
+
+.ring2 {
+    width: 32px;
+    height: 32px;
+    animation: rotate-ring 9s linear infinite reverse;
+}
+
+@keyframes rotate-ring {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* 中心和播放图标 */
+.holo-center {
+    width: 22px;
+    height: 22px;
+    background: rgba(0, 102, 153, 0.3); /* 稍深的蓝色 */
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 0 8px rgba(0, 204, 255, 0.4);
+    position: relative;
+    z-index: 2;
     transition: all 0.3s ease;
 }
 
@@ -371,604 +1130,437 @@ header nav a:hover {
     width: 0;
     height: 0;
     border-style: solid;
-    border-width: 5px 0 5px 8px;
-    border-color: transparent transparent transparent var(--bg-color);
-    margin-left: 2px;
-}
-
-.progress-controls {
-    flex-grow: 1;
-    display: flex;
-    align-items: center;
-    gap: 10px;
-}
-
-.time-display {
-    font-family: 'Droid Sans Mono', monospace;
-    color: var(--primary-color);
-    font-size: 0.9rem;
-    min-width: 45px;
-}
-
-.progress-container {
-    flex-grow: 1;
-    height: 4px;
-    background: rgba(0, 204, 255, 0.1);
-    border-radius: 2px;
-    position: relative;
-    cursor: pointer;
-}
-
-.progress-track {
-    width: 100%;
-    height: 100%;
-    position: relative;
-}
-
-.progress-fill {
-    position: absolute;
-    top: 0;
-    left: 0;
-    height: 100%;
-    background: var(--primary-color);
-    border-radius: 2px;
-    width: 0;
-    transition: width 0.1s linear;
-}
-
-.rainbow-glow {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: linear-gradient(90deg,
-        var(--primary-color),
-        var(--accent-color),
-        var(--accent-color2),
-        var(--primary-color)
-    );
-    opacity: 0.5;
-    border-radius: 2px;
-}
-
-.progress-handle {
-    position: absolute;
-    top: 50%;
-    width: 12px;
-    height: 12px;
-    background: var(--primary-color);
-    border-radius: 50%;
-    transform: translate(-50%, -50%);
-    cursor: pointer;
-    transition: transform 0.1s ease;
-}
-
-.progress-handle:hover {
-    transform: translate(-50%, -50%) scale(1.2);
-}
-
-.handle-glow {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: var(--primary-color);
-    border-radius: 50%;
-    box-shadow: 0 0 10px var(--primary-color);
-    opacity: 0.5;
-}
-
-.volume-control {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    flex-shrink: 0;
-}
-
-.volume-icon {
-    width: 24px;
-    height: 24px;
-    position: relative;
-    cursor: pointer;
-}
-
-.volume-wave {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    width: 16px;
-    height: 16px;
-    background: var(--primary-color);
-    clip-path: polygon(
-        0% 50%,
-        20% 50%,
-        40% 30%,
-        60% 70%,
-        80% 50%,
-        100% 50%,
-        100% 100%,
-        0% 100%
-    );
-}
-
-.volume-slider {
-    width: 80px;
-    height: 4px;
-    background: rgba(0, 204, 255, 0.1);
-    border-radius: 2px;
-    position: relative;
-    cursor: pointer;
-}
-
-.volume-track {
-    width: 100%;
-    height: 100%;
-    position: relative;
-}
-
-.volume-fill {
-    position: absolute;
-    top: 0;
-    left: 0;
-    height: 100%;
-    background: var(--primary-color);
-    border-radius: 2px;
-    width: 100%;
-}
-
-.volume-handle {
-    position: absolute;
-    top: 50%;
-    right: 0;
-    width: 12px;
-    height: 12px;
-    background: var(--primary-color);
-    border-radius: 50%;
-    transform: translate(50%, -50%);
-    cursor: pointer;
-    transition: transform 0.1s ease;
-}
-
-.volume-handle:hover {
-    transform: translate(50%, -50%) scale(1.2);
-}
-
-/* 分享终端样式 */
-.sharing-options {
-    background: var(--control-bg);
-    border: 2px solid var(--primary-color);
-    border-radius: 8px;
-    padding: 20px;
-    margin: 20px 0;
-    position: relative;
-    box-shadow: 0 0 20px rgba(0, 204, 255, 0.2);
-}
-
-.terminal-title {
-    color: var(--primary-color);
-    font-size: 1.2rem;
-    margin-bottom: 20px;
-    text-shadow: 0 0 5px var(--glow-color);
-}
-
-.hologram-container {
-    position: relative;
-    margin-bottom: 20px;
-}
-
-.hologram-effect {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: linear-gradient(45deg,
-        var(--primary-color),
-        var(--accent-color),
-        var(--accent-color2),
-        var(--primary-color)
-    );
-    opacity: 0.1;
-    border-radius: 4px;
-}
-
-.hologram-projection {
-    position: relative;
-    padding: 20px;
-    background: rgba(0, 0, 0, 0.3);
-    border-radius: 4px;
-}
-
-.hologram-ring {
-    position: absolute;
-    border: 1px solid var(--primary-color);
-    border-radius: 50%;
-    animation: rotate-ring 10s linear infinite;
-}
-
-.hologram-ring.top {
-    top: 10px;
-    left: 50%;
-    width: 20px;
-    height: 20px;
-    transform: translateX(-50%);
-    border-color: var(--accent-color);
-}
-
-.hologram-ring.middle {
-    top: 50%;
-    left: 50%;
-    width: 40px;
-    height: 40px;
-    transform: translate(-50%, -50%);
-    border-color: var(--primary-color);
-}
-
-.hologram-ring.bottom {
-    bottom: 10px;
-    left: 50%;
-    width: 20px;
-    height: 20px;
-    transform: translateX(-50%);
-    border-color: var(--accent-color2);
-}
-
-@keyframes rotate-ring {
-    0% {
-        transform: rotate(0deg);
-    }
-    100% {
-        transform: rotate(360deg);
-    }
-}
-
-.hologram-url {
-    width: 100%;
-    padding: 10px;
-    background: rgba(0, 0, 0, 0.5);
-    border: 1px solid var(--primary-color);
-    border-radius: 4px;
-    color: var(--text-color);
-    font-family: 'Droid Sans Mono', monospace;
-    font-size: 0.9rem;
-    text-align: center;
-    cursor: text;
-}
-
-.terminal-controls {
-    display: flex;
-    gap: 10px;
-    margin-bottom: 20px;
-}
-
-.terminal-button {
-    flex: 1;
-    padding: 10px;
-    background: var(--dark-color);
-    border: 1px solid var(--primary-color);
-    border-radius: 4px;
-    color: var(--text-color);
-    font-family: 'Droid Sans Mono', monospace;
-    cursor: pointer;
-    position: relative;
-    overflow: hidden;
+    border-width: 6px 0 6px 10px;
+    border-color: transparent transparent transparent rgba(0, 204, 255, 0.8);
+    margin-left: 1px;
+    filter: drop-shadow(0 0 3px rgba(0, 204, 255, 0.5));
     transition: all 0.3s ease;
 }
 
-.terminal-button:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 0 10px rgba(0, 204, 255, 0.3);
-}
-
-.button-led {
-    width: 8px;
-    height: 8px;
-    border-radius: 50%;
-    margin-bottom: 5px;
-}
-
-.terminal-button.blue .button-led {
-    background: var(--primary-color);
-    box-shadow: 0 0 5px var(--primary-color);
-}
-
-.terminal-button.purple .button-led {
-    background: var(--accent-color2);
-    box-shadow: 0 0 5px var(--accent-color2);
-}
-
-.terminal-button.green .button-led {
-    background: var(--accent-color);
-    box-shadow: 0 0 5px var(--accent-color);
-}
-
-.button-label {
-    font-weight: bold;
-    margin-bottom: 2px;
-}
-
-.button-desc {
-    font-size: 0.8rem;
-    opacity: 0.8;
-}
-
-.radar-container {
-    margin-bottom: 20px;
-}
-
-.radar-text {
-    color: var(--primary-color);
-    font-size: 0.9rem;
-    margin-bottom: 10px;
-}
-
-.radar-scan {
-    height: 100px;
-    background: rgba(0, 0, 0, 0.3);
-    border-radius: 4px;
-    position: relative;
-    overflow: hidden;
-}
-
-.radar-line {
+/* 扫描线效果 */
+.holo-center::before {
+    content: '';
     position: absolute;
     top: 0;
-    left: 50%;
-    width: 2px;
-    height: 100%;
-    background: var(--primary-color);
-    transform-origin: bottom center;
-    animation: radar-scan 4s linear infinite;
+    left: 0;
+    width: 100%;
+    height: 2px;
+    background: rgba(0, 204, 255, 0.7);
+    animation: holo-scan 2s infinite linear;
+    z-index: 1;
 }
 
-@keyframes radar-scan {
-    0% {
-        transform: rotate(0deg);
-    }
-    100% {
-        transform: rotate(360deg);
-    }
+@keyframes holo-scan {
+    0% { top: 0; }
+    100% { top: 100%; }
 }
 
-.radar-dot {
-    position: absolute;
-    width: 6px;
-    height: 6px;
-    border-radius: 50%;
-    background: var(--accent-color);
-    box-shadow: 0 0 5px var(--accent-color);
-}
-
-.radar-dot.dot1 {
-    top: 30%;
-    left: 40%;
-}
-
-.radar-dot.dot2 {
-    top: 60%;
-    left: 70%;
-}
-
-.radar-dot.dot3 {
-    top: 40%;
-    left: 60%;
-}
-
-.transmission-status {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-}
-
-.status-led {
-    width: 10px;
-    height: 10px;
-    border-radius: 50%;
-    background: var(--accent-color);
-    box-shadow: 0 0 10px var(--accent-color);
-    animation: status-pulse 2s infinite;
-}
-
-.status-text {
-    color: var(--primary-color);
-    font-size: 0.9rem;
-}
-
-/* 分享面板样式 */
-.share-panel {
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    background: var(--control-bg);
-    border: 2px solid var(--primary-color);
-    border-radius: 8px;
-    padding: 20px;
-    width: 300px;
-    box-shadow: 0 0 30px rgba(0, 204, 255, 0.3);
-    display: none;
-    z-index: 1000;
-}
-
-.share-panel-header {
-    color: var(--primary-color);
-    font-size: 1.2rem;
-    margin-bottom: 20px;
-    text-align: center;
-}
-
-.share-options {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 10px;
-    margin-bottom: 20px;
-}
-
-.share-option {
-    padding: 10px;
-    background: var(--dark-color);
-    border: 1px solid var(--primary-color);
-    border-radius: 4px;
-    color: var(--text-color);
-    cursor: pointer;
-    transition: all 0.3s ease;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 5px;
-}
-
-.share-option:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 0 10px rgba(0, 204, 255, 0.3);
-}
-
-.share-icon {
-    width: 30px;
-    height: 30px;
-    border-radius: 50%;
-    background: var(--primary-color);
-    display: flex;
+/* 结合彩虹星球和同心圆效果的按钮 */
+.rainbowplanet-concentric {
+    display: inline-flex;
     align-items: center;
     justify-content: center;
-    font-weight: bold;
-    color: var(--bg-color);
-}
-
-.close-panel {
-    width: 100%;
-    padding: 10px;
-    background: var(--dark-color);
-    border: 1px solid var(--primary-color);
-    border-radius: 4px;
-    color: var(--text-color);
-    cursor: pointer;
-    transition: all 0.3s ease;
-}
-
-.close-panel:hover {
-    background: var(--primary-color);
-    color: var(--bg-color);
-}
-
-/* 密码保护样式 */
-.password-protection {
-    background: var(--control-bg);
-    border: 2px solid var(--primary-color);
-    border-radius: 8px;
-    padding: 20px;
-    margin: 20px 0;
-    text-align: center;
-}
-
-.indicator-light {
-    width: 20px;
-    height: 20px;
-    border-radius: 50%;
-    background: var(--accent-color2);
-    box-shadow: 0 0 10px var(--accent-color2);
-    margin: 0 auto 20px;
-    animation: indicator-pulse 2s infinite;
-}
-
-@keyframes indicator-pulse {
-    0%, 100% {
-        opacity: 0.5;
-    }
-    50% {
-        opacity: 1;
-    }
-}
-
-.form-group {
-    margin-bottom: 20px;
-}
-
-.form-group label {
-    display: block;
-    color: var(--primary-color);
-    margin-bottom: 10px;
-}
-
-.form-group input {
-    width: 100%;
-    padding: 10px;
-    background: rgba(0, 0, 0, 0.3);
-    border: 1px solid var(--primary-color);
-    border-radius: 4px;
-    color: var(--text-color);
-    font-family: 'Droid Sans Mono', monospace;
-}
-
-.error-message {
-    color: var(--accent-color2);
-    margin: 10px 0;
-    font-size: 0.9rem;
-}
-
-/* 返回按钮样式 */
-.back-button-container {
-    margin-top: 20px;
-    text-align: center;
-}
-
-.back-button {
-    display: inline-block;
     width: 60px;
     height: 60px;
     border-radius: 50%;
-    background: var(--dark-color);
-    border: 2px solid var(--primary-color);
-    cursor: pointer;
+    background: rgba(2, 4, 16, 0.7);
     position: relative;
+    text-decoration: none;
+    margin: 0 auto;
+    transition: all 0.3s ease;
+    font-size: 0; /* 移除文字 */
     overflow: hidden;
+    z-index: 10;
+}
+
+/* 同心圆效果 */
+.concentric-circles {
+    position: relative;
+    width: 54px;
+    height: 54px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 3; /* 确保在彩虹星球效果之上 */
+}
+
+/* 外层同心圆 */
+.circle-outer {
+    position: absolute;
+    width: 54px;
+    height: 54px;
+    border: 2px solid var(--primary-color);
+    border-radius: 50%;
+    box-shadow: 0 0 8px rgba(0, 204, 255, 0.3);
     transition: all 0.3s ease;
 }
 
-.back-button:hover {
-    transform: scale(1.05);
-    box-shadow: 0 0 15px rgba(0, 204, 255, 0.5);
+/* 中层同心圆 - 旋转效果 */
+.circle-middle {
+    position: absolute;
+    width: 44px;
+    height: 44px;
+    border: 1px dashed rgba(0, 204, 255, 0.6);
+    border-radius: 50%;
+    animation: rotate-ring 18s linear infinite;
+    transition: all 0.3s ease;
 }
 
-.back-icon {
+/* 内层同心圆 */
+.circle-inner {
     position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
+    width: 34px;
+    height: 34px;
+    border: 2px solid rgba(0, 204, 255, 0.7);
+    border-radius: 50%;
+    box-shadow: inset 0 0 10px rgba(0, 204, 255, 0.3);
+    transition: all 0.3s ease;
+}
+
+/* 按钮中心 */
+.button-center {
+    width: 24px;
+    height: 24px;
+    background: rgba(0, 102, 153, 0.3);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 0 8px rgba(0, 204, 255, 0.3);
+    position: relative;
+    z-index: 2;
+    transition: all 0.3s ease;
+}
+
+/* 播放图标 */
+.play-icon {
     width: 0;
     height: 0;
     border-style: solid;
-    border-width: 8px 12px 8px 0;
-    border-color: transparent var(--primary-color) transparent transparent;
+    border-width: 6px 0 6px 10px;
+    border-color: transparent transparent transparent rgba(0, 204, 255, 0.8);
+    margin-left: 2px;
+    filter: drop-shadow(0 0 3px rgba(0, 204, 255, 0.5));
+    transition: all 0.3s ease;
 }
 
-/* 响应式设计 */
-@media (max-width: 768px) {
-    .imperial-controls {
-        flex-direction: column;
-        gap: 15px;
-    }
-    
-    .progress-controls {
-        width: 100%;
-    }
-    
-    .volume-control {
-        width: 100%;
-    }
-    
-    .volume-slider {
-        flex-grow: 1;
-    }
-    
-    .terminal-controls {
-        flex-direction: column;
-    }
-    
-    .share-options {
-        grid-template-columns: 1fr;
-    }
+/* 旋转动画 */
+@keyframes rotate-ring {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* 反向旋转动画 */
+@keyframes rotate-ring-reverse {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(-360deg); }
+}
+
+/* 悬停效果 */
+.rainbowplanet-concentric:hover .circle-outer {
+    border-color: transparent;
+    box-shadow: 0 0 15px rgba(0, 204, 255, 0.6);
+}
+
+.rainbowplanet-concentric:hover .circle-middle {
+    border-color: rgba(255, 255, 255, 0.5);
+}
+
+.rainbowplanet-concentric:hover .circle-inner {
+    border-color: rgba(255, 255, 255, 0.7);
+    box-shadow: inset 0 0 15px rgba(0, 204, 255, 0.5);
+}
+
+.rainbowplanet-concentric:hover .button-center {
+    background: rgba(0, 128, 192, 0.4);
+    box-shadow: 0 0 15px rgba(0, 204, 255, 0.6);
+}
+
+.rainbowplanet-concentric:hover .play-icon {
+    border-color: transparent transparent transparent rgba(255, 255, 255, 0.9);
+    filter: drop-shadow(0 0 5px rgba(255, 255, 255, 0.7));
+    transform: scale(1.1);
+}
+
+/* 确保按钮居中显示 */
+.button-container {
+    display: flex;
+    justify-content: center;
+    margin-top: 1rem;
+}
+/* 基础同心圆按钮样式 */
+.control-button {
+    display: flex;
+    justify-content: center;
+    margin: 15px 0;
+}
+
+/* 不同尺寸的同心圆按钮 */
+.concentric-button {
+    position: relative;
+    border-radius: 50%;
+    border: 2px solid var(--primary-color);
+    background: var(--dark-color);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    box-shadow: 0 0 10px rgba(0, 204, 255, 0.3);
+    transition: all 0.3s ease;
+}
+
+/* 标准尺寸 - 用于主要操作 */
+.concentric-button.standard {
+    width: 60px;
+    height: 60px;
+}
+
+/* 小尺寸 - 用于次要操作 */
+.concentric-button.small {
+    width: 40px;
+    height: 40px;
+}
+
+/* 大尺寸 - 用于关键操作 */
+.concentric-button.large {
+    width: 80px;
+    height: 80px;
+}
+
+/* 同心圆环样式 */
+.concentric-rings {
+    width: 100%;
+    height: 100%;
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* 外环 */
+.ring-outer {
+    position: absolute;
+    border-radius: 50%;
+    border: 1px solid rgba(0, 204, 255, 0.4);
+}
+.concentric-button.standard .ring-outer {
+    width: 54px;
+    height: 54px;
+}
+.concentric-button.small .ring-outer {
+    width: 36px;
+    height: 36px;
+}
+.concentric-button.large .ring-outer {
+    width: 72px;
+    height: 72px;
+}
+
+/* 中环 */
+.ring-middle {
+    position: absolute;
+    border-radius: 50%;
+    border: 1px solid rgba(0, 204, 255, 0.6);
+}
+.concentric-button.standard .ring-middle {
+    width: 42px;
+    height: 42px;
+}
+.concentric-button.small .ring-middle {
+    width: 28px;
+    height: 28px;
+}
+.concentric-button.large .ring-middle {
+    width: 56px;
+    height: 56px;
+}
+
+/* 内环 */
+.ring-inner {
+    position: absolute;
+    border-radius: 50%;
+    border: 1px solid rgba(0, 204, 255, 0.8);
+}
+.concentric-button.standard .ring-inner {
+    width: 30px;
+    height: 30px;
+}
+.concentric-button.small .ring-inner {
+    width: 20px;
+    height: 20px;
+}
+.concentric-button.large .ring-inner {
+    width: 40px;
+    height: 40px;
+}
+
+/* 按钮中心 */
+.button-core {
+    position: absolute;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-shadow: 0 0 10px rgba(0, 204, 255, 0.7);
+    background: var(--primary-color);
+}
+.concentric-button.standard .button-core {
+    width: 20px;
+    height: 20px;
+}
+.concentric-button.small .button-core {
+    width: 14px;
+    height: 14px;
+}
+.concentric-button.large .button-core {
+    width: 26px;
+    height: 26px;
+}
+
+/* 按钮标签文字 */
+.button-label {
+    text-align: center;
+    margin-top: 8px;
+    font-size: 0.9rem;
+    color: var(--primary-color);
+    text-shadow: 0 0 5px rgba(0, 204, 255, 0.5);
+    letter-spacing: 1px;
+}
+
+/* 按钮悬停效果 */
+.concentric-button:hover {
+    transform: scale(1.05);
+    box-shadow: 0 0 15px rgba(0, 204, 255, 0.5), 0 0 30px rgba(0, 204, 255, 0.3);
+}
+
+/* 按钮点击效果 */
+.concentric-button:active {
+    transform: scale(0.95);
+    transition: transform 0.1s;
+}
+.concentric-button:active .button-core {
+    transform: scale(0.9);
+    transition: transform 0.1s;
+}
+
+/* 悬停时的旋转动画 */
+@keyframes spin-slow {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+@keyframes spin-reverse {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(-360deg); }
+}
+
+.concentric-button:hover .ring-outer {
+    animation: spin-slow 20s linear infinite;
+}
+.concentric-button:hover .ring-middle {
+    animation: spin-reverse 15s linear infinite;
+}
+.concentric-button:hover .ring-inner {
+    animation: spin-slow 10s linear infinite;
+}
+
+/* 按钮颜色变体 */
+/* 蓝色(默认) - 导航/信息类操作 */
+.concentric-button.blue {
+    border-color: var(--primary-color);
+}
+.concentric-button.blue .button-core {
+    background: var(--primary-color);
+}
+.concentric-button.blue .button-label {
+    color: var(--primary-color);
+}
+
+/* 绿色 - 确认/成功类操作 */
+.concentric-button.green {
+    border-color: var(--accent-color);
+}
+.concentric-button.green .ring-outer {
+    border-color: rgba(0, 255, 157, 0.4);
+}
+.concentric-button.green .ring-middle {
+    border-color: rgba(0, 255, 157, 0.6);
+}
+.concentric-button.green .ring-inner {
+    border-color: rgba(0, 255, 157, 0.8);
+}
+.concentric-button.green .button-core {
+    background: var(--accent-color);
+    box-shadow: 0 0 10px rgba(0, 255, 157, 0.7);
+}
+.concentric-button.green .button-label {
+    color: var(--accent-color);
+    text-shadow: 0 0 5px rgba(0, 255, 157, 0.5);
+}
+.concentric-button.green:hover {
+    box-shadow: 0 0 15px rgba(0, 255, 157, 0.5), 0 0 30px rgba(0, 255, 157, 0.3);
+}
+
+/* 红色 - 删除/危险类操作 */
+.concentric-button.red {
+    border-color: var(--accent-color2);
+}
+.concentric-button.red .ring-outer {
+    border-color: rgba(255, 51, 102, 0.4);
+}
+.concentric-button.red .ring-middle {
+    border-color: rgba(255, 51, 102, 0.6);
+}
+.concentric-button.red .ring-inner {
+    border-color: rgba(255, 51, 102, 0.8);
+}
+.concentric-button.red .button-core {
+    background: var(--accent-color2);
+    box-shadow: 0 0 10px rgba(255, 51, 102, 0.7);
+}
+.concentric-button.red .button-label {
+    color: var(--accent-color2);
+    text-shadow: 0 0 5px rgba(255, 51, 102, 0.5);
+}
+.concentric-button.red:hover {
+    box-shadow: 0 0 15px rgba(255, 51, 102, 0.5), 0 0 30px rgba(255, 51, 102, 0.3);
+}
+
+/* 紫色 - 特殊/高级功能 */
+.concentric-button.purple {
+    border-color: #9966ff;
+}
+.concentric-button.purple .ring-outer {
+    border-color: rgba(153, 102, 255, 0.4);
+}
+.concentric-button.purple .ring-middle {
+    border-color: rgba(153, 102, 255, 0.6);
+}
+.concentric-button.purple .ring-inner {
+    border-color: rgba(153, 102, 255, 0.8);
+}
+.concentric-button.purple .button-core {
+    background: #9966ff;
+    box-shadow: 0 0 10px rgba(153, 102, 255, 0.7);
+}
+.concentric-button.purple .button-label {
+    color: #9966ff;
+    text-shadow: 0 0 5px rgba(153, 102, 255, 0.5);
+}
+.concentric-button.purple:hover {
+    box-shadow: 0 0 15px rgba(153, 102, 255, 0.5), 0 0 30px rgba(153, 102, 255, 0.3);
+}
+
+/* 禁用状态 */
+.concentric-button.disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+.concentric-button.disabled:hover {
+    transform: none;
+    box-shadow: 0 0 10px rgba(0, 204, 255, 0.3);
+}
+.concentric-button.disabled:hover .ring-outer,
+.concentric-button.disabled:hover .ring-middle,
+.concentric-button.disabled:hover .ring-inner {
+    animation: none;
 }

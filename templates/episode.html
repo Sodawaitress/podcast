@@ -16,7 +16,6 @@
         {% if authenticated %}
         <div class="episode-description">{{ episode.description|safe }}</div>
         
-        <!-- 音频播放器 -->
         <div class="imperial-audio-device">
             <div class="device-header">
                 <div class="device-title">蒂国通讯录音 - {{ episode.title }}</div>
@@ -31,94 +30,54 @@
                     <div class="waveform" id="waveform">
                         <div class="waveform-grid"></div>
                         <div class="waveform-line"></div>
-                        <div class="bars-container" id="bars-container"></div>
                     </div>
                 </div>
-            </div>
-            
-            <div class="imperial-controls">
-                <div class="play-button-container">
-                    <button id="playButton" class="play-button rainbowplanet">
-                        <span class="planet-effect"></span>
-                        <div class="concentric-circles">
-                            <div class="circle-outer"></div>
-                            <div class="circle-middle"></div>
-                            <div class="circle-inner"></div>
-                            <div class="button-center">
-                                <div class="play-icon"></div>
-                            </div>
-                        </div>
-                    </button>
-                </div>
-                
-                <div class="progress-controls">
-                    <div class="time-display current-time">00:00</div>
-                    <div class="progress-container">
-                        <div class="progress-track">
-                            <div class="progress-fill" id="progressFill">
-                                <div class="rainbow-glow"></div>
-                            </div>
-                            <div class="progress-handle" id="progressHandle">
-                                <div class="handle-glow"></div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="time-display total-time">
-                        {% if episode.duration %}
-                        {{ episode.duration//60 }}:{{ '%02d'|format(episode.duration%60) }}
-                        {% else %}
-                        --:--
-                        {% endif %}
-                    </div>
-                </div>
-                
-                <div class="volume-control">
-                    <div class="volume-icon">
-                        <div class="volume-wave"></div>
-                    </div>
-                    <div class="volume-slider">
-                        <div class="volume-track">
-                            <div class="volume-fill"></div>
-                            <div class="volume-handle"></div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            
-            <audio id="audioElement" style="display: none;">
-                {% if episode.audio_file.startswith('http') %}
-                <source src="{{ episode.audio_file }}" type="audio/mpeg">
-                {% else %}
-                <source src="{{ url_for('media', filename=episode.audio_file) }}" type="audio/mpeg">
-                {% endif %}
-                您的浏览器不支持HTML5音频播放。
-            </audio>
-        </div>
-
-        <!-- 上一集/下一集导航 -->
-        <div class="episode-navigation">
+                <div class="audio-spectrum">
+                    <div class="spectrum-bar" style="height: 40%;"></div>
+        
+        <!-- 上一集/下一集控制按钮 - 完全闭合的线条，无三角形 -->
+        <div style="display: flex; justify-content: center; margin: 30px auto; width: 130px;">
             {% if prev_url %}
-            <a href="{{ prev_url }}" class="nav-button prev">
-                <div class="nav-circle left"></div>
-            </a>
+            <a href="{{ prev_url }}" style="text-decoration: none;">
             {% else %}
-            <a href="#" class="nav-button prev disabled">
-                <div class="nav-circle left"></div>
-            </a>
+            <a href="#" style="text-decoration: none; pointer-events: none; opacity: 0.5;">
             {% endif %}
+                <button type="button" style="background: none; border: none; cursor: pointer; padding: 0; margin-right: 5px;">
+                    <div style="position: relative; width: 60px; height: 60px; overflow: hidden;">
+                        <!-- 完全闭合的左半圆 -->
+                        <div style="position: absolute; top: 0; left: 0; width: 60px; height: 60px; overflow: hidden;">
+                            <div class="left-half-circle" style="position: absolute; width: 60px; height: 60px; border-radius: 30px; border: 2px solid var(--primary-color); background: var(--dark-color); clip-path: polygon(0 0, 50% 0, 50% 100%, 0% 100%); box-shadow: 0 0 10px rgba(0, 204, 255, 0.3); transition: all 0.3s ease;"></div>
+                            
+                            <!-- 内部同心圆 - 完全闭合 -->
+                            <div style="position: absolute; top: 4px; left: 4px; width: 52px; height: 52px; border-radius: 26px; border: 1px solid rgba(0, 204, 255, 0.4); clip-path: polygon(0 0, 50% 0, 50% 100%, 0% 100%);"></div>
+                            <div style="position: absolute; top: 12px; left: 12px; width: 36px; height: 36px; border-radius: 18px; border: 1px solid rgba(0, 204, 255, 0.6); clip-path: polygon(0 0, 50% 0, 50% 100%, 0% 100%);"></div>
+                            <div style="position: absolute; top: 20px; left: 20px; width: 20px; height: 20px; border-radius: 10px; border: 1px solid rgba(0, 204, 255, 0.8); clip-path: polygon(0 0, 50% 0, 50% 100%, 0% 100%);"></div>
+                        </div>
+                    </div>
+                </button>
+            </a>
             
             {% if next_url %}
-            <a href="{{ next_url }}" class="nav-button next">
-                <div class="nav-circle right"></div>
-            </a>
+            <a href="{{ next_url }}" style="text-decoration: none;">
             {% else %}
-            <a href="#" class="nav-button next disabled">
-                <div class="nav-circle right"></div>
-            </a>
+            <a href="#" style="text-decoration: none; pointer-events: none; opacity: 0.5;">
             {% endif %}
+                <button type="button" style="background: none; border: none; cursor: pointer; padding: 0; margin-left: 5px;">
+                    <div style="position: relative; width: 60px; height: 60px; overflow: hidden;">
+                        <!-- 完全闭合的右半圆 -->
+                        <div style="position: absolute; top: 0; left: 0; width: 60px; height: 60px; overflow: hidden;">
+                            <div class="right-half-circle" style="position: absolute; width: 60px; height: 60px; border-radius: 30px; border: 2px solid var(--primary-color); background: var(--dark-color); clip-path: polygon(50% 0, 100% 0, 100% 100%, 50% 100%); box-shadow: 0 0 10px rgba(0, 204, 255, 0.3); transition: all 0.3s ease;"></div>
+                            
+                            <!-- 内部同心圆 - 完全闭合 -->
+                            <div style="position: absolute; top: 4px; left: 4px; width: 52px; height: 52px; border-radius: 26px; border: 1px solid rgba(0, 204, 255, 0.4); clip-path: polygon(50% 0, 100% 0, 100% 100%, 50% 100%);"></div>
+                            <div style="position: absolute; top: 12px; left: 12px; width: 36px; height: 36px; border-radius: 18px; border: 1px solid rgba(0, 204, 255, 0.6); clip-path: polygon(50% 0, 100% 0, 100% 100%, 50% 100%);"></div>
+                            <div style="position: absolute; top: 20px; left: 20px; width: 20px; height: 20px; border-radius: 10px; border: 1px solid rgba(0, 204, 255, 0.8); clip-path: polygon(50% 0, 100% 0, 100% 100%, 50% 100%);"></div>
+                        </div>
+                    </div>
+                </button>
+            </a>
         </div>
-
-        <!-- 分享终端 -->
+        
         <div class="sharing-options hologram-terminal">
             <h3 class="terminal-title">蒂国通讯终端 - 信息传输</h3>
             
@@ -132,24 +91,788 @@
                 </div>
             </div>
             
-            <div class="terminal-controls">
-                <button class="terminal-button blue" onclick="copyHologramUrl()">
-                    <div class="button-led"></div>
-                    <div class="button-label">复制链接</div>
-                    <div class="button-desc">复制当前页面链接</div>
-                </button>
+            <div class="imperial-audio-device">
+                <div class="device-header">
+                    <div class="device-title">蒂国通讯录音 - {{ episode.title }}</div>
+                    <div class="device-status">
+                        <div class="status-light"></div>
+                        <span class="status-text">就绪</span>
+                    </div>
+                </div>
                 
-                <button class="terminal-button purple" onclick="encryptUrl()">
-                    <div class="button-led"></div>
-                    <div class="button-label">生成短链</div>
-                    <div class="button-desc">生成加密短链接</div>
-                </button>
+                <div class="audio-visualization">
+                    <!-- 音频波形显示区域 -->
+                    <div class="waveform-container">
+                        <div class="waveform" id="waveform">
+                            <div class="waveform-grid"></div>
+                            <div class="waveform-line"></div>
+                            <!-- 波形条 -->
+                            <div class="bars-container" id="bars-container"></div>
+                        </div>
+                    </div>
+                </div>
                 
-                <button class="terminal-button green" onclick="broadcastEpisode()">
-                    <div class="button-led"></div>
-                    <div class="button-label">广播</div>
-                    <div class="button-desc">分享到社交平台</div>
-                </button>
+                <div class="imperial-controls">
+                    <!-- 彩虹行星效果播放按钮 -->
+                    <div class="play-button-container">
+                        <button id="playButton" class="play-button rainbowplanet">
+                            <span class="planet-effect"></span>
+                            <div class="concentric-circles">
+                                <div class="circle-outer"></div>
+                                <div class="circle-middle"></div>
+                                <div class="circle-inner"></div>
+                                <div class="button-center">
+                                    <div class="play-icon"></div>
+                                </div>
+                            </div>
+                        </button>
+                    </div>
+                    
+                    <!-- 进度控制 -->
+                    <div class="progress-controls">
+                        <div class="time-display current-time">00:00</div>
+                        
+                        <!-- 带彩虹行星效果的进度条 -->
+                        <div class="progress-container">
+                            <div class="progress-track">
+                                <div class="progress-fill" id="progressFill">
+                                    <div class="rainbow-glow"></div>
+                                </div>
+                                <div class="progress-handle" id="progressHandle">
+                                    <div class="handle-glow"></div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="time-display total-time">
+                            {% if episode.duration %}
+                            {{ episode.duration//60 }}:{{ '%02d'|format(episode.duration%60) }}
+                            {% else %}
+                            --:--
+                            {% endif %}
+                        </div>
+                    </div>
+                    
+                    <!-- 音量控制 -->
+                    <div class="volume-control">
+                        <div class="volume-icon">
+                            <div class="volume-wave"></div>
+                        </div>
+                        <div class="volume-slider">
+                            <div class="volume-track">
+                                <div class="volume-fill"></div>
+                                <div class="volume-handle"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- 隐藏的原始音频元素 -->
+                <audio id="audioElement" style="display: none;">
+                    {% if episode.audio_file.startswith('http') %}
+                    <source src="{{ episode.audio_file }}" type="audio/mpeg">
+                    {% else %}
+                    <source src="{{ url_for('media', filename=episode.audio_file) }}" type="audio/mpeg">
+                    {% endif %}
+                    您的浏览器不支持HTML5音频播放。
+                </audio>
+            </div>
+            
+            <style>
+            /* 音频播放器整体容器 */
+            .imperial-audio-device {
+                background: rgba(5, 6, 26, 0.8);
+                border: 2px solid var(--primary-color);
+                border-radius: 8px;
+                padding: 20px;
+                margin: 30px 0;
+                position: relative;
+                overflow: hidden;
+                box-shadow: 0 0 20px rgba(0, 204, 255, 0.3);
+            }
+            
+            /* 设备顶部信息 */
+            .device-header {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                margin-bottom: 15px;
+                border-bottom: 1px solid rgba(0, 204, 255, 0.3);
+                padding-bottom: 10px;
+            }
+            
+            .device-title {
+                color: var(--primary-color);
+                font-size: 16px;
+                font-weight: bold;
+                letter-spacing: 1px;
+                text-shadow: 0 0 5px rgba(0, 204, 255, 0.5);
+            }
+            
+            .device-status {
+                display: flex;
+                align-items: center;
+            }
+            
+            .status-light {
+                width: 8px;
+                height: 8px;
+                border-radius: 50%;
+                background-color: #00ff9d;
+                box-shadow: 0 0 8px rgba(0, 255, 157, 0.7);
+                margin-right: 8px;
+            }
+            
+            .status-text {
+                color: #00ff9d;
+                font-size: 12px;
+            }
+            
+            /* 音频可视化区域 */
+            .audio-visualization {
+                margin: 20px 0;
+                height: 100px;
+                position: relative;
+            }
+            
+            .waveform-container {
+                height: 100%;
+                width: 100%;
+                position: relative;
+                overflow: hidden;
+            }
+            
+            .waveform {
+                height: 100%;
+                width: 100%;
+                position: relative;
+                background: rgba(0, 0, 0, 0.3);
+                border: 1px solid var(--primary-color);
+                border-radius: 4px;
+                box-shadow: 0 0 10px rgba(0, 204, 255, 0.2) inset;
+            }
+            
+            .waveform-grid {
+                position: absolute;
+                width: 100%;
+                height: 100%;
+                background-image: 
+                    linear-gradient(to right, rgba(0, 204, 255, 0.15) 1px, transparent 1px),
+                    linear-gradient(to bottom, rgba(0, 204, 255, 0.15) 1px, transparent 1px);
+                background-size: 20px 20px;
+                z-index: 1;
+            }
+            
+            .waveform-line {
+                position: absolute;
+                top: 0;
+                left: 50%;
+                height: 100%;
+                width: 1px;
+                background-color: rgba(0, 204, 255, 0.5);
+                box-shadow: 0 0 10px rgba(0, 204, 255, 0.7);
+                z-index: 3;
+            }
+            
+            /* 波形条 */
+            .bars-container {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                height: 100%;
+                padding: 0 5px;
+                position: relative;
+                z-index: 2;
+            }
+            
+            .audio-bar {
+                width: 3px;
+                background-color: var(--primary-color);
+                box-shadow: 0 0 5px rgba(0, 204, 255, 0.7);
+                border-radius: 1.5px;
+                transition: height 0.1s ease;
+            }
+            
+            /* 控制区域 */
+            .imperial-controls {
+                display: flex;
+                align-items: center;
+                margin-top: 20px;
+            }
+            
+            /* 彩虹行星效果播放按钮 */
+            .play-button-container {
+                margin-right: 15px;
+            }
+            
+            .play-button {
+                width: 60px;
+                height: 60px;
+                border-radius: 50%;
+                position: relative;
+                cursor: pointer;
+                background: none;
+                border: none;
+                padding: 0;
+                outline: none;
+            }
+            
+            .play-button.rainbowplanet {
+                border: 2px solid var(--primary-color);
+                background: var(--dark-color);
+                box-shadow: 0 0 10px rgba(0, 204, 255, 0.3);
+                transition: all 0.3s ease;
+            }
+            
+            .play-button.rainbowplanet:hover {
+                transform: scale(1.05);
+                box-shadow: 0 0 15px rgba(0, 204, 255, 0.5);
+            }
+            
+            /* 彩虹行星效果层 */
+            .planet-effect {
+                position: absolute;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                border-radius: 50%;
+                opacity: 0;
+                z-index: 1;
+                transition: opacity 0.3s ease;
+                background: 
+                    radial-gradient(
+                        circle at center,
+                        rgba(247, 140, 170, 0.9) 0%,
+                        rgba(85, 205, 252, 0.8) 30%,
+                        rgba(247, 140, 170, 0.7) 60%,
+                        transparent 100%
+                    ),
+                    linear-gradient(
+                        0deg,
+                        rgba(255, 100, 100, 0.8) 0%,
+                        rgba(255, 160, 80, 0.8) 16.6%,
+                        rgba(255, 240, 70, 0.8) 33.3%,
+                        rgba(100, 230, 100, 0.8) 50%,
+                        rgba(80, 170, 255, 0.8) 66.6%,
+                        rgba(180, 100, 255, 0.8) 83.3%,
+                        rgba(247, 140, 170, 0.8) 100%
+                    );
+            }
+            
+            .play-button.rainbowplanet:hover .planet-effect {
+                opacity: 0.9;
+            }
+            
+            /* 同心圆结构 */
+            .concentric-circles {
+                position: relative;
+                width: 100%;
+                height: 100%;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                z-index: 2;
+            }
+            
+            .circle-outer {
+                position: absolute;
+                width: 54px;
+                height: 54px;
+                border-radius: 50%;
+                border: 1px solid rgba(0, 204, 255, 0.4);
+                transition: all 0.3s ease;
+            }
+            
+            .circle-middle {
+                position: absolute;
+                width: 42px;
+                height: 42px;
+                border-radius: 50%;
+                border: 1px solid rgba(0, 204, 255, 0.6);
+                transition: all 0.3s ease;
+            }
+            
+            .circle-inner {
+                position: absolute;
+                width: 30px;
+                height: 30px;
+                border-radius: 50%;
+                border: 1px solid rgba(0, 204, 255, 0.8);
+                transition: all 0.3s ease;
+            }
+            
+            .button-center {
+                position: absolute;
+                width: 20px;
+                height: 20px;
+                border-radius: 50%;
+                background: var(--primary-color);
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                box-shadow: 0 0 10px rgba(0, 204, 255, 0.7);
+                transition: all 0.3s ease;
+            }
+            
+            /* 播放/暂停图标 */
+            .play-icon {
+                width: 0;
+                height: 0;
+                border-style: solid;
+                border-width: 5px 0 5px 8px;
+                border-color: transparent transparent transparent var(--bg-color);
+                margin-left: 2px;
+            }
+            
+            .play-button.playing .play-icon {
+                width: 8px;
+                height: 8px;
+                border: none;
+                margin-left: 0;
+                position: relative;
+            }
+            
+            .play-button.playing .play-icon:before,
+            .play-button.playing .play-icon:after {
+                content: '';
+                position: absolute;
+                background: var(--bg-color);
+                width: 3px;
+                height: 8px;
+                top: 0;
+            }
+            
+            .play-button.playing .play-icon:before {
+                left: 0;
+            }
+            
+            .play-button.playing .play-icon:after {
+                right: 0;
+            }
+            
+            /* 旋转效果 */
+            @keyframes spin-slow {
+                0% { transform: rotate(0deg); }
+                100% { transform: rotate(360deg); }
+            }
+            
+            @keyframes spin-reverse {
+                0% { transform: rotate(0deg); }
+                100% { transform: rotate(-360deg); }
+            }
+            
+            .play-button.playing .circle-outer {
+                animation: spin-slow 20s linear infinite;
+            }
+            
+            .play-button.playing .circle-middle {
+                animation: spin-reverse 15s linear infinite;
+            }
+            
+            .play-button.playing .circle-inner {
+                animation: spin-slow 10s linear infinite;
+            }
+            
+            /* 进度控制 */
+            .progress-controls {
+                flex: 1;
+                display: flex;
+                align-items: center;
+                margin: 0 15px;
+            }
+            
+            .time-display {
+                color: var(--primary-color);
+                font-family: 'Droid Sans Mono', monospace;
+                font-size: 14px;
+                min-width: 45px;
+                text-align: center;
+            }
+            
+            .progress-container {
+                flex: 1;
+                margin: 0 10px;
+                height: 20px;
+                display: flex;
+                align-items: center;
+            }
+            
+            .progress-track {
+                height: 6px;
+                width: 100%;
+                background: rgba(0, 0, 0, 0.5);
+                border-radius: 3px;
+                position: relative;
+                border: 1px solid rgba(0, 204, 255, 0.3);
+                box-shadow: 0 0 5px rgba(0, 204, 255, 0.2) inset;
+                cursor: pointer;
+            }
+            
+            .progress-fill {
+                height: 100%;
+                width: 0%;
+                background: linear-gradient(
+                    to right,
+                    var(--primary-color) 0%,
+                    #00ff9d 50%,
+                    var(--primary-color) 100%
+                );
+                border-radius: 3px;
+                position: relative;
+                transition: width 0.1s linear;
+            }
+            
+            .rainbow-glow {
+                position: absolute;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                border-radius: 3px;
+                box-shadow: 0 0 10px rgba(0, 204, 255, 0.7);
+                animation: rainbow-pulse 2s infinite alternate;
+            }
+            
+            @keyframes rainbow-pulse {
+                0% {
+                    box-shadow: 0 0 5px rgba(0, 204, 255, 0.7);
+                }
+                50% {
+                    box-shadow: 0 0 10px rgba(0, 255, 157, 0.7);
+                }
+                100% {
+                    box-shadow: 0 0 15px rgba(153, 102, 255, 0.7);
+                }
+            }
+            
+            .progress-handle {
+                width: 14px;
+                height: 14px;
+                border-radius: 50%;
+                background: var(--primary-color);
+                position: absolute;
+                top: 50%;
+                left: 0%;
+                transform: translate(-50%, -50%);
+                cursor: pointer;
+            }
+            
+            .handle-glow {
+                position: absolute;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                border-radius: 50%;
+                box-shadow: 0 0 10px rgba(0, 204, 255, 0.7);
+            }
+            
+            /* 音量控制 */
+            .volume-control {
+                display: flex;
+                align-items: center;
+                margin-left: 15px;
+            }
+            
+            .volume-icon {
+                width: 20px;
+                height: 20px;
+                position: relative;
+                margin-right: 8px;
+            }
+            
+            .volume-icon:before {
+                content: '';
+                position: absolute;
+                left: 0;
+                top: 6px;
+                width: 8px;
+                height: 8px;
+                background: var(--primary-color);
+                clip-path: polygon(0 0, 40% 0, 100% 30%, 100% 70%, 40% 100%, 0 100%);
+            }
+            
+            .volume-wave {
+                position: absolute;
+                right: 0;
+                top: 5px;
+                width: 12px;
+                height: 10px;
+                border-radius: 0 50% 50% 0;
+                border-right: 2px solid var(--primary-color);
+                border-top: 2px solid transparent;
+                border-bottom: 2px solid transparent;
+            }
+            
+            .volume-wave:before {
+                content: '';
+                position: absolute;
+                right: -4px;
+                top: -4px;
+                width: 16px;
+                height: 14px;
+                border-radius: 0 50% 50% 0;
+                border-right: 1px solid rgba(0, 204, 255, 0.5);
+                border-top: 1px solid transparent;
+                border-bottom: 1px solid transparent;
+            }
+            
+            .volume-slider {
+                width: 80px;
+                height: 20px;
+                display: flex;
+                align-items: center;
+            }
+            
+            .volume-track {
+                height: 4px;
+                width: 100%;
+                background: rgba(0, 0, 0, 0.5);
+                border-radius: 2px;
+                position: relative;
+                border: 1px solid rgba(0, 204, 255, 0.3);
+                cursor: pointer;
+            }
+            
+            .volume-fill {
+                height: 100%;
+                width: 70%;
+                background: var(--primary-color);
+                border-radius: 2px;
+            }
+            
+            .volume-handle {
+                width: 10px;
+                height: 10px;
+                border-radius: 50%;
+                background: var(--primary-color);
+                position: absolute;
+                top: 50%;
+                left: 70%;
+                transform: translate(-50%, -50%);
+                box-shadow: 0 0 5px rgba(0, 204, 255, 0.7);
+                cursor: pointer;
+            }
+            
+            /* 响应式调整 */
+            @media (max-width: 768px) {
+                .imperial-controls {
+                    flex-direction: column;
+                    align-items: center;
+                }
+                
+                .play-button-container {
+                    margin-right: 0;
+                    margin-bottom: 15px;
+                }
+                
+                .progress-controls {
+                    width: 100%;
+                    margin: 15px 0;
+                }
+                
+                .volume-control {
+                    margin-left: 0;
+                    margin-top: 10px;
+                }
+            }
+            </style>
+            
+            <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                // 获取音频元素
+                const audio = document.getElementById('audioElement');
+                
+                // 获取控制按钮和进度条
+                const playButton = document.getElementById('playButton');
+                const progressFill = document.getElementById('progressFill');
+                const progressHandle = document.getElementById('progressHandle');
+                const progressTrack = document.querySelector('.progress-track');
+                const currentTimeDisplay = document.querySelector('.current-time');
+                
+                // 波形条容器
+                const barsContainer = document.getElementById('bars-container');
+                
+                // 创建波形条
+                const createWaveformBars = () => {
+                    const barCount = 50; // 条的数量
+                    barsContainer.innerHTML = '';
+                    
+                    for (let i = 0; i < barCount; i++) {
+                        const bar = document.createElement('div');
+                        bar.className = 'audio-bar';
+                        bar.style.height = Math.random() * 70 + 10 + '%';
+                        barsContainer.appendChild(bar);
+                    }
+                };
+                createWaveformBars();
+                
+                // 模拟音频可视化效果
+                const animateWaveform = (playing) => {
+                    const bars = barsContainer.querySelectorAll('.audio-bar');
+                    
+                    if (playing) {
+                        const animate = () => {
+                            bars.forEach(bar => {
+                                const height = Math.random() * 70 + 10;
+                                bar.style.height = height + '%';
+                            });
+                            
+                            if (audio.paused) return;
+                            requestAnimationFrame(animate);
+                        };
+                        
+                        animate();
+                    } else {
+                        // 暂停时静止显示
+                        bars.forEach(bar => {
+                            bar.style.height = '30%';
+                        });
+                    }
+                };
+                
+                // 播放/暂停切换
+                playButton.addEventListener('click', function() {
+                    if (audio.paused) {
+                        audio.play();
+                        playButton.classList.add('playing');
+                        animateWaveform(true);
+                        document.querySelector('.status-text').textContent = '播放中';
+                    } else {
+                        audio.pause();
+                        playButton.classList.remove('playing');
+                        animateWaveform(false);
+                        document.querySelector('.status-text').textContent = '已暂停';
+                    }
+                });
+                
+                // 更新进度条
+                audio.addEventListener('timeupdate', function() {
+                    const currentTime = audio.currentTime;
+                    const duration = audio.duration;
+                    const progressPercent = (currentTime / duration) * 100;
+                    
+                    // 更新进度条填充
+                    progressFill.style.width = progressPercent + '%';
+                    
+                    // 更新拖动手柄位置
+                    progressHandle.style.left = progressPercent + '%';
+                    
+                    // 更新时间显示
+                    const currentMinutes = Math.floor(currentTime / 60);
+                    const currentSeconds = Math.floor(currentTime % 60);
+                    currentTimeDisplay.textContent = 
+                        (currentMinutes < 10 ? '0' : '') + currentMinutes + 
+                        ':' + 
+                        (currentSeconds < 10 ? '0' : '') + currentSeconds;
+                });
+                
+                // 点击进度条跳转
+                progressTrack.addEventListener('click', function(e) {
+                    const trackRect = progressTrack.getBoundingClientRect();
+                    const clickPosition = e.clientX - trackRect.left;
+                    const progressPercent = (clickPosition / trackRect.width) * 100;
+                    
+                    // 更新音频当前时间
+                    audio.currentTime = (progressPercent / 100) * audio.duration;
+                });
+                
+                // 音频结束时重置
+                audio.addEventListener('ended', function() {
+                    playButton.classList.remove('playing');
+                    animateWaveform(false);
+                    document.querySelector('.status-text').textContent = '已完成';
+                });
+                
+                // 进度条拖动功能
+                let isDragging = false;
+                
+                progressHandle.addEventListener('mousedown', function(e) {
+                    isDragging = true;
+                    e.preventDefault(); // 防止选中文本
+                });
+                
+                document.addEventListener('mousemove', function(e) {
+                    if (!isDragging) return;
+                    
+                    const trackRect = progressTrack.getBoundingClientRect();
+                    let clickPosition = e.clientX - trackRect.left;
+                    
+                    // 限制在轨道范围内
+                    if (clickPosition < 0) clickPosition = 0;
+                    if (clickPosition > trackRect.width) clickPosition = trackRect.width;
+                    
+                    const progressPercent = (clickPosition / trackRect.width) * 100;
+                    
+                    // 更新进度条填充和手柄位置
+                    progressFill.style.width = progressPercent + '%';
+                    progressHandle.style.left = progressPercent + '%';
+                });
+                
+                document.addEventListener('mouseup', function() {
+                    if (!isDragging) return;
+                    
+                    const trackRect = progressTrack.getBoundingClientRect();
+                    const handleRect = progressHandle.getBoundingClientRect();
+                    const handlePosition = handleRect.left + handleRect.width / 2 - trackRect.left;
+                    const progressPercent = (handlePosition / trackRect.width) * 100;
+                    
+                    // 设置音频当前时间
+                    audio.currentTime = (progressPercent / 100) * audio.duration;
+                    
+                    isDragging = false;
+                });
+                
+                // 音量控制
+                const volumeTrack = document.querySelector('.volume-track');
+                const volumeFill = document.querySelector('.volume-fill');
+                const volumeHandle = document.querySelector('.volume-handle');
+                
+                volumeTrack.addEventListener('click', function(e) {
+                    const trackRect = volumeTrack.getBoundingClientRect();
+                    const clickPosition = e.clientX - trackRect.left;
+                    const volumePercent = (clickPosition / trackRect.width) * 100;
+                    
+                    // 更新音量填充和手柄位置
+                    volumeFill.style.width = volumePercent + '%';
+                    volumeHandle.style.left = volumePercent + '%';
+                    
+                    // 设置音频音量 (0-1)
+                    audio.volume = volumePercent / 100;
+                });
+            });
+            </script>
+            
+            <!-- 分享选项面板，默认隐藏 -->
+            <div class="share-panel" id="sharePanel">
+                <div class="share-panel-header">选择广播频道</div>
+                <div class="share-options">
+                    <!-- 豆瓣分享 -->
+                    <button class="share-option" onclick="shareToApp('douban')">
+                        <div class="share-icon douban">豆</div>
+                        <span>豆瓣</span>
+                    </button>
+                    
+                    <!-- CMX分享 -->
+                    <button class="share-option" onclick="shareToApp('cmx')">
+                        <div class="share-icon cmx">C</div>
+                        <span>CMX</span>
+                    </button>
+                    
+                    <!-- Twitter分享 -->
+                    <button class="share-option" onclick="shareToApp('twitter')">
+                        <div class="share-icon twitter">X</div>
+                        <span>Twitter</span>
+                    </button>
+                    
+                    <!-- 更多选项 -->
+                    <button class="share-option" onclick="shareToApp('more')">
+                        <div class="share-icon more">+</div>
+                        <span>更多</span>
+                    </button>
+                </div>
+                <button class="close-panel" onclick="closeSharePanel()">关闭</button>
             </div>
             
             <div class="radar-container">
@@ -168,32 +891,681 @@
             </div>
         </div>
         
-        <!-- 分享面板 -->
-        <div class="share-panel" id="sharePanel">
-            <div class="share-panel-header">选择广播频道</div>
-            <div class="share-options">
-                <button class="share-option" onclick="shareToApp('douban')">
-                    <div class="share-icon douban">豆</div>
-                    <span>豆瓣</span>
-                </button>
+        <script>
+        // 复制链接功能
+        function copyHologramUrl() {
+            var urlElement = document.getElementById('hologram-url');
+            urlElement.select();
+            document.execCommand('copy');
+            
+            // 更新状态指示器
+            updateStatus('传输完成', 'success');
+            
+            // 添加全息投影激活效果
+            var hologramEffect = document.querySelector('.hologram-effect');
+            hologramEffect.classList.add('transmitting');
+            
+            // 3秒后恢复
+            setTimeout(function() {
+                var statusLed = document.querySelector('.status-led');
+                var statusText = document.querySelector('.status-text');
                 
-                <button class="share-option" onclick="shareToApp('cmx')">
-                    <div class="share-icon cmx">C</div>
-                    <span>CMX</span>
-                </button>
+                statusLed.className = 'status-led';
+                statusText.textContent = '传输就绪';
+                hologramEffect.classList.remove('transmitting');
+            }, 3000);
+        }
+        
+        // 生成短链接功能
+        function encryptUrl() {
+            var urlElement = document.getElementById('hologram-url');
+            var originalUrl = urlElement.value;
+            
+            // 更新状态为"处理中"
+            updateStatus('加密处理中', 'processing');
+            
+            // 模拟短链接生成过程 - 在实际应用中，这里应该调用短链接API
+            setTimeout(function() {
+                // 这里只是模拟生成短链接，实际应用中应替换为真实API调用
+                var shortUrl = "https://s.cmx.im/" + generateRandomString(7);
                 
-                <button class="share-option" onclick="shareToApp('twitter')">
-                    <div class="share-icon twitter">X</div>
-                    <span>Twitter</span>
-                </button>
+                // 更新输入框值为短链接
+                urlElement.value = shortUrl;
                 
-                <button class="share-option" onclick="shareToApp('more')">
-                    <div class="share-icon more">+</div>
-                    <span>更多</span>
-                </button>
-            </div>
-            <button class="close-panel" onclick="closeSharePanel()">关闭</button>
-        </div>
+                // 更新状态为"加密完成"
+                updateStatus('加密完成', 'success');
+                
+                // 添加全息投影激活效果
+                var hologramEffect = document.querySelector('.hologram-effect');
+                hologramEffect.classList.add('encrypted');
+                
+                // 5秒后恢复
+                setTimeout(function() {
+                    // 点击按钮可以在原始链接和短链接之间切换
+                    urlElement.setAttribute('data-original-url', originalUrl);
+                    urlElement.setAttribute('data-short-url', shortUrl);
+                    urlElement.setAttribute('data-is-short', 'true');
+                    
+                    var statusLed = document.querySelector('.status-led');
+                    var statusText = document.querySelector('.status-text');
+                    
+                    statusLed.className = 'status-led';
+                    statusText.textContent = '传输就绪';
+                    hologramEffect.classList.remove('encrypted');
+                }, 3000);
+            }, 1500);
+        }
+        
+        // 生成随机字符串作为短链接代码
+        function generateRandomString(length) {
+            var chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+            var result = '';
+            for (var i = 0; i < length; i++) {
+                result += chars.charAt(Math.floor(Math.random() * chars.length));
+            }
+            return result;
+        }
+        
+        // 显示分享面板
+        function broadcastEpisode() {
+            var sharePanel = document.getElementById('sharePanel');
+            sharePanel.classList.add('active');
+            
+            // 更新状态
+            updateStatus('广播准备中', 'alert');
+        }
+        
+        // 关闭分享面板
+        function closeSharePanel() {
+            var sharePanel = document.getElementById('sharePanel');
+            sharePanel.classList.remove('active');
+            
+            // 恢复状态
+            var statusLed = document.querySelector('.status-led');
+            var statusText = document.querySelector('.status-text');
+            
+            statusLed.className = 'status-led';
+            statusText.textContent = '传输就绪';
+        }
+        
+        // 分享到指定应用
+        function shareToApp(app) {
+            var urlElement = document.getElementById('hologram-url');
+            var shareUrl = urlElement.value;
+            var title = "{{ episode.title }}"; // 使用实际的播客标题
+            var description = "来自星际播客的精彩内容"; // 可以替换为实际描述
+            
+            var shareUrls = {
+                'douban': 'https://www.douban.com/share/service?href=' + encodeURIComponent(shareUrl) + '&name=' + encodeURIComponent(title) + '&text=' + encodeURIComponent(description),
+                'twitter': 'https://twitter.com/intent/tweet?url=' + encodeURIComponent(shareUrl) + '&text=' + encodeURIComponent(title),
+                'cmx': 'https://cmx.im/share?url=' + encodeURIComponent(shareUrl) + '&title=' + encodeURIComponent(title),
+                'more': 'javascript:navigator.share && navigator.share({title: "' + title + '", url: "' + shareUrl + '"})'
+            };
+            
+            if (app === 'more' && navigator.share) {
+                navigator.share({
+                    title: title,
+                    text: description,
+                    url: shareUrl
+                }).catch(function(error) {
+                    console.log('分享出错:', error);
+                });
+            } else {
+                window.open(shareUrls[app], '_blank');
+            }
+            
+            // 更新状态
+            updateStatus('广播成功', 'success');
+            
+            // 3秒后关闭分享面板
+            setTimeout(function() {
+                closeSharePanel();
+            }, 3000);
+        }
+        
+        // 更新状态指示器
+        function updateStatus(message, type) {
+            var statusLed = document.querySelector('.status-led');
+            var statusText = document.querySelector('.status-text');
+            
+            statusLed.className = 'status-led';
+            statusText.textContent = message;
+            
+            if (type === 'success') {
+                statusLed.classList.add('success');
+            } else if (type === 'alert') {
+                statusLed.classList.add('alert');
+            } else if (type === 'processing') {
+                statusLed.classList.add('processing');
+            }
+        }
+        </script>
+        
+        <style>
+        /* 全息通讯终端样式 */
+        .hologram-terminal {
+            background: rgba(5, 6, 26, 0.8);
+            border: 2px solid var(--primary-color);
+            border-radius: 8px;
+            padding: 25px;
+            margin: 30px 0;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 0 20px rgba(0, 204, 255, 0.3);
+        }
+        
+        /* 标题样式 */
+        .terminal-title {
+            color: var(--primary-color);
+            text-align: center;
+            font-family: 'Star Jedi', 'Arial', sans-serif;
+            letter-spacing: 2px;
+            margin-bottom: 20px;
+            text-shadow: 
+                0 0 5px var(--primary-color),
+                0 0 10px var(--primary-color);
+        }
+        
+        /* 全息投影容器 */
+        .hologram-container {
+            position: relative;
+            height: 120px;
+            margin: 30px 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        /* 全息投影效果 */
+        .hologram-effect {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(
+                ellipse at center,
+                rgba(0, 204, 255, 0.2) 0%,
+                rgba(0, 204, 255, 0.1) 40%,
+                transparent 70%
+            );
+            opacity: 0.7;
+            z-index: 1;
+            pointer-events: none;
+            animation: pulse 2s infinite alternate;
+        }
+        
+        .hologram-effect.transmitting {
+            background: radial-gradient(
+                ellipse at center,
+                rgba(0, 255, 157, 0.3) 0%,
+                rgba(0, 255, 157, 0.2) 40%,
+                transparent 70%
+            );
+            animation: pulse-transmit 0.5s infinite alternate;
+        }
+        
+        .hologram-effect.encrypted {
+            background: radial-gradient(
+                ellipse at center,
+                rgba(153, 102, 255, 0.3) 0%,
+                rgba(153, 102, 255, 0.2) 40%,
+                transparent 70%
+            );
+            animation: pulse-encrypt 0.8s infinite alternate;
+        }
+        
+        @keyframes pulse {
+            0% {
+                opacity: 0.5;
+            }
+            100% {
+                opacity: 0.8;
+            }
+        }
+        
+        @keyframes pulse-transmit {
+            0% {
+                opacity: 0.7;
+            }
+            100% {
+                opacity: 1;
+            }
+        }
+        
+        @keyframes pulse-encrypt {
+            0% {
+                opacity: 0.6;
+            }
+            100% {
+                opacity: 0.9;
+            }
+        }
+        
+        /* 全息投影 */
+        .hologram-projection {
+            position: relative;
+            width: 80%;
+            height: 60px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 2;
+        }
+        
+        /* 全息环 */
+        .hologram-ring {
+            position: absolute;
+            border-radius: 50%;
+            border: 1px solid rgba(0, 204, 255, 0.5);
+            box-shadow: 0 0 10px rgba(0, 204, 255, 0.3);
+        }
+        
+        .hologram-ring.top {
+            width: 100%;
+            height: 100%;
+            animation: rotate 15s linear infinite;
+        }
+        
+        .hologram-ring.middle {
+            width: 80%;
+            height: 80%;
+            animation: rotate-reverse 12s linear infinite;
+        }
+        
+        .hologram-ring.bottom {
+            width: 60%;
+            height: 60%;
+            animation: rotate 10s linear infinite;
+        }
+        
+        @keyframes rotate {
+            0% {
+                transform: rotate(0deg);
+            }
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+        
+        @keyframes rotate-reverse {
+            0% {
+                transform: rotate(0deg);
+            }
+            100% {
+                transform: rotate(-360deg);
+            }
+        }
+        
+        /* URL输入框 */
+        .hologram-url {
+            width: 100%;
+            background: rgba(0, 0, 0, 0.3);
+            border: 1px solid var(--primary-color);
+            color: var(--primary-color);
+            padding: 10px;
+            text-align: center;
+            font-family: 'Droid Sans Mono', monospace;
+            letter-spacing: 1px;
+            box-shadow: 0 0 10px rgba(0, 204, 255, 0.3);
+            position: relative;
+            z-index: 5;
+        }
+        
+        .hologram-url:focus {
+            outline: none;
+            box-shadow: 0 0 15px rgba(0, 204, 255, 0.5);
+        }
+        
+        /* 控制按钮区域 */
+        .terminal-controls {
+            display: flex;
+            justify-content: space-around;
+            margin: 25px 0;
+            flex-wrap: wrap; /* 适应小屏幕 */
+        }
+        
+        /* 按钮样式 */
+        .terminal-button {
+            position: relative;
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            border: 2px solid var(--primary-color);
+            background: var(--dark-color);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin: 5px;
+        }
+        
+        .terminal-button::before {
+            content: '';
+            position: absolute;
+            width: 80%;
+            height: 80%;
+            border-radius: 50%;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .terminal-button::after {
+            content: '';
+            position: absolute;
+            width: 60%;
+            height: 60%;
+            border-radius: 50%;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .terminal-button:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 15px rgba(0, 204, 255, 0.3);
+        }
+        
+        .terminal-button:active {
+            transform: scale(0.95);
+        }
+        
+        /* LED指示灯 */
+        .button-led {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.5);
+            margin-bottom: 5px;
+            box-shadow: 0 0 5px rgba(255, 255, 255, 0.3);
+        }
+        
+        /* 按钮标签 */
+        .button-label {
+            font-size: 12px;
+            color: white;
+            text-align: center;
+        }
+        
+        /* 按钮描述 */
+        .button-desc {
+            font-size: 10px;
+            color: rgba(255, 255, 255, 0.7);
+            margin-top: 5px;
+        }
+        
+        /* 蓝色按钮 */
+        .terminal-button.blue {
+            border-color: var(--primary-color);
+            box-shadow: 0 0 10px rgba(0, 204, 255, 0.2);
+        }
+        .terminal-button.blue .button-led {
+            background: var(--primary-color);
+            box-shadow: 0 0 5px var(--primary-color);
+        }
+        .terminal-button.blue:hover {
+            box-shadow: 0 0 15px rgba(0, 204, 255, 0.4);
+        }
+        
+        /* 紫色按钮 */
+        .terminal-button.purple {
+            border-color: #9966ff;
+            box-shadow: 0 0 10px rgba(153, 102, 255, 0.2);
+        }
+        .terminal-button.purple .button-led {
+            background: #9966ff;
+            box-shadow: 0 0 5px #9966ff;
+        }
+        .terminal-button.purple:hover {
+            box-shadow: 0 0 15px rgba(153, 102, 255, 0.4);
+        }
+        
+        /* 绿色按钮 */
+        .terminal-button.green {
+            border-color: var(--accent-color);
+            box-shadow: 0 0 10px rgba(0, 255, 157, 0.2);
+        }
+        .terminal-button.green .button-led {
+            background: var(--accent-color);
+            box-shadow: 0 0 5px var(--accent-color);
+        }
+        .terminal-button.green:hover {
+            box-shadow: 0 0 15px rgba(0, 255, 157, 0.4);
+        }
+        
+        /* 分享面板 */
+        .share-panel {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            right: 0;
+            background: rgba(5, 6, 26, 0.95);
+            border: 2px solid var(--accent-color);
+            border-radius: 8px;
+            padding: 20px;
+            transition: transform 0.3s ease;
+            transform: translateY(0);
+            z-index: 100;
+            box-shadow: 0 0 20px rgba(0, 255, 157, 0.3);
+        }
+        
+        .share-panel.active {
+            transform: translateY(-100%);
+        }
+        
+        .share-panel-header {
+            color: var(--accent-color);
+            text-align: center;
+            margin-bottom: 15px;
+            font-weight: bold;
+        }
+        
+        .share-options {
+            display: flex;
+            justify-content: space-around;
+            flex-wrap: wrap;
+        }
+        
+        .share-option {
+            background: none;
+            border: none;
+            color: white;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            cursor: pointer;
+            margin: 10px;
+            transition: all 0.3s ease;
+        }
+        
+        .share-option:hover {
+            transform: scale(1.1);
+        }
+        
+        .share-icon {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 5px;
+            color: white;
+            font-weight: bold;
+            font-size: 18px;
+        }
+        
+        .share-icon.douban {
+            background-color: #00B51D; /* 豆瓣绿色 */
+        }
+        
+        .share-icon.cmx {
+            background-color: #FF5252; /* CMX红色 */
+            font-family: 'Arial', sans-serif;
+        }
+        
+        .share-icon.twitter {
+            background-color: #1DA1F2; /* Twitter蓝色 */
+            font-family: 'Arial', sans-serif;
+        }
+        
+        .share-icon.more {
+            background-color: #666;
+            font-size: 24px;
+        }
+        
+        .close-panel {
+            display: block;
+            margin: 20px auto 0;
+            padding: 8px 15px;
+            background: rgba(0, 0, 0, 0.5);
+            border: 1px solid var(--accent-color);
+            color: var(--accent-color);
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .close-panel:hover {
+            background: rgba(0, 255, 157, 0.1);
+        }
+        
+        /* 雷达扫描区 */
+        .radar-container {
+            margin: 25px 0;
+            text-align: center;
+        }
+        
+        .radar-text {
+            color: var(--primary-color);
+            margin-bottom: 10px;
+            font-size: 14px;
+        }
+        
+        .radar-scan {
+            position: relative;
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            border: 1px solid var(--primary-color);
+            margin: 0 auto;
+            background: rgba(0, 0, 0, 0.2);
+            overflow: hidden;
+        }
+        
+        .radar-line {
+            position: absolute;
+            width: 100%;
+            height: 1px;
+            background: linear-gradient(to right, transparent, var(--primary-color), transparent);
+            top: 50%;
+            left: 0;
+            animation: radar-scan 3s linear infinite;
+            transform-origin: center;
+        }
+        
+        @keyframes radar-scan {
+            0% {
+                transform: rotate(0deg);
+            }
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+        
+        .radar-dot {
+            position: absolute;
+            width: 5px;
+            height: 5px;
+            border-radius: 50%;
+            background: var(--primary-color);
+            box-shadow: 0 0 5px var(--primary-color);
+        }
+        
+        .radar-dot.dot1 {
+            top: 30%;
+            left: 40%;
+            animation: blink 2s infinite;
+        }
+        
+        .radar-dot.dot2 {
+            top: 60%;
+            left: 70%;
+            animation: blink 3s infinite;
+        }
+        
+        .radar-dot.dot3 {
+            top: 45%;
+            left: 20%;
+            animation: blink 2.5s infinite 0.5s;
+        }
+        
+        @keyframes blink {
+            0%, 100% {
+                opacity: 0.5;
+            }
+            50% {
+                opacity: 1;
+            }
+        }
+        
+        /* 传输状态指示器 */
+        .transmission-status {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-top: 20px;
+        }
+        
+        .status-led {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.5);
+            margin-right: 10px;
+            transition: all 0.3s ease;
+        }
+        
+        .status-led.success {
+            background: var(--accent-color);
+            box-shadow: 0 0 10px var(--accent-color);
+        }
+        
+        .status-led.alert {
+            background: #FF9900;
+            box-shadow: 0 0 10px #FF9900;
+        }
+        
+        .status-led.processing {
+            background: #9966ff;
+            box-shadow: 0 0 10px #9966ff;
+            animation: processing 1s infinite;
+        }
+        
+        @keyframes processing {
+            0%, 100% {
+                opacity: 0.7;
+            }
+            50% {
+                opacity: 1;
+            }
+        }
+        
+        .status-text {
+            color: var(--primary-color);
+            font-size: 14px;
+        }
+        
+        /* 响应式调整 */
+        @media (max-width: 768px) {
+            .terminal-controls {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .radar-scan {
+                width: 120px;
+                height: 120px;
+            }
+        }
+        </style>
         {% else %}
         <div class="password-protection">
             <div class="indicator-light"></div> 
@@ -209,14 +1581,18 @@
                 <div class="error-message">{{ error }}</div>
                 {% endif %}
                 
-                <div class="unlock-button-container">
-                    <button type="submit" class="unlock-button">
-                        <div class="concentric-circles">
-                            <div class="circle-outer"></div>
-                            <div class="circle-middle"></div>
-                            <div class="circle-inner"></div>
-                            <div class="button-center">
-                                <div class="unlock-icon"></div>
+                <!-- 紫色解锁按钮 - 无文字提示 -->
+                <div style="display: flex; justify-content: center; margin: 20px 0;">
+                    <button type="submit" style="background: none; border: none; cursor: pointer; padding: 0;">
+                        <div class="rainbowplanet-concentric" style="border: 2px solid #9966ff;">
+                            <div class="concentric-circles">
+                                <div class="circle-outer" style="border-color: rgba(153, 102, 255, 0.4);"></div>
+                                <div class="circle-middle" style="border-color: rgba(153, 102, 255, 0.6);"></div>
+                                <div class="circle-inner" style="border-color: rgba(153, 102, 255, 0.8);"></div>
+                                <div class="button-center" style="background: #9966ff;">
+                                    <!-- 小圆环解锁图标 -->
+                                    <div style="width: 8px; height: 8px; border: 1.5px solid var(--bg-color); border-radius: 50%;"></div>
+                                </div>
                             </div>
                         </div>
                     </button>
@@ -225,18 +1601,78 @@
         </div>
         {% endif %}
         
-        <!-- 返回列表按钮 -->
-        <div class="back-button-container">
-            <a href="{{ url_for('index') }}" class="back-button">
-                <div class="concentric-circles">
-                    <div class="circle-outer"></div>
-                    <div class="circle-middle"></div>
-                    <div class="circle-inner"></div>
-                    <div class="button-center">
-                        <div class="back-icon"></div>
+        <!-- 返回列表按钮 - 较小的蓝色按钮，无文字提示 -->
+        <div style="display: flex; justify-content: center; margin-top: 40px;">
+            <a href="{{ url_for('index') }}" style="text-decoration: none;">
+                <button type="button" style="background: none; border: none; cursor: pointer; padding: 0;">
+                    <div class="rainbowplanet-concentric" style="width: 40px; height: 40px; border: 2px solid var(--primary-color);">
+                        <div class="concentric-circles">
+                            <div class="circle-outer" style="width: 36px; height: 36px;"></div>
+                            <div class="circle-middle" style="width: 28px; height: 28px;"></div>
+                            <div class="circle-inner" style="width: 20px; height: 20px;"></div>
+                            <div class="button-center" style="width: 14px; height: 14px;">
+                                <!-- 返回图标 - 小圆点 -->
+                                <div style="width: 7px; height: 7px; background-color: var(--bg-color); border-radius: 50%;"></div>
+                            </div>
+                        </div>
                     </div>
-                </div>
+                </button>
             </a>
         </div>
     </div>
+
+    <!-- 添加交互动画的脚本 -->
+    <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // 获取所有半圆按钮
+        var leftHalfCircles = document.querySelectorAll('.left-half-circle');
+        var rightHalfCircles = document.querySelectorAll('.right-half-circle');
+        
+        // 为左半圆按钮添加悬停效果
+        leftHalfCircles.forEach(function(circle) {
+            let button = circle.closest('button');
+            
+            button.addEventListener('mouseenter', function() {
+                circle.style.transform = 'scale(1.05)';
+                circle.style.boxShadow = '0 0 15px rgba(0, 204, 255, 0.5), 0 0 30px rgba(0, 204, 255, 0.3)';
+            });
+            
+            button.addEventListener('mouseleave', function() {
+                circle.style.transform = 'scale(1)';
+                circle.style.boxShadow = '0 0 10px rgba(0, 204, 255, 0.3)';
+            });
+            
+            button.addEventListener('mousedown', function() {
+                circle.style.transform = 'scale(0.95)';
+            });
+            
+            button.addEventListener('mouseup', function() {
+                circle.style.transform = 'scale(1.05)';
+            });
+        });
+        
+        // 为右半圆按钮添加悬停效果
+        rightHalfCircles.forEach(function(circle) {
+            let button = circle.closest('button');
+            
+            button.addEventListener('mouseenter', function() {
+                circle.style.transform = 'scale(1.05)';
+                circle.style.boxShadow = '0 0 15px rgba(0, 204, 255, 0.5), 0 0 30px rgba(0, 204, 255, 0.3)';
+            });
+            
+            button.addEventListener('mouseleave', function() {
+                circle.style.transform = 'scale(1)';
+                circle.style.boxShadow = '0 0 10px rgba(0, 204, 255, 0.3)';
+            });
+            
+            button.addEventListener('mousedown', function() {
+                circle.style.transform = 'scale(0.95)';
+            });
+            
+            button.addEventListener('mouseup', function() {
+                circle.style.transform = 'scale(1.05)';
+            });
+        });
+    });
+    </script>
 {% endblock %}
