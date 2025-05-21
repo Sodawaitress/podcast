@@ -55,20 +55,37 @@
         }
 
         body {
-            font-family: 'Droid Sans Mono', 'Courier New', monospace;
-            line-height: 1.6;
-            color: var(--text-color);
-            background-color: var(--bg-color);
-            text-align: center;
-            background-image: 
-                linear-gradient(0deg, rgba(2, 4, 16, 0.9) 0%, rgba(5, 6, 26, 0.95) 100%),
-                /* 网格线间距增大 */
-                repeating-linear-gradient(0deg, var(--grid-color) 0px, var(--grid-color) 2px, transparent 2px, transparent 40px),
-                repeating-linear-gradient(90deg, var(--grid-color) 0px, var(--grid-color) 2px, transparent 2px, transparent 40px);
-            background-attachment: fixed;
-            overflow-x: hidden;
-            position: relative;
-        }
+    font-family: 'Droid Sans Mono', 'Courier New', monospace;
+    line-height: 1.6;
+    color: var(--text-color);
+    background-color: var(--bg-color);
+    text-align: center;
+    background-image: 
+        linear-gradient(0deg, rgba(2, 4, 16, 0.9) 0%, rgba(5, 6, 26, 0.95) 100%),
+        /* 主网格 - 更加星战风格 */
+        repeating-linear-gradient(0deg, transparent 0px, transparent 39px, var(--grid-color) 39px, var(--grid-color) 40px),
+        repeating-linear-gradient(90deg, transparent 0px, transparent 39px, var(--grid-color) 39px, var(--grid-color) 40px),
+        /* 次级网格 - 淡化的小格子 */
+        repeating-linear-gradient(0deg, transparent 0px, transparent 9px, rgba(0, 204, 255, 0.05) 9px, rgba(0, 204, 255, 0.05) 10px),
+        repeating-linear-gradient(90deg, transparent 0px, transparent 9px, rgba(0, 204, 255, 0.05) 9px, rgba(0, 204, 255, 0.05) 10px),
+        /* 添加星战风格的视觉透视网格效果 */
+        radial-gradient(
+            circle at 50% 50%,
+            rgba(0, 204, 255, 0.1) 0%,
+            rgba(0, 204, 255, 0.05) 10%,
+            transparent 60%
+        );
+    background-size: 100% 100%, 40px 40px, 40px 40px, 10px 10px, 10px 10px, 100% 100%;
+    background-attachment: fixed;
+    overflow-x: hidden;
+    position: relative;
+}
+
+/* 更新网格颜色变量 - 可选，如果原变量设置不满足需求 */
+:root {
+    /* 网格颜色 - 微调使其更符合星战风格 */
+    --grid-color: rgba(0, 204, 255, 0.2); /* 稍微加强蓝色网格线 */
+}
 
         /* 标题使用Star Wars风格字体 */
         h1, h2, h3, nav {
