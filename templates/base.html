@@ -154,7 +154,7 @@
         }
 
         /* 自然气态行星按钮 - 中心涡旋，自然晕染 */
-        .rainbow-button {
+        .rainbowplanet-button {
             background: var(--dark-color);
             color: var(--primary-color);
             border: 2px solid var(--primary-color);
@@ -185,14 +185,14 @@
         }
 
         /* 悬停时效果 - 彩虹气态行星效果 */
-        .rainbow-button:hover {
+        .rainbowplanet-button:hover {
             color: white;
             border-color: rgba(255, 255, 255, 0.9);
             text-shadow: 0 0 5px rgba(255, 255, 255, 0.9);
         }
 
         /* 气态行星效果层 - 自然晕染的彩虹条纹 */
-        .rainbow-button::before {
+        .rainbowplanet-button::before {
             content: "";
             position: absolute;
             top: 0;
@@ -218,7 +218,7 @@
         }
 
         /* 中心涡旋效果层 */
-        .rainbow-button::after {
+        .rainbowplanet-button::after {
             content: "";
             position: absolute;
             top: 0;
@@ -321,23 +321,6 @@
             color: var(--primary-color);
             position: relative;
             display: inline-block;
-        }
-
-        /* 蓝色按钮 - 星战风格 */
-        .rainbow-button {
-            background: var(--dark-color);
-            border: 2px solid var(--primary-color);
-            border-radius: 5px;
-            color: var(--secondary-color);
-            padding: 12px 25px;
-            font-family: 'VCR OSD Mono', monospace;
-            font-weight: bold;
-            cursor: pointer;
-            position: relative;
-            z-index: 10;
-            text-shadow: 0 0 5px var(--primary-color);
-            box-shadow: 0 0 15px rgba(0, 204, 255, 0.3);
-            transition: all 0.3s ease;
         }
         
 
