@@ -16,16 +16,24 @@
         {% if authenticated %}
         <div class="episode-description">{{ episode.description|safe }}</div>
         
-        <div class="audio-player">
-            <audio controls>
-                {% if episode.audio_file.startswith('http') %}
-                <source src="{{ episode.audio_file }}" type="audio/mpeg">
-                {% else %}
-                <source src="{{ url_for('media', filename=episode.audio_file) }}" type="audio/mpeg">
-                {% endif %}
-                您的浏览器不支持HTML5音频播放。
-            </audio>
-        </div>
+        <div class="imperial-audio-device">
+            <div class="device-header">
+                <div class="device-title">蒂国通讯录音 - {{ episode.title }}</div>
+                <div class="device-status">
+                    <div class="status-light"></div>
+                    <span class="status-text">就绪</span>
+                </div>
+            </div>
+            
+            <div class="audio-visualization">
+                <div class="waveform-container">
+                    <div class="waveform" id="waveform">
+                        <div class="waveform-grid"></div>
+                        <div class="waveform-line"></div>
+                    </div>
+                </div>
+                <div class="audio-spectrum">
+                    <div class="spectrum-bar" style="height: 40%;"></div>
         
         <!-- 上一集/下一集控制按钮 - 完全闭合的线条，无三角形 -->
         <div style="display: flex; justify-content: center; margin: 30px auto; width: 130px;">
@@ -71,7 +79,7 @@
         </div>
         
         <div class="sharing-options hologram-terminal">
-            <h3 class="terminal-title">帝国通讯终端 - 信息传输</h3>
+            <h3 class="terminal-title">蒂国通讯终端 - 信息传输</h3>
             
             <div class="hologram-container">
                 <div class="hologram-effect"></div>
