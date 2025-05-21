@@ -16,20 +16,20 @@
             <div class="error-message" style="color: var(--accent-color2); margin: 15px 0;">{{ error }}</div>
             {% endif %}
             
-            <div class="control-button">
+            <!-- 使用内联样式的星战风格按钮 -->
+            <div style="display: flex; justify-content: center; margin: 20px 0;">
                 <button type="submit" style="background: none; border: none; cursor: pointer; padding: 0;">
-                    <div class="concentric-button standard purple">
-                        <div class="concentric-rings">
-                            <div class="ring-outer"></div>
-                            <div class="ring-middle"></div>
-                            <div class="ring-inner"></div>
-                            <div class="button-core">
-                                <!-- 登录图标 -->
-                                <div style="width: 0; height: 0; border-left: 8px solid var(--bg-color); border-top: 5px solid transparent; border-bottom: 5px solid transparent; margin-left: 2px;"></div>
-                            </div>
+                    <div style="position: relative; width: 60px; height: 60px; border-radius: 50%; border: 2px solid #00ccff; background: #05061a; display: flex; justify-content: center; align-items: center; cursor: pointer; box-shadow: 0 0 10px rgba(0, 204, 255, 0.3); transition: all 0.3s ease;">
+                        <!-- 同心圆结构 -->
+                        <div style="position: absolute; width: 54px; height: 54px; border-radius: 50%; border: 1px solid rgba(0, 204, 255, 0.4);"></div>
+                        <div style="position: absolute; width: 42px; height: 42px; border-radius: 50%; border: 1px solid rgba(0, 204, 255, 0.6);"></div>
+                        <div style="position: absolute; width: 30px; height: 30px; border-radius: 50%; border: 1px solid rgba(0, 204, 255, 0.8);"></div>
+                        <div style="position: absolute; width: 20px; height: 20px; border-radius: 50%; background: #00ccff; display: flex; justify-content: center; align-items: center; box-shadow: 0 0 10px rgba(0, 204, 255, 0.7);">
+                            <!-- 登录图标 -->
+                            <div style="width: 0; height: 0; border-left: 8px solid #020410; border-top: 5px solid transparent; border-bottom: 5px solid transparent; margin-left: 2px;"></div>
                         </div>
                     </div>
-                    <div class="button-label">登录</div>
+                    <div style="text-align: center; margin-top: 8px; color: #00ccff; text-shadow: 0 0 5px rgba(0, 204, 255, 0.5);">登录</div>
                 </button>
             </div>
         </form>
