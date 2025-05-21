@@ -27,7 +27,7 @@
             </audio>
         </div>
         
-        <!-- 上一集/下一集控制按钮 - 没有文字标签 -->
+        <!-- 上一集/下一集控制按钮 - 完全闭合的线条，无三角形 -->
         <div style="display: flex; justify-content: center; margin: 30px auto; width: 130px;">
             {% if prev_url %}
             <a href="{{ prev_url }}" style="text-decoration: none;">
@@ -36,13 +36,14 @@
             {% endif %}
                 <button type="button" style="background: none; border: none; cursor: pointer; padding: 0; margin-right: 5px;">
                     <div style="position: relative; width: 60px; height: 60px; overflow: hidden;">
-                        <!-- 左半圆 - 完整闭合的线条 -->
-                        <div style="position: absolute; right: 0; top: 0; width: 60px; height: 60px; border-radius: 30px 0 0 30px; border: 2px solid var(--primary-color); border-right: none; background: var(--dark-color); box-shadow: 0 0 10px rgba(0, 204, 255, 0.3); transition: all 0.3s ease;">
-                            <div style="position: absolute; right: 4px; top: 4px; width: 50px; height: 50px; border-radius: 25px 0 0 25px; border: 1px solid rgba(0, 204, 255, 0.4); border-right: none;"></div>
-                            <div style="position: absolute; right: 12px; top: 12px; width: 34px; height: 34px; border-radius: 17px 0 0 17px; border: 1px solid rgba(0, 204, 255, 0.6); border-right: none;"></div>
-                            <div style="position: absolute; right: 20px; top: 20px; width: 18px; height: 18px; border-radius: 9px 0 0 9px; border: 1px solid rgba(0, 204, 255, 0.8); border-right: none;"></div>
-                            <!-- 左箭头图标 -->
-                            <div style="position: absolute; right: 18px; top: 22px; width: 0; height: 0; border-top: 8px solid transparent; border-bottom: 8px solid transparent; border-right: 12px solid var(--primary-color);"></div>
+                        <!-- 完全闭合的左半圆 -->
+                        <div style="position: absolute; top: 0; left: 0; width: 60px; height: 60px; overflow: hidden;">
+                            <div class="left-half-circle" style="position: absolute; width: 60px; height: 60px; border-radius: 30px; border: 2px solid var(--primary-color); background: var(--dark-color); clip-path: polygon(0 0, 50% 0, 50% 100%, 0% 100%); box-shadow: 0 0 10px rgba(0, 204, 255, 0.3); transition: all 0.3s ease;"></div>
+                            
+                            <!-- 内部同心圆 - 完全闭合 -->
+                            <div style="position: absolute; top: 4px; left: 4px; width: 52px; height: 52px; border-radius: 26px; border: 1px solid rgba(0, 204, 255, 0.4); clip-path: polygon(0 0, 50% 0, 50% 100%, 0% 100%);"></div>
+                            <div style="position: absolute; top: 12px; left: 12px; width: 36px; height: 36px; border-radius: 18px; border: 1px solid rgba(0, 204, 255, 0.6); clip-path: polygon(0 0, 50% 0, 50% 100%, 0% 100%);"></div>
+                            <div style="position: absolute; top: 20px; left: 20px; width: 20px; height: 20px; border-radius: 10px; border: 1px solid rgba(0, 204, 255, 0.8); clip-path: polygon(0 0, 50% 0, 50% 100%, 0% 100%);"></div>
                         </div>
                     </div>
                 </button>
@@ -55,13 +56,14 @@
             {% endif %}
                 <button type="button" style="background: none; border: none; cursor: pointer; padding: 0; margin-left: 5px;">
                     <div style="position: relative; width: 60px; height: 60px; overflow: hidden;">
-                        <!-- 右半圆 - 完整闭合的线条 -->
-                        <div style="position: absolute; left: 0; top: 0; width: 60px; height: 60px; border-radius: 0 30px 30px 0; border: 2px solid var(--primary-color); border-left: none; background: var(--dark-color); box-shadow: 0 0 10px rgba(0, 204, 255, 0.3); transition: all 0.3s ease;">
-                            <div style="position: absolute; left: 4px; top: 4px; width: 50px; height: 50px; border-radius: 0 25px 25px 0; border: 1px solid rgba(0, 204, 255, 0.4); border-left: none;"></div>
-                            <div style="position: absolute; left: 12px; top: 12px; width: 34px; height: 34px; border-radius: 0 17px 17px 0; border: 1px solid rgba(0, 204, 255, 0.6); border-left: none;"></div>
-                            <div style="position: absolute; left: 20px; top: 20px; width: 18px; height: 18px; border-radius: 0 9px 9px 0; border: 1px solid rgba(0, 204, 255, 0.8); border-left: none;"></div>
-                            <!-- 右箭头图标 -->
-                            <div style="position: absolute; left: 18px; top: 22px; width: 0; height: 0; border-top: 8px solid transparent; border-bottom: 8px solid transparent; border-left: 12px solid var(--primary-color);"></div>
+                        <!-- 完全闭合的右半圆 -->
+                        <div style="position: absolute; top: 0; left: 0; width: 60px; height: 60px; overflow: hidden;">
+                            <div class="right-half-circle" style="position: absolute; width: 60px; height: 60px; border-radius: 30px; border: 2px solid var(--primary-color); background: var(--dark-color); clip-path: polygon(50% 0, 100% 0, 100% 100%, 50% 100%); box-shadow: 0 0 10px rgba(0, 204, 255, 0.3); transition: all 0.3s ease;"></div>
+                            
+                            <!-- 内部同心圆 - 完全闭合 -->
+                            <div style="position: absolute; top: 4px; left: 4px; width: 52px; height: 52px; border-radius: 26px; border: 1px solid rgba(0, 204, 255, 0.4); clip-path: polygon(50% 0, 100% 0, 100% 100%, 50% 100%);"></div>
+                            <div style="position: absolute; top: 12px; left: 12px; width: 36px; height: 36px; border-radius: 18px; border: 1px solid rgba(0, 204, 255, 0.6); clip-path: polygon(50% 0, 100% 0, 100% 100%, 50% 100%);"></div>
+                            <div style="position: absolute; top: 20px; left: 20px; width: 20px; height: 20px; border-radius: 10px; border: 1px solid rgba(0, 204, 255, 0.8); clip-path: polygon(50% 0, 100% 0, 100% 100%, 50% 100%);"></div>
                         </div>
                     </div>
                 </button>
@@ -131,48 +133,52 @@
     <script>
     document.addEventListener('DOMContentLoaded', function() {
         // 获取所有半圆按钮
-        var leftButtons = document.querySelectorAll('[style*="border-radius: 30px 0 0 30px"]');
-        var rightButtons = document.querySelectorAll('[style*="border-radius: 0 30px 30px 0"]');
+        var leftHalfCircles = document.querySelectorAll('.left-half-circle');
+        var rightHalfCircles = document.querySelectorAll('.right-half-circle');
         
         // 为左半圆按钮添加悬停效果
-        leftButtons.forEach(function(button) {
-            button.parentElement.parentElement.addEventListener('mouseenter', function() {
-                button.style.transform = 'scale(1.05)';
-                button.style.boxShadow = '0 0 15px rgba(0, 204, 255, 0.5), 0 0 30px rgba(0, 204, 255, 0.3)';
+        leftHalfCircles.forEach(function(circle) {
+            let button = circle.closest('button');
+            
+            button.addEventListener('mouseenter', function() {
+                circle.style.transform = 'scale(1.05)';
+                circle.style.boxShadow = '0 0 15px rgba(0, 204, 255, 0.5), 0 0 30px rgba(0, 204, 255, 0.3)';
             });
             
-            button.parentElement.parentElement.addEventListener('mouseleave', function() {
-                button.style.transform = 'scale(1)';
-                button.style.boxShadow = '0 0 10px rgba(0, 204, 255, 0.3)';
+            button.addEventListener('mouseleave', function() {
+                circle.style.transform = 'scale(1)';
+                circle.style.boxShadow = '0 0 10px rgba(0, 204, 255, 0.3)';
             });
             
-            button.parentElement.parentElement.addEventListener('mousedown', function() {
-                button.style.transform = 'scale(0.95)';
+            button.addEventListener('mousedown', function() {
+                circle.style.transform = 'scale(0.95)';
             });
             
-            button.parentElement.parentElement.addEventListener('mouseup', function() {
-                button.style.transform = 'scale(1.05)';
+            button.addEventListener('mouseup', function() {
+                circle.style.transform = 'scale(1.05)';
             });
         });
         
         // 为右半圆按钮添加悬停效果
-        rightButtons.forEach(function(button) {
-            button.parentElement.parentElement.addEventListener('mouseenter', function() {
-                button.style.transform = 'scale(1.05)';
-                button.style.boxShadow = '0 0 15px rgba(0, 204, 255, 0.5), 0 0 30px rgba(0, 204, 255, 0.3)';
+        rightHalfCircles.forEach(function(circle) {
+            let button = circle.closest('button');
+            
+            button.addEventListener('mouseenter', function() {
+                circle.style.transform = 'scale(1.05)';
+                circle.style.boxShadow = '0 0 15px rgba(0, 204, 255, 0.5), 0 0 30px rgba(0, 204, 255, 0.3)';
             });
             
-            button.parentElement.parentElement.addEventListener('mouseleave', function() {
-                button.style.transform = 'scale(1)';
-                button.style.boxShadow = '0 0 10px rgba(0, 204, 255, 0.3)';
+            button.addEventListener('mouseleave', function() {
+                circle.style.transform = 'scale(1)';
+                circle.style.boxShadow = '0 0 10px rgba(0, 204, 255, 0.3)';
             });
             
-            button.parentElement.parentElement.addEventListener('mousedown', function() {
-                button.style.transform = 'scale(0.95)';
+            button.addEventListener('mousedown', function() {
+                circle.style.transform = 'scale(0.95)';
             });
             
-            button.parentElement.parentElement.addEventListener('mouseup', function() {
-                button.style.transform = 'scale(1.05)';
+            button.addEventListener('mouseup', function() {
+                circle.style.transform = 'scale(1.05)';
             });
         });
     });
