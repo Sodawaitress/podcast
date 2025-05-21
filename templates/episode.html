@@ -18,7 +18,7 @@
         
         <div class="imperial-audio-device">
             <div class="device-header">
-                <div class="device-title">蒂国通讯录音 - {{ episode.title }}</div>
+                <div class="device-title">帝国通讯录音 - {{ episode.title }}</div>
                 <div class="device-status">
                     <div class="status-light"></div>
                     <span class="status-text">就绪</span>
@@ -26,79 +26,81 @@
             </div>
             
             <div class="audio-visualization">
+                <!-- 音频波形显示区域 -->
                 <div class="waveform-container">
                     <div class="waveform" id="waveform">
                         <div class="waveform-grid"></div>
                         <div class="waveform-line"></div>
+                        <!-- 波形条 -->
                         <div class="bars-container" id="bars-container"></div>
                     </div>
                 </div>
+            </div>
+            
+            <div class="imperial-controls">
+                <!-- 彩虹行星效果播放按钮 -->
+                <div class="play-button-container">
+                    <button id="playButton" class="play-button rainbowplanet">
+                        <span class="planet-effect"></span>
+                        <div class="concentric-circles">
+                            <div class="circle-outer"></div>
+                            <div class="circle-middle"></div>
+                            <div class="circle-inner"></div>
+                            <div class="button-center">
+                                <div class="play-icon"></div>
+                            </div>
+                        </div>
+                    </button>
+                </div>
                 
-                <div class="imperial-controls">
-                    <!-- 彩虹行星效果播放按钮 -->
-                    <div class="play-button-container">
-                        <button id="playButton" class="play-button rainbowplanet">
-                            <span class="planet-effect"></span>
-                            <div class="concentric-circles">
-                                <div class="circle-outer"></div>
-                                <div class="circle-middle"></div>
-                                <div class="circle-inner"></div>
-                                <div class="button-center">
-                                    <div class="play-icon"></div>
-                                </div>
-                            </div>
-                        </button>
-                    </div>
+                <!-- 进度控制 -->
+                <div class="progress-controls">
+                    <div class="time-display current-time">00:00</div>
                     
-                    <!-- 进度控制 -->
-                    <div class="progress-controls">
-                        <div class="time-display current-time">00:00</div>
-                        
-                        <!-- 带彩虹行星效果的进度条 -->
-                        <div class="progress-container">
-                            <div class="progress-track">
-                                <div class="progress-fill" id="progressFill">
-                                    <div class="rainbow-glow"></div>
-                                </div>
-                                <div class="progress-handle" id="progressHandle">
-                                    <div class="handle-glow"></div>
-                                </div>
+                    <!-- 带彩虹行星效果的进度条 -->
+                    <div class="progress-container">
+                        <div class="progress-track">
+                            <div class="progress-fill" id="progressFill">
+                                <div class="rainbow-glow"></div>
                             </div>
-                        </div>
-                        
-                        <div class="time-display total-time">
-                            {% if episode.duration %}
-                            {{ episode.duration//60 }}:{{ '%02d'|format(episode.duration%60) }}
-                            {% else %}
-                            --:--
-                            {% endif %}
+                            <div class="progress-handle" id="progressHandle">
+                                <div class="handle-glow"></div>
+                            </div>
                         </div>
                     </div>
                     
-                    <!-- 音量控制 -->
-                    <div class="volume-control">
-                        <div class="volume-icon">
-                            <div class="volume-wave"></div>
-                        </div>
-                        <div class="volume-slider">
-                            <div class="volume-track">
-                                <div class="volume-fill"></div>
-                                <div class="volume-handle"></div>
-                            </div>
-                        </div>
+                    <div class="time-display total-time">
+                        {% if episode.duration %}
+                        {{ episode.duration//60 }}:{{ '%02d'|format(episode.duration%60) }}
+                        {% else %}
+                        --:--
+                        {% endif %}
                     </div>
                 </div>
                 
-                <!-- 隐藏的原始音频元素 -->
-                <audio id="audioElement" style="display: none;">
-                    {% if episode.audio_file.startswith('http') %}
-                    <source src="{{ episode.audio_file }}" type="audio/mpeg">
-                    {% else %}
-                    <source src="{{ url_for('media', filename=episode.audio_file) }}" type="audio/mpeg">
-                    {% endif %}
-                    您的浏览器不支持HTML5音频播放。
-                </audio>
+                <!-- 音量控制 -->
+                <div class="volume-control">
+                    <div class="volume-icon">
+                        <div class="volume-wave"></div>
+                    </div>
+                    <div class="volume-slider">
+                        <div class="volume-track">
+                            <div class="volume-fill"></div>
+                            <div class="volume-handle"></div>
+                        </div>
+                    </div>
+                </div>
             </div>
+            
+            <!-- 隐藏的原始音频元素 -->
+            <audio id="audioElement" style="display: none;" preload="auto">
+                {% if episode.audio_file.startswith('http') %}
+                <source src="{{ episode.audio_file }}" type="audio/mpeg">
+                {% else %}
+                <source src="{{ url_for('media', filename=episode.audio_file) }}" type="audio/mpeg">
+                {% endif %}
+                您的浏览器不支持HTML5音频播放。
+            </audio>
         </div>
         
         <div style="display: flex; justify-content: center; margin: 30px auto; width: 130px;">
@@ -110,14 +112,12 @@
                 <button type="button" style="background: none; border: none; cursor: pointer; padding: 0; margin-right: 5px;">
                     <div style="position: relative; width: 60px; height: 60px; overflow: hidden;">
                         <!-- 完全闭合的左半圆 -->
-                        <div style="position: absolute; top: 0; left: 0; width: 60px; height: 60px; overflow: hidden;">
-                            <div class="left-half-circle" style="position: absolute; width: 60px; height: 60px; border-radius: 30px; border: 2px solid var(--primary-color); background: var(--dark-color); clip-path: polygon(0 0, 50% 0, 50% 100%, 0% 100%); box-shadow: 0 0 10px rgba(0, 204, 255, 0.3); transition: all 0.3s ease;"></div>
-                            
-                            <!-- 内部同心圆 - 完全闭合 -->
-                            <div style="position: absolute; top: 4px; left: 4px; width: 52px; height: 52px; border-radius: 26px; border: 1px solid rgba(0, 204, 255, 0.4); clip-path: polygon(0 0, 50% 0, 50% 100%, 0% 100%);"></div>
-                            <div style="position: absolute; top: 12px; left: 12px; width: 36px; height: 36px; border-radius: 18px; border: 1px solid rgba(0, 204, 255, 0.6); clip-path: polygon(0 0, 50% 0, 50% 100%, 0% 100%);"></div>
-                            <div style="position: absolute; top: 20px; left: 20px; width: 20px; height: 20px; border-radius: 10px; border: 1px solid rgba(0, 204, 255, 0.8); clip-path: polygon(0 0, 50% 0, 50% 100%, 0% 100%);"></div>
-                        </div>
+                        <div style="position: absolute; top: 0; left: 0; width: 60px; height: 60px; border-radius: 30px; border: 2px solid var(--primary-color); background: var(--dark-color); clip-path: polygon(0 0, 50% 0, 50% 100%, 0% 100%); box-shadow: 0 0 10px rgba(0, 204, 255, 0.3); transition: all 0.3s ease;"></div>
+                        
+                        <!-- 内部同心圆 - 完全闭合 -->
+                        <div style="position: absolute; top: 4px; left: 4px; width: 52px; height: 52px; border-radius: 26px; border: 1px solid rgba(0, 204, 255, 0.4); clip-path: polygon(0 0, 50% 0, 50% 100%, 0% 100%);"></div>
+                        <div style="position: absolute; top: 12px; left: 12px; width: 36px; height: 36px; border-radius: 18px; border: 1px solid rgba(0, 204, 255, 0.6); clip-path: polygon(0 0, 50% 0, 50% 100%, 0% 100%);"></div>
+                        <div style="position: absolute; top: 20px; left: 20px; width: 20px; height: 20px; border-radius: 10px; border: 1px solid rgba(0, 204, 255, 0.8); clip-path: polygon(0 0, 50% 0, 50% 100%, 0% 100%);"></div>
                     </div>
                 </button>
             </a>
@@ -927,6 +927,188 @@
             }
         }
         </style>
+
+        <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // 获取音频元素
+            const audio = document.getElementById('audioElement');
+            
+            // 确保音频加载
+            audio.addEventListener('loadedmetadata', function() {
+                console.log('音频已加载，时长:', audio.duration);
+                // 初始化音量
+                audio.volume = 0.7;
+            });
+
+            // 音频加载错误处理
+            audio.addEventListener('error', function(e) {
+                console.error('音频加载错误:', e);
+                document.querySelector('.status-text').textContent = '加载失败';
+            });
+
+            // 获取控制按钮和进度条
+            const playButton = document.getElementById('playButton');
+            const progressFill = document.getElementById('progressFill');
+            const progressHandle = document.getElementById('progressHandle');
+            const progressTrack = document.querySelector('.progress-track');
+            const currentTimeDisplay = document.querySelector('.current-time');
+            
+            // 波形条容器
+            const barsContainer = document.getElementById('bars-container');
+            
+            // 创建波形条
+            const createWaveformBars = () => {
+                const barCount = 50; // 条的数量
+                barsContainer.innerHTML = '';
+                
+                for (let i = 0; i < barCount; i++) {
+                    const bar = document.createElement('div');
+                    bar.className = 'audio-bar';
+                    bar.style.height = Math.random() * 70 + 10 + '%';
+                    barsContainer.appendChild(bar);
+                }
+            };
+            createWaveformBars();
+            
+            // 模拟音频可视化效果
+            const animateWaveform = (playing) => {
+                const bars = barsContainer.querySelectorAll('.audio-bar');
+                
+                if (playing) {
+                    const animate = () => {
+                        bars.forEach(bar => {
+                            const height = Math.random() * 70 + 10;
+                            bar.style.height = height + '%';
+                        });
+                        
+                        if (audio.paused) return;
+                        requestAnimationFrame(animate);
+                    };
+                    
+                    animate();
+                } else {
+                    // 暂停时静止显示
+                    bars.forEach(bar => {
+                        bar.style.height = '30%';
+                    });
+                }
+            };
+            
+            // 播放/暂停切换
+            playButton.addEventListener('click', function() {
+                if (audio.paused) {
+                    audio.play().then(() => {
+                        playButton.classList.add('playing');
+                        animateWaveform(true);
+                        document.querySelector('.status-text').textContent = '播放中';
+                    }).catch(error => {
+                        console.error('播放失败:', error);
+                        document.querySelector('.status-text').textContent = '播放失败';
+                    });
+                } else {
+                    audio.pause();
+                    playButton.classList.remove('playing');
+                    animateWaveform(false);
+                    document.querySelector('.status-text').textContent = '已暂停';
+                }
+            });
+            
+            // 更新进度条
+            audio.addEventListener('timeupdate', function() {
+                const currentTime = audio.currentTime;
+                const duration = audio.duration;
+                const progressPercent = (currentTime / duration) * 100;
+                
+                // 更新进度条填充
+                progressFill.style.width = progressPercent + '%';
+                
+                // 更新拖动手柄位置
+                progressHandle.style.left = progressPercent + '%';
+                
+                // 更新时间显示
+                const currentMinutes = Math.floor(currentTime / 60);
+                const currentSeconds = Math.floor(currentTime % 60);
+                currentTimeDisplay.textContent = 
+                    (currentMinutes < 10 ? '0' : '') + currentMinutes + 
+                    ':' + 
+                    (currentSeconds < 10 ? '0' : '') + currentSeconds;
+            });
+            
+            // 点击进度条跳转
+            progressTrack.addEventListener('click', function(e) {
+                const trackRect = progressTrack.getBoundingClientRect();
+                const clickPosition = e.clientX - trackRect.left;
+                const progressPercent = (clickPosition / trackRect.width) * 100;
+                
+                // 更新音频当前时间
+                audio.currentTime = (progressPercent / 100) * audio.duration;
+            });
+            
+            // 音频结束时重置
+            audio.addEventListener('ended', function() {
+                playButton.classList.remove('playing');
+                animateWaveform(false);
+                document.querySelector('.status-text').textContent = '已完成';
+            });
+            
+            // 进度条拖动功能
+            let isDragging = false;
+            
+            progressHandle.addEventListener('mousedown', function(e) {
+                isDragging = true;
+                e.preventDefault(); // 防止选中文本
+            });
+            
+            document.addEventListener('mousemove', function(e) {
+                if (!isDragging) return;
+                
+                const trackRect = progressTrack.getBoundingClientRect();
+                let clickPosition = e.clientX - trackRect.left;
+                
+                // 限制在轨道范围内
+                if (clickPosition < 0) clickPosition = 0;
+                if (clickPosition > trackRect.width) clickPosition = trackRect.width;
+                
+                const progressPercent = (clickPosition / trackRect.width) * 100;
+                
+                // 更新进度条填充和手柄位置
+                progressFill.style.width = progressPercent + '%';
+                progressHandle.style.left = progressPercent + '%';
+            });
+            
+            document.addEventListener('mouseup', function() {
+                if (!isDragging) return;
+                
+                const trackRect = progressTrack.getBoundingClientRect();
+                const handleRect = progressHandle.getBoundingClientRect();
+                const handlePosition = handleRect.left + handleRect.width / 2 - trackRect.left;
+                const progressPercent = (handlePosition / trackRect.width) * 100;
+                
+                // 设置音频当前时间
+                audio.currentTime = (progressPercent / 100) * audio.duration;
+                
+                isDragging = false;
+            });
+            
+            // 音量控制
+            const volumeTrack = document.querySelector('.volume-track');
+            const volumeFill = document.querySelector('.volume-fill');
+            const volumeHandle = document.querySelector('.volume-handle');
+            
+            volumeTrack.addEventListener('click', function(e) {
+                const trackRect = volumeTrack.getBoundingClientRect();
+                const clickPosition = e.clientX - trackRect.left;
+                const volumePercent = (clickPosition / trackRect.width) * 100;
+                
+                // 更新音量填充和手柄位置
+                volumeFill.style.width = volumePercent + '%';
+                volumeHandle.style.left = volumePercent + '%';
+                
+                // 设置音频音量 (0-1)
+                audio.volume = volumePercent / 100;
+            });
+        });
+        </script>
         {% else %}
         <div class="password-protection">
             <div class="indicator-light"></div> 
