@@ -1,12 +1,12 @@
 from flask import Flask, render_template, send_from_directory, url_for, request, redirect, jsonify
+from flask import session, flash  # Add these imports
 from datetime import datetime
 import os
 import secrets
 import hashlib
 import json
 import base64
-from flask import session, flash
-import functools
+import functools  # Important for the decorator
 
 # 尝试导入requests，在Vercel上首次部署时可能不可用
 try:
@@ -31,6 +31,9 @@ app.config['SITE_NAME'] = "灰礁播客"
 app.config['SITE_DESCRIPTION'] = "浮筝带来的灰礁上的声音"
 app.config['SITE_URL'] = os.environ.get('SITE_URL', 'https://podcast-five-pink.vercel.app')
 
+# Add a constant for admin password
+ADMIN_PASSWORD = "yourpassword"  # 修改为你想要的密码
+
 # 如果Cloudinary可用，则配置它
 if cloudinary_available:
     cloudinary.config( 
@@ -38,8 +41,6 @@ if cloudinary_available:
         api_key = "286612799875297", 
         api_secret = "EkrlSu4mv50B9Aclc_a4US3ZdX4" 
     )
-
-ADMIN_PASSWORD = "greyreef2025"  # 修改为你想要的密码
 
 # 默认播客数据
 def default_episodes():
@@ -96,6 +97,15 @@ else:
     # 如果Cloudinary不可用或requests不可用，使用默认数据
     EPISODES = default_episodes()
 
+# 定义login_required装饰器 - 必须在使用前定义
+def login_required(view):
+    @functools.wraps(view)
+    def wrapped_view(**kwargs):
+        if not session.get('authenticated'):
+            return redirect(url_for('admin_login'))
+        return view(**kwargs)
+    return wrapped_view
+
 # 上下文处理器 - 为所有模板提供站点信息
 @app.context_processor
 def inject_site_info():
@@ -110,6 +120,19 @@ def inject_site_info():
 @app.route('/')
 def index():
     return render_template('index.html', episodes=EPISODES)
+
+# 管理员登录
+@app.route('/admin', methods=['GET', 'POST'])
+def admin_login():
+    error = None
+    if request.method == 'POST':
+        if request.form.get('password') == ADMIN_PASSWORD:
+            session['authenticated'] = True
+            return redirect(url_for('upload'))
+        else:
+            error = "密码不正确"
+    
+    return render_template('admin_login.html', error=error)
 
 # 单集页面
 @app.route('/episode/<int:episode_id>')
@@ -127,6 +150,7 @@ def episode(episode_id):
 
 # 删除播客
 @app.route('/delete/<int:episode_id>', methods=['POST'])
+@login_required
 def delete_episode(episode_id):
     global EPISODES
     
@@ -149,25 +173,11 @@ def delete_episode(episode_id):
         if cloudinary_available:
             upload_episodes_to_cloudinary(EPISODES)
             
-        return redirect(url_for('index'))
+        return redirect(url_for('upload'))  # 改为返回上传页面而不是首页
     
     return "播客不存在", 404
 
-
-# Add a login route
-@app.route('/admin', methods=['GET', 'POST'])
-def admin_login():
-    error = None
-    if request.method == 'POST':
-        if request.form.get('password') == ADMIN_PASSWORD:
-            session['authenticated'] = True
-            return redirect(url_for('upload'))
-        else:
-            error = "密码不正确"
-    
-    return render_template('admin_login.html', error=error)
-
-# 上传页面 - 添加 login_required 装饰器
+# 上传页面
 @app.route('/upload', methods=['GET', 'POST'])
 @login_required
 def upload():
@@ -201,34 +211,6 @@ def upload():
                           cloud_name="dxm0ajjil", 
                           upload_preset="podcast_upload")
 
-# Modify the delete_episode route to also require login
-@app.route('/delete/<int:episode_id>', methods=['POST'])
-@login_required
-def delete_episode(episode_id):
-    global EPISODES
-    
-    # 查找要删除的播客索引
-    episode_index = -1
-    for i, ep in enumerate(EPISODES):
-        if ep['id'] == episode_id:
-            episode_index = i
-            break
-    
-    if episode_index >= 0:
-        # 删除播客
-        removed = EPISODES.pop(episode_index)
-        
-        # 重新编号剩余播客
-        for i, ep in enumerate(EPISODES):
-            ep['id'] = i
-        
-        # 保存到Cloudinary
-        if cloudinary_available:
-            upload_episodes_to_cloudinary(EPISODES)
-            
-        return redirect(url_for('upload'))  # 改为返回上传页面而不是首页
-    
-    return "播客不存在", 404
 # RSS Feed
 @app.route('/feed.xml')
 def feed():
