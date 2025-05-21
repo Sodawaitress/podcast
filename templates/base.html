@@ -15,12 +15,15 @@
             box-sizing: border-box;
         }
 
+        /* 更新颜色变量 */
         :root {
             /* 星战风格配色 */
-            --primary-color: #00ccff;      /* 蓝色 */
+            --primary-color: #00ccff;      /* 天蓝色 */
             --secondary-color: #ffffff;    /* 白色 */
             --accent-color: #00ff9d;       /* 亮绿色（用于少量点缀） */
             --accent-color2: #ff3366;      /* 红色（用于少量点缀） */
+            --deep-blue: #004466;          /* 深蓝色（用于文字边框） */
+            --soft-pink: #ff9eb8;          /* 嫩粉色（用于光晕） */
             
             /* 文本和背景 */
             --text-color: #ffffff;         /* 白色文本 */
@@ -29,7 +32,7 @@
             
             /* 特效颜色 */
             --grid-color: rgba(0, 204, 255, 0.15); /* 蓝色网格线 */
-            --glow-color: rgba(0, 204, 255, 0.7);  /* 蓝色光晕 */
+            --glow-color: rgba(255, 158, 184, 0.7);  /* 粉色光晕 */
             --control-bg: #05061a;         /* 控制面板背景 */
             --button-bg: #04041a;          /* 深蓝按钮背景 */
             
@@ -76,54 +79,176 @@
 
         /* 霓虹灯标题效果增强 */
         header h1 {
-            margin: 0 0 0.5rem 0;
-            font-size: 2.8rem;
-            color: var(--secondary-color);
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: 3px;
+        margin: 0 0 0.5rem 0;
+        font-size: 2.8rem;
+        color: var(--primary-color);
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 3px;
+        text-shadow: 
+            /* 深蓝色边框效果 */
+            -1px -1px 0 var(--deep-blue),  
+            1px -1px 0 var(--deep-blue),
+            -1px 1px 0 var(--deep-blue),
+            1px 1px 0 var(--deep-blue),
+            
+            /* 嫩粉色光晕效果 */
+            0 0 10px var(--soft-pink),
+            0 0 20px var(--soft-pink),
+            0 0 30px var(--soft-pink);
+    }
+
+        header h1 a {
+            color: var(--primary-color);
+            text-decoration: none;
+        }
+
+        /* 其他标题也使用相同风格 */
+        h2, h3 {
+            color: var(--primary-color);
             text-shadow: 
-                0 0 10px var(--primary-color),
-                0 0 20px var(--primary-color),
-                0 0 30px var(--primary-color);
+                /* 深蓝色边框效果 */
+                -1px -1px 0 var(--deep-blue),  
+                1px -1px 0 var(--deep-blue),
+                -1px 1px 0 var(--deep-blue),
+                1px 1px 0 var(--deep-blue),
+                
+                /* 嫩粉色光晕效果，强度稍弱 */
+                0 0 8px var(--soft-pink),
+                0 0 15px var(--soft-pink);
         }
 
-        /* 导航增强 */
-        header nav {
-            margin-top: 1.5rem;
-            border-top: 1px solid rgba(0, 204, 255, 0.3);
-            padding-top: 1.5rem;
-        }
-
-        header nav ul {
-            list-style: none;
-            display: flex;
-            justify-content: center;
-            gap: 2rem;
-        }
 
         header nav a {
-            font-size: 1.2rem;
-            text-transform: uppercase;
-            transition: all 0.3s ease;
-            letter-spacing: 2px;
-            padding: 5px 10px;
-            border: 1px solid transparent;
-        }
+        font-size: 1.2rem;
+        text-transform: uppercase;
+        transition: all 0.3s ease;
+        letter-spacing: 2px;
+        padding: 5px 10px;
+        border: 1px solid transparent;
+        color: var(--primary-color);
+        text-shadow: 
+            /* 深蓝色边框效果 */
+            -1px -1px 0 var(--deep-blue),  
+            1px -1px 0 var(--deep-blue),
+            -1px 1px 0 var(--deep-blue),
+            1px 1px 0 var(--deep-blue),
+            
+            /* 嫩粉色光晕效果，更轻微 */
+            0 0 5px var(--soft-pink);
+    }           
 
         header nav a:hover {
             border: 1px solid var(--primary-color);
             text-shadow: 
-                0 0 5px var(--primary-color),
-                0 0 10px var(--primary-color);
-            box-shadow: 0 0 10px rgba(0, 204, 255, 0.3);
+                /* 深蓝色边框效果 */
+                -1px -1px 0 var(--deep-blue),  
+                1px -1px 0 var(--deep-blue),
+                -1px 1px 0 var(--deep-blue),
+                1px 1px 0 var(--deep-blue),
+                
+                /* 嫩粉色光晕效果，更强 */
+                0 0 8px var(--soft-pink),
+                0 0 15px var(--soft-pink);
+            box-shadow: 0 0 10px rgba(255, 158, 184, 0.5);
         }
 
-        /* 按钮样式统一 */
-        .rainbow-button, .button {
+        /* 自然气态行星按钮 - 中心涡旋，自然晕染 */
+        .rainbow-button {
+            background: var(--dark-color);
+            color: var(--primary-color);
+            border: 2px solid var(--primary-color);
+            border-radius: 5px;
+            padding: 12px 25px;
             font-family: 'Droid Sans Mono', monospace;
+            font-weight: bold;
+            cursor: pointer;
+            position: relative;
+            z-index: 10;
             text-transform: uppercase;
             letter-spacing: 1px;
+            overflow: hidden;
+            
+            /* 文字阴影效果 */
+            text-shadow: 
+                -1px -1px 0 var(--deep-blue),  
+                1px -1px 0 var(--deep-blue),
+                -1px 1px 0 var(--deep-blue),
+                1px 1px 0 var(--deep-blue),
+                0 0 5px var(--soft-pink);
+            
+            /* 盒子阴影 */
+            box-shadow: 0 0 15px rgba(0, 204, 255, 0.3);
+            
+            /* 简单的过渡效果，无动画 */
+            transition: all 0.3s ease;
+        }
+
+        /* 悬停时效果 - 彩虹气态行星效果 */
+        .rainbow-button:hover {
+            color: white;
+            border-color: rgba(255, 255, 255, 0.9);
+            text-shadow: 0 0 5px rgba(255, 255, 255, 0.9);
+        }
+
+        /* 气态行星效果层 - 自然晕染的彩虹条纹 */
+        .rainbow-button::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background:
+                /* 气态行星的水平条纹 - 彩虹色彩自然晕染 */
+                linear-gradient(
+                    0deg,
+                    rgba(255, 100, 100, 0.8) 0%,     /* 红色区域 */
+                    rgba(255, 160, 80, 0.8) 16.6%,   /* 橙色区域 */
+                    rgba(255, 240, 70, 0.8) 33.3%,   /* 黄色区域 */
+                    rgba(100, 230, 100, 0.8) 50%,    /* 绿色区域 */
+                    rgba(80, 170, 255, 0.8) 66.6%,   /* 蓝色区域 */
+                    rgba(180, 100, 255, 0.8) 83.3%,  /* 紫色区域 */
+                    rgba(247, 140, 170, 0.8) 100%    /* 跨粉色区域 */
+                );
+            opacity: 0;
+            z-index: -1;
+            transition: opacity 0.3s ease;
+            border-radius: 3px;
+        }
+
+        /* 中心涡旋效果层 */
+        .rainbow-button::after {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background:
+                /* 中心涡旋效果 - 跨性别色彩 */
+                radial-gradient(
+                    circle at center,
+                    rgba(247, 140, 170, 0.9) 0%,    /* 跨粉色中心 */
+                    rgba(85, 205, 252, 0.8) 30%,    /* 跨蓝色过渡 */
+                    rgba(247, 140, 170, 0.7) 60%,   /* 跨粉色晕染 */
+                    transparent 100%                 /* 透明边缘，融入条纹 */
+                ),
+                /* 气态行星的水平条纹 - 彩虹色彩自然晕染 */
+                linear-gradient(
+                    0deg,
+                    rgba(255, 100, 100, 0.8) 0%,     /* 红色区域 */
+                    rgba(255, 160, 80, 0.8) 16.6%,   /* 橙色区域 */
+                    rgba(255, 240, 70, 0.8) 33.3%,   /* 黄色区域 */
+                    rgba(100, 230, 100, 0.8) 50%,    /* 绿色区域 */
+                    rgba(80, 170, 255, 0.8) 66.6%,   /* 蓝色区域 */
+                    rgba(180, 100, 255, 0.8) 83.3%,  /* 紫色区域 */
+                    rgba(247, 140, 170, 0.8) 100%    /* 跨粉色区域 */
+                );
+            opacity: 0;
+            z-index: -1;
+            border-radius: 3px;
+            transition: opacity 0.3s ease;
         }
 
         /* 错误信息样式 */
@@ -215,10 +340,6 @@
             transition: all 0.3s ease;
         }
         
-        .rainbow-button:hover {
-            background-color: rgba(0, 204, 255, 0.1);
-            box-shadow: 0 0 20px rgba(0, 204, 255, 0.5);
-        }
 
         /* 上传表单 */
         .upload-form {
@@ -358,7 +479,7 @@
             overflow: hidden;
         }
         
-        /* 光剑样式 */
+        /* 光剑样式更新 - 添加更多粉色光剑 */
         .lightsaber {
             position: absolute;
             height: 4px;
@@ -594,20 +715,37 @@
             z-index: 1000;
         }
         
-        /* 星战风格卡片 */
-        .episode-card {
-            background: var(--control-bg);
-            border: 2px solid var(--primary-color);
-            border-radius: 5px;
-            padding: 1.8rem;
-            box-shadow: 0 0 20px rgba(0, 204, 255, 0.2);
+        /* 卡片标题样式 */
+        .episode-card h3 {
+            color: var(--primary-color);
+            text-shadow: 
+                /* 深蓝色边框效果 */
+                -1px -1px 0 var(--deep-blue),  
+                1px -1px 0 var(--deep-blue),
+                -1px 1px 0 var(--deep-blue),
+                1px 1px 0 var(--deep-blue),
+                
+                /* 嫩粉色光晕效果 */
+                0 0 6px var(--soft-pink),
+                0 0 12px var(--soft-pink);
             transition: all 0.3s ease;
         }
-        
-        .episode-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 0 30px rgba(0, 204, 255, 0.3);
+
+        /* 卡片悬停时标题样式增强 */
+        .episode-card:hover h3 {
+            text-shadow: 
+                /* 深蓝色边框效果 */
+                -1px -1px 0 var(--deep-blue),  
+                1px -1px 0 var(--deep-blue),
+                -1px 1px 0 var(--deep-blue),
+                1px 1px 0 var(--deep-blue),
+                
+                /* 嫩粉色光晕效果，更强 */
+                0 0 8px var(--soft-pink),
+                0 0 15px var(--soft-pink),
+                0 0 25px var(--soft-pink);
         }
+
         
         .episode-card h3 {
             color: var(--secondary-color);
@@ -659,8 +797,7 @@
         <nav>
             <ul>
                 <li><a href="{{ url_for('index') }}">首页</a></li>
-                <li><a href="{{ url_for('admin_login') }}">管理</a></li>
-                <li><a href="{{ url_for('feed') }}">RSS</a></li>
+                <li><a href="{{ url_for('admin_login') }}">上传</a></li>
             </ul>
         </nav>
         </div>

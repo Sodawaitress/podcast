@@ -32,7 +32,7 @@ app.config['SITE_DESCRIPTION'] = "浮筝带来的灰礁上的声音"
 app.config['SITE_URL'] = os.environ.get('SITE_URL', 'https://podcast-five-pink.vercel.app')
 
 # Add a constant for admin password
-ADMIN_PASSWORD = "yourpassword"  # 修改为你想要的密码
+ADMIN_PASSWORD = "greyreef2025"  # 修改为你想要的密码
 
 # 如果Cloudinary可用，则配置它
 if cloudinary_available:
