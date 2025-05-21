@@ -16,7 +16,20 @@
             <div class="error-message" style="color: var(--accent-color2); margin: 15px 0;">{{ error }}</div>
             {% endif %}
             
-            <button type="submit" class="rainbowplanet-button">登录</button>
-        </form>
-    </div>
+            <div class="control-button">
+                <button type="submit" style="background: none; border: none; cursor: pointer; padding: 0;">
+                    <div class="concentric-button standard purple">
+                        <div class="concentric-rings">
+                            <div class="ring-outer"></div>
+                            <div class="ring-middle"></div>
+                            <div class="ring-inner"></div>
+                            <div class="button-core">
+                                <!-- 登录图标 -->
+                                <div style="width: 0; height: 0; border-left: 8px solid var(--bg-color); border-top: 5px solid transparent; border-bottom: 5px solid transparent; margin-left: 2px;"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="button-label">登录</div>
+                </button>
+            </div>
 {% endblock %}

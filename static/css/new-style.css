@@ -1288,3 +1288,279 @@ body::after {
     justify-content: center;
     margin-top: 1rem;
 }
+/* 基础同心圆按钮样式 */
+.control-button {
+    display: flex;
+    justify-content: center;
+    margin: 15px 0;
+}
+
+/* 不同尺寸的同心圆按钮 */
+.concentric-button {
+    position: relative;
+    border-radius: 50%;
+    border: 2px solid var(--primary-color);
+    background: var(--dark-color);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    box-shadow: 0 0 10px rgba(0, 204, 255, 0.3);
+    transition: all 0.3s ease;
+}
+
+/* 标准尺寸 - 用于主要操作 */
+.concentric-button.standard {
+    width: 60px;
+    height: 60px;
+}
+
+/* 小尺寸 - 用于次要操作 */
+.concentric-button.small {
+    width: 40px;
+    height: 40px;
+}
+
+/* 大尺寸 - 用于关键操作 */
+.concentric-button.large {
+    width: 80px;
+    height: 80px;
+}
+
+/* 同心圆环样式 */
+.concentric-rings {
+    width: 100%;
+    height: 100%;
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* 外环 */
+.ring-outer {
+    position: absolute;
+    border-radius: 50%;
+    border: 1px solid rgba(0, 204, 255, 0.4);
+}
+.concentric-button.standard .ring-outer {
+    width: 54px;
+    height: 54px;
+}
+.concentric-button.small .ring-outer {
+    width: 36px;
+    height: 36px;
+}
+.concentric-button.large .ring-outer {
+    width: 72px;
+    height: 72px;
+}
+
+/* 中环 */
+.ring-middle {
+    position: absolute;
+    border-radius: 50%;
+    border: 1px solid rgba(0, 204, 255, 0.6);
+}
+.concentric-button.standard .ring-middle {
+    width: 42px;
+    height: 42px;
+}
+.concentric-button.small .ring-middle {
+    width: 28px;
+    height: 28px;
+}
+.concentric-button.large .ring-middle {
+    width: 56px;
+    height: 56px;
+}
+
+/* 内环 */
+.ring-inner {
+    position: absolute;
+    border-radius: 50%;
+    border: 1px solid rgba(0, 204, 255, 0.8);
+}
+.concentric-button.standard .ring-inner {
+    width: 30px;
+    height: 30px;
+}
+.concentric-button.small .ring-inner {
+    width: 20px;
+    height: 20px;
+}
+.concentric-button.large .ring-inner {
+    width: 40px;
+    height: 40px;
+}
+
+/* 按钮中心 */
+.button-core {
+    position: absolute;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-shadow: 0 0 10px rgba(0, 204, 255, 0.7);
+    background: var(--primary-color);
+}
+.concentric-button.standard .button-core {
+    width: 20px;
+    height: 20px;
+}
+.concentric-button.small .button-core {
+    width: 14px;
+    height: 14px;
+}
+.concentric-button.large .button-core {
+    width: 26px;
+    height: 26px;
+}
+
+/* 按钮标签文字 */
+.button-label {
+    text-align: center;
+    margin-top: 8px;
+    font-size: 0.9rem;
+    color: var(--primary-color);
+    text-shadow: 0 0 5px rgba(0, 204, 255, 0.5);
+    letter-spacing: 1px;
+}
+
+/* 按钮悬停效果 */
+.concentric-button:hover {
+    transform: scale(1.05);
+    box-shadow: 0 0 15px rgba(0, 204, 255, 0.5), 0 0 30px rgba(0, 204, 255, 0.3);
+}
+
+/* 按钮点击效果 */
+.concentric-button:active {
+    transform: scale(0.95);
+    transition: transform 0.1s;
+}
+.concentric-button:active .button-core {
+    transform: scale(0.9);
+    transition: transform 0.1s;
+}
+
+/* 悬停时的旋转动画 */
+@keyframes spin-slow {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+@keyframes spin-reverse {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(-360deg); }
+}
+
+.concentric-button:hover .ring-outer {
+    animation: spin-slow 20s linear infinite;
+}
+.concentric-button:hover .ring-middle {
+    animation: spin-reverse 15s linear infinite;
+}
+.concentric-button:hover .ring-inner {
+    animation: spin-slow 10s linear infinite;
+}
+
+/* 按钮颜色变体 */
+/* 蓝色(默认) - 导航/信息类操作 */
+.concentric-button.blue {
+    border-color: var(--primary-color);
+}
+.concentric-button.blue .button-core {
+    background: var(--primary-color);
+}
+.concentric-button.blue .button-label {
+    color: var(--primary-color);
+}
+
+/* 绿色 - 确认/成功类操作 */
+.concentric-button.green {
+    border-color: var(--accent-color);
+}
+.concentric-button.green .ring-outer {
+    border-color: rgba(0, 255, 157, 0.4);
+}
+.concentric-button.green .ring-middle {
+    border-color: rgba(0, 255, 157, 0.6);
+}
+.concentric-button.green .ring-inner {
+    border-color: rgba(0, 255, 157, 0.8);
+}
+.concentric-button.green .button-core {
+    background: var(--accent-color);
+    box-shadow: 0 0 10px rgba(0, 255, 157, 0.7);
+}
+.concentric-button.green .button-label {
+    color: var(--accent-color);
+    text-shadow: 0 0 5px rgba(0, 255, 157, 0.5);
+}
+.concentric-button.green:hover {
+    box-shadow: 0 0 15px rgba(0, 255, 157, 0.5), 0 0 30px rgba(0, 255, 157, 0.3);
+}
+
+/* 红色 - 删除/危险类操作 */
+.concentric-button.red {
+    border-color: var(--accent-color2);
+}
+.concentric-button.red .ring-outer {
+    border-color: rgba(255, 51, 102, 0.4);
+}
+.concentric-button.red .ring-middle {
+    border-color: rgba(255, 51, 102, 0.6);
+}
+.concentric-button.red .ring-inner {
+    border-color: rgba(255, 51, 102, 0.8);
+}
+.concentric-button.red .button-core {
+    background: var(--accent-color2);
+    box-shadow: 0 0 10px rgba(255, 51, 102, 0.7);
+}
+.concentric-button.red .button-label {
+    color: var(--accent-color2);
+    text-shadow: 0 0 5px rgba(255, 51, 102, 0.5);
+}
+.concentric-button.red:hover {
+    box-shadow: 0 0 15px rgba(255, 51, 102, 0.5), 0 0 30px rgba(255, 51, 102, 0.3);
+}
+
+/* 紫色 - 特殊/高级功能 */
+.concentric-button.purple {
+    border-color: #9966ff;
+}
+.concentric-button.purple .ring-outer {
+    border-color: rgba(153, 102, 255, 0.4);
+}
+.concentric-button.purple .ring-middle {
+    border-color: rgba(153, 102, 255, 0.6);
+}
+.concentric-button.purple .ring-inner {
+    border-color: rgba(153, 102, 255, 0.8);
+}
+.concentric-button.purple .button-core {
+    background: #9966ff;
+    box-shadow: 0 0 10px rgba(153, 102, 255, 0.7);
+}
+.concentric-button.purple .button-label {
+    color: #9966ff;
+    text-shadow: 0 0 5px rgba(153, 102, 255, 0.5);
+}
+.concentric-button.purple:hover {
+    box-shadow: 0 0 15px rgba(153, 102, 255, 0.5), 0 0 30px rgba(153, 102, 255, 0.3);
+}
+
+/* 禁用状态 */
+.concentric-button.disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+.concentric-button.disabled:hover {
+    transform: none;
+    box-shadow: 0 0 10px rgba(0, 204, 255, 0.3);
+}
+.concentric-button.disabled:hover .ring-outer,
+.concentric-button.disabled:hover .ring-middle,
+.concentric-button.disabled:hover .ring-inner {
+    animation: none;
+}
