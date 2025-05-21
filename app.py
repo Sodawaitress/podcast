@@ -227,10 +227,17 @@ def upload():
 def feed():
     return "RSS Feed", 200
 
-# 提供favicon
 @app.route('/favicon.ico')
 def favicon():
-    return send_from_directory(app.static_folder, 'favicon.ico', mimetype='image/x-icon')
+    try:
+        return send_from_directory(
+            os.path.join(app.root_path, 'static'),
+            'favicon.ico',
+            mimetype='image/vnd.microsoft.icon'
+        )
+    except Exception as e:
+        # 如果找不到favicon，返回一个空响应
+        return '', 204
 
 # 错误处理
 @app.errorhandler(404)
