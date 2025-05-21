@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+
+{% block title %}管理员登录{% endblock %}
+
+{% block content %}
+    <div class="upload-form">
+        <h2>鲨鱼登陆</h2>
+        
+        <form method="post">
+            <div class="form-group">
+                <label for="password">密码:</label>
+                <input type="password" id="password" name="password" required>
+            </div>
+            
+            {% if error %}
+            <div class="error-message" style="color: var(--accent-color2); margin: 15px 0;">{{ error }}</div>
+            {% endif %}
+            
+            <button type="submit" class="rainbow-button">登录</button>
+        </form>
+    </div>
+{% endblock %}

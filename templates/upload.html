@@ -1,6 +1,6 @@
 {% extends 'base.html' %}
 
-{% block title %}上传新播客{% endblock %}
+{% block title %}播客管理{% endblock %}
 
 {% block content %}
     <div class="upload-form">
@@ -111,6 +111,38 @@
             
             <button type="submit" class="rainbow-button">上传播客</button>
         </form>
+        {% endif %}
+    </div>
+    
+    <!-- 添加播客管理列表部分 -->
+    <div class="admin-episodes-list">
+        <h2>管理现有播客</h2>
+        
+        {% if episodes|length > 0 %}
+            <div class="episodes-list">
+                {% for episode in episodes %}
+                <div class="episode-card">
+                    <h3>{{ episode.title }}</h3>
+                    <div class="episode-meta">
+                        <span class="episode-date">{{ episode.pub_date }}</span>
+                    </div>
+                    <p class="episode-description">{{ episode.description }}</p>
+                    <a href="{{ url_for('episode', episode_id=episode.id) }}" class="button">查看播客</a>
+                    
+                    <!-- 删除按钮 -->
+                    <form action="{{ url_for('delete_episode', episode_id=episode.id) }}" method="post" style="margin-top: 10px;">
+                        <button type="submit" class="button" style="background-color: rgba(255, 50, 50, 0.3);"
+                            onclick="return confirm('确定要删除这个播客吗？');">删除</button>
+                    </form>
+                    
+                    {% if episode.is_demo %}
+                    <span style="display: inline-block; margin-top: 8px; font-size: 0.8em; color: #ff5fd7;">* 演示播客</span>
+                    {% endif %}
+                </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <p>还没有上传任何播客。</p>
         {% endif %}
     </div>
 {% endblock %}

@@ -5,6 +5,8 @@ import secrets
 import hashlib
 import json
 import base64
+from flask import session, flash
+import functools
 
 # 尝试导入requests，在Vercel上首次部署时可能不可用
 try:
@@ -36,6 +38,8 @@ if cloudinary_available:
         api_key = "286612799875297", 
         api_secret = "EkrlSu4mv50B9Aclc_a4US3ZdX4" 
     )
+
+ADMIN_PASSWORD = "greyreef2025"  # 修改为你想要的密码
 
 # 默认播客数据
 def default_episodes():
@@ -149,8 +153,23 @@ def delete_episode(episode_id):
     
     return "播客不存在", 404
 
-# 上传页面
+
+# Add a login route
+@app.route('/admin', methods=['GET', 'POST'])
+def admin_login():
+    error = None
+    if request.method == 'POST':
+        if request.form.get('password') == ADMIN_PASSWORD:
+            session['authenticated'] = True
+            return redirect(url_for('upload'))
+        else:
+            error = "密码不正确"
+    
+    return render_template('admin_login.html', error=error)
+
+# 上传页面 - 添加 login_required 装饰器
 @app.route('/upload', methods=['GET', 'POST'])
+@login_required
 def upload():
     if request.method == 'POST':
         title = request.form.get('title')
@@ -182,6 +201,34 @@ def upload():
                           cloud_name="dxm0ajjil", 
                           upload_preset="podcast_upload")
 
+# Modify the delete_episode route to also require login
+@app.route('/delete/<int:episode_id>', methods=['POST'])
+@login_required
+def delete_episode(episode_id):
+    global EPISODES
+    
+    # 查找要删除的播客索引
+    episode_index = -1
+    for i, ep in enumerate(EPISODES):
+        if ep['id'] == episode_id:
+            episode_index = i
+            break
+    
+    if episode_index >= 0:
+        # 删除播客
+        removed = EPISODES.pop(episode_index)
+        
+        # 重新编号剩余播客
+        for i, ep in enumerate(EPISODES):
+            ep['id'] = i
+        
+        # 保存到Cloudinary
+        if cloudinary_available:
+            upload_episodes_to_cloudinary(EPISODES)
+            
+        return redirect(url_for('upload'))  # 改为返回上传页面而不是首页
+    
+    return "播客不存在", 404
 # RSS Feed
 @app.route('/feed.xml')
 def feed():

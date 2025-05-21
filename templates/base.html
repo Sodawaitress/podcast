@@ -39,14 +39,21 @@
         }
 
         @font-face {
-            font-family: 'VCR OSD Mono';
-            src: url('https://cdn.jsdelivr.net/npm/@typopro/web-vcr-osd-mono@3.7.5/TypoPRO-VCROSDMono.woff2') format('woff2');
+            font-family: 'Star Jedi';
+            src: url('https://cdn.jsdelivr.net/gh/ProjectMoon/StarJedi@master/Fonts/StarJedi-DGRW.ttf') format('truetype');
+            font-weight: normal;
+            font-style: normal;
+        }
+
+        @font-face {
+            font-family: 'Droid Sans Mono';
+            src: url('https://fonts.gstatic.com/s/droidsansmono/v7/ns-m2xQYezAtqh7ai59hJYdJ2JT0J65PSe7wdxAnx_I.woff2') format('woff2');
             font-weight: normal;
             font-style: normal;
         }
 
         body {
-            font-family: 'VCR OSD Mono', 'Courier New', monospace;
+            font-family: 'Droid Sans Mono', 'Courier New', monospace;
             line-height: 1.6;
             color: var(--text-color);
             background-color: var(--bg-color);
@@ -61,58 +68,27 @@
             position: relative;
         }
 
-        .container {
-            width: 90%;
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 0 15px;
-            position: relative;
-            z-index: 5; /* 确保内容在星空之上 */
+        /* 标题使用Star Wars风格字体 */
+        h1, h2, h3, nav {
+            font-family: 'Star Jedi', 'Arial', sans-serif;
+            letter-spacing: 2px;
         }
 
-        a {
-            color: var(--primary-color);   
-            text-decoration: none;
-            position: relative;
-            z-index: 5;
-        }
-
-        a:hover {
-            color: var(--secondary-color);
-        }
-
-        /* 头部样式 */
-        header {
-            background-color: var(--dark-color);
-            border-bottom: 3px solid var(--primary-color);
-            padding: 2rem 0;
-            margin-bottom: 3rem;
-            position: relative;
-            z-index: 5;
-        }
-
-        /* 霓虹灯标题效果 */
+        /* 霓虹灯标题效果增强 */
         header h1 {
             margin: 0 0 0.5rem 0;
-            font-size: 3rem;
+            font-size: 2.8rem;
             color: var(--secondary-color);
             font-weight: 700;
             text-transform: uppercase;
             letter-spacing: 3px;
-            text-shadow: 0 0 10px var(--primary-color);
+            text-shadow: 
+                0 0 10px var(--primary-color),
+                0 0 20px var(--primary-color),
+                0 0 30px var(--primary-color);
         }
 
-        header h1 a {
-            color: var(--secondary-color);
-            text-decoration: none;
-        }
-
-        header p {
-            font-size: 1.2rem;
-            color: var(--primary-color);
-            margin-bottom: 1.5rem;
-        }
-
+        /* 导航增强 */
         header nav {
             margin-top: 1.5rem;
             border-top: 1px solid rgba(0, 204, 255, 0.3);
@@ -124,6 +100,54 @@
             display: flex;
             justify-content: center;
             gap: 2rem;
+        }
+
+        header nav a {
+            font-size: 1.2rem;
+            text-transform: uppercase;
+            transition: all 0.3s ease;
+            letter-spacing: 2px;
+            padding: 5px 10px;
+            border: 1px solid transparent;
+        }
+
+        header nav a:hover {
+            border: 1px solid var(--primary-color);
+            text-shadow: 
+                0 0 5px var(--primary-color),
+                0 0 10px var(--primary-color);
+            box-shadow: 0 0 10px rgba(0, 204, 255, 0.3);
+        }
+
+        /* 按钮样式统一 */
+        .rainbow-button, .button {
+            font-family: 'Droid Sans Mono', monospace;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        /* 错误信息样式 */
+        .error-message {
+            color: var(--accent-color2);
+            margin: 15px 0;
+            font-weight: bold;
+            text-shadow: 0 0 5px rgba(255, 51, 102, 0.5);
+        }
+
+        /* 管理列表样式 */
+        .admin-episodes-list {
+            margin-top: 4rem;
+        }
+
+        .admin-episodes-list h2 {
+            margin-bottom: 2rem;
+        }
+
+        .episodes-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-bottom: 3rem;
         }
 
         /* 控制灯效果 */
@@ -631,13 +655,14 @@
                 <div class="control-light purple"></div>
             </div>
             
-            <nav>
-                <ul>
-                    <li><a href="{{ url_for('index') }}">首页</a></li>
-                    <li><a href="{{ url_for('upload') }}">上传</a></li>
-                    <li><a href="{{ url_for('feed') }}">RSS</a></li>
-                </ul>
-            </nav>
+         
+        <nav>
+            <ul>
+                <li><a href="{{ url_for('index') }}">首页</a></li>
+                <li><a href="{{ url_for('admin_login') }}">管理</a></li>
+                <li><a href="{{ url_for('feed') }}">RSS</a></li>
+            </ul>
+        </nav>
         </div>
     </header>
     
