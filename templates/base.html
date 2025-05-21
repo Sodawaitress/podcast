@@ -214,7 +214,7 @@
                 0 0 15px var(--soft-pink);
             box-shadow: 0 0 10px rgba(255, 158, 184, 0.5);
         }
-/* 同心圆彩虹行星按钮 - 将此CSS添加到base.html的<style>标签内 */
+        /* 同心圆彩虹行星按钮 - 将此CSS添加到base.html的<style>标签内 */
 
         /* 基础按钮容器 */
         .button-container {
@@ -348,26 +348,22 @@
 
         /* 悬停时显示彩虹行星效果 */
         .rainbowplanet-concentric:hover .planet-effect {
-            opacity: 0.8;
+            opacity: 0.9; /* 增强彩虹行星效果的不透明度 */
         }
 
-        /* 悬停时同心圆旋转 */
-        .rainbowplanet-concentric:hover .circle-outer {
-            animation: spin-slow 8s linear infinite;
-        }
-
-        .rainbowplanet-concentric:hover .circle-middle {
-            animation: spin-slow 6s linear infinite reverse;
-        }
-
+        /* 悬停时同心圆淡出 */
+        .rainbowplanet-concentric:hover .circle-outer,
+        .rainbowplanet-concentric:hover .circle-middle,
         .rainbowplanet-concentric:hover .circle-inner {
-            animation: spin-slow 4s linear infinite;
+            opacity: 0;
+            transition: opacity 0.3s ease;
         }
 
-        /* 悬停时中心点放大发光 */
+        /* 悬停时中心点淡出 */
         .rainbowplanet-concentric:hover .button-center {
-            transform: scale(1.1);
-            box-shadow: 0 0 15px rgba(0, 204, 255, 0.9), 0 0 20px rgba(0, 204, 255, 0.5);
+            transform: scale(0.95);
+            opacity: 0;
+            transition: all 0.3s ease;
         }
 
         /* 同心圆旋转动画 */
