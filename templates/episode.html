@@ -46,11 +46,45 @@
                 <div class="error-message">{{ error }}</div>
                 {% endif %}
                 
-                <button type="submit" class="rainbowplanet-button">解锁内容</button>
+                <!-- 紫色解锁按钮 -->
+                <div style="display: flex; justify-content: center; margin: 20px 0;">
+                    <button type="submit" style="background: none; border: none; cursor: pointer; padding: 0;">
+                        <div class="rainbowplanet-concentric" style="border: 2px solid #9966ff;">
+                            <div class="concentric-circles">
+                                <div class="circle-outer" style="border-color: rgba(153, 102, 255, 0.4);"></div>
+                                <div class="circle-middle" style="border-color: rgba(153, 102, 255, 0.6);"></div>
+                                <div class="circle-inner" style="border-color: rgba(153, 102, 255, 0.8);"></div>
+                                <div class="button-center" style="background: #9966ff;">
+                                    <!-- 小圆环解锁图标 -->
+                                    <div style="width: 8px; height: 8px; border: 1.5px solid var(--bg-color); border-radius: 50%;"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div style="text-align: center; margin-top: 8px; color: #9966ff;">解锁内容</div>
+                    </button>
+                </div>
             </form>
         </div>
         {% endif %}
         
-        <a href="{{ url_for('index') }}" class="back-link">← 返回列表</a>
+        <!-- 蓝色返回按钮 (小尺寸) -->
+        <div style="display: flex; justify-content: center; margin-top: 30px;">
+            <a href="{{ url_for('index') }}" style="text-decoration: none;">
+                <button type="button" style="background: none; border: none; cursor: pointer; padding: 0;">
+                    <div class="rainbowplanet-concentric" style="width: 40px; height: 40px; border: 2px solid var(--primary-color);">
+                        <div class="concentric-circles">
+                            <div class="circle-outer" style="width: 36px; height: 36px;"></div>
+                            <div class="circle-middle" style="width: 28px; height: 28px;"></div>
+                            <div class="circle-inner" style="width: 20px; height: 20px;"></div>
+                            <div class="button-center" style="width: 14px; height: 14px;">
+                                <!-- 返回图标 - 小圆点 -->
+                                <div style="width: 7px; height: 7px; background-color: var(--bg-color); border-radius: 50%;"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div style="text-align: center; margin-top: 8px; color: var(--primary-color);">返回列表</div>
+                </button>
+            </a>
+        </div>
     </div>
 {% endblock %}
