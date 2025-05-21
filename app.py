@@ -31,6 +31,15 @@ app.config['SITE_NAME'] = "灰礁播客"
 app.config['SITE_DESCRIPTION'] = "浮筝带来的灰礁上的声音"
 app.config['SITE_URL'] = os.environ.get('SITE_URL', 'https://podcast-five-pink.vercel.app')
 
+# 确保目录存在
+def ensure_dir(directory):
+    if not os.path.exists(directory):
+        os.makedirs(directory)
+
+# 确保CSS目录存在
+css_dir = os.path.join(app.static_folder, 'css')
+ensure_dir(css_dir)
+
 # Add a constant for admin password
 ADMIN_PASSWORD = "greyreef2025"  # 修改为你想要的密码
 
@@ -146,7 +155,7 @@ def episode(episode_id):
             
     if matching_episode:
         return render_template('episode.html', episode=matching_episode, authenticated=True)
-    return "播客不存在", 404
+    return render_template('error.html', error="播客不存在", error_code="404"), 404
 
 # 删除播客
 @app.route('/delete/<int:episode_id>', methods=['POST'])
@@ -175,7 +184,7 @@ def delete_episode(episode_id):
             
         return redirect(url_for('upload'))  # 改为返回上传页面而不是首页
     
-    return "播客不存在", 404
+    return render_template('error.html', error="播客不存在", error_code="404"), 404
 
 # 上传页面
 @app.route('/upload', methods=['GET', 'POST'])
@@ -193,7 +202,7 @@ def upload():
                 'title': title,
                 'description': description,
                 'audio_file': audio_url,
-                'pub_date': datetime.now().isoformat(),
+                'pub_date': datetime.now().strftime('%Y-%m-%d'),
                 'is_demo': False  # 标记为非演示播客
             }
             
@@ -207,7 +216,9 @@ def upload():
             return redirect(url_for('index'))
     
     # 传递正确的upload_preset到模板
-    return render_template('upload.html', use_cloudinary=cloudinary_available, 
+    return render_template('upload.html', 
+                          episodes=EPISODES,  # 添加播客列表用于管理
+                          use_cloudinary=cloudinary_available, 
                           cloud_name="dxm0ajjil", 
                           upload_preset="podcast_upload")
 
@@ -216,26 +227,45 @@ def upload():
 def feed():
     return "RSS Feed", 200
 
-# 提供CSS文件 - 直接路由
-@app.route('/static/css/new-style.css')
-def css():
-    return send_from_directory(os.path.join(app.static_folder, 'css'), 'new-style.css')
-
 # 提供favicon
 @app.route('/favicon.ico')
 def favicon():
     return send_from_directory(app.static_folder, 'favicon.ico', mimetype='image/x-icon')
 
+# 错误处理
+@app.errorhandler(404)
+def page_not_found(e):
+    return render_template('error.html', error="404 - 页面未找到", error_code="404"), 404
+
+@app.errorhandler(500)
+def internal_server_error(e):
+    return render_template('error.html', error="500 - 服务器内部错误", error_code="500"), 500
+
 # 状态检查端点
 @app.route('/status')
 def status():
+    # 检查CSS文件是否存在
+    css_path = os.path.join(app.static_folder, 'css', 'new-style.css')
+    css_exists = os.path.exists(css_path)
+    
+    # 如果CSS文件不存在，尝试创建它
+    if not css_exists:
+        try:
+            with open(css_path, 'w', encoding='utf-8') as f:
+                f.write('/* 这是一个占位CSS文件 */\n')
+                f.write('body { background-color: #0b0b1e; color: white; }')
+            css_exists = os.path.exists(css_path)
+        except Exception as e:
+            print(f"无法创建CSS文件: {e}")
+    
     return jsonify({
         "status": "ok",
         "cloudinary_available": cloudinary_available,
         "requests_available": requests_available,
         "episodes_count": len(EPISODES),
         "static_url": url_for('static', filename='css/new-style.css'),
-        "css_exists": os.path.exists(os.path.join(app.static_folder, 'css', 'new-style.css'))
+        "css_exists": css_exists,
+        "css_path": css_path
     })
 
 if __name__ == '__main__':
