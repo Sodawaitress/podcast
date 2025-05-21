@@ -1171,3 +1171,139 @@ body::after {
     border-color: rgba(0, 204, 255, 0.7);
     box-shadow: 0 0 8px rgba(0, 204, 255, 0.5);
 }
+/* 星战风格同心圆按钮 */
+.starwars-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    background: rgba(2, 4, 16, 0.7);
+    position: relative;
+    text-decoration: none;
+    margin: 0 auto;
+    transition: all 0.3s ease;
+    font-size: 0; /* 移除文字 */
+}
+
+/* 星战同心圆效果 */
+.concentric-circles {
+    position: relative;
+    width: 54px;
+    height: 54px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* 外层同心圆 */
+.circle-outer {
+    position: absolute;
+    width: 54px;
+    height: 54px;
+    border: 2px solid var(--primary-color);
+    border-radius: 50%;
+    box-shadow: 0 0 8px rgba(0, 204, 255, 0.3);
+    transition: all 0.3s ease;
+}
+
+/* 中层同心圆 - 旋转效果 */
+.circle-middle {
+    position: absolute;
+    width: 44px;
+    height: 44px;
+    border: 1px dashed rgba(0, 204, 255, 0.6);
+    border-radius: 50%;
+    animation: rotate-ring 18s linear infinite;
+    transition: all 0.3s ease;
+}
+
+/* 内层同心圆 */
+.circle-inner {
+    position: absolute;
+    width: 34px;
+    height: 34px;
+    border: 2px solid rgba(0, 204, 255, 0.7);
+    border-radius: 50%;
+    box-shadow: inset 0 0 10px rgba(0, 204, 255, 0.3);
+    transition: all 0.3s ease;
+}
+
+/* 按钮中心 */
+.button-center {
+    width: 24px;
+    height: 24px;
+    background: rgba(0, 102, 153, 0.3);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 0 8px rgba(0, 204, 255, 0.3);
+    position: relative;
+    z-index: 2;
+    transition: all 0.3s ease;
+}
+
+/* 播放图标 */
+.play-icon {
+    width: 0;
+    height: 0;
+    border-style: solid;
+    border-width: 6px 0 6px 10px;
+    border-color: transparent transparent transparent rgba(0, 204, 255, 0.8);
+    margin-left: 2px;
+    filter: drop-shadow(0 0 3px rgba(0, 204, 255, 0.5));
+    transition: all 0.3s ease;
+}
+
+/* 旋转动画 */
+@keyframes rotate-ring {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* 反向旋转动画 */
+@keyframes rotate-ring-reverse {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(-360deg); }
+}
+
+/* 气态行星效果 - 悬停时显示 */
+.planet-effect {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    background: 
+        radial-gradient(
+            circle at center,
+            rgba(247, 140, 170, 0.9) 0%,    /* 跨粉色中心 */
+            rgba(85, 205, 252, 0.8) 30%,    /* 跨蓝色过渡 */
+            rgba(247, 140, 170, 0.7) 60%,   /* 跨粉色晕染 */
+            transparent 100%                 /* 透明边缘 */
+        ),
+        linear-gradient(
+            0deg,
+            rgba(255, 100, 100, 0.8) 0%,     /* 红色区域 */
+            rgba(255, 160, 80, 0.8) 16.6%,   /* 橙色区域 */
+            rgba(255, 240, 70, 0.8) 33.3%,   /* 黄色区域 */
+            rgba(100, 230, 100, 0.8) 50%,    /* 绿色区域 */
+            rgba(80, 170, 255, 0.8) 66.6%,   /* 蓝色区域 */
+            rgba(180, 100, 255, 0.8) 83.3%,  /* 紫色区域 */
+            rgba(247, 140, 170, 0.8) 100%    /* 跨粉色区域 */
+        );
+    opacity: 0;
+    z-index: 1;
+    transition: opacity 0.3s ease;
+}
+
+
+/* 确保按钮居中显示 */
+.button-container {
+    display: flex;
+    justify-content: center;
+    margin-top: 1rem;
+}
