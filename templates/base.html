@@ -4,8 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{% block title %}{{ site_name }}{% endblock %}</title>
-    <!-- 使用绝对路径 -->
-    <link rel="stylesheet" href="/static/css/new-style.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/new-style.css') }}">
     <!-- 备用样式链接 -->
     <style>
         /* 基础重置 */
@@ -815,7 +814,7 @@
           button.style.borderColor = '';
           button.style.textShadow = '';
         });
-    });
+               }); // 这里缺少了闭合buttons.forEach循环的括号
     </script>
     
 <body>
