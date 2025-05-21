@@ -71,7 +71,7 @@
         </div>
         
         <div class="sharing-options hologram-terminal">
-            <h3 class="terminal-title">蒂国通讯终端 - 信息传输</h3>
+            <h3 class="terminal-title">帝国通讯终端 - 信息传输</h3>
             
             <div class="hologram-container">
                 <div class="hologram-effect"></div>
@@ -107,27 +107,27 @@
             <div class="share-panel" id="sharePanel">
                 <div class="share-panel-header">选择广播频道</div>
                 <div class="share-options">
-                    <!-- 微信分享 -->
-                    <button class="share-option" onclick="shareToApp('wechat')">
-                        <div class="share-icon wechat">微信</div>
-                        <span>微信</span>
+                    <!-- 豆瓣分享 -->
+                    <button class="share-option" onclick="shareToApp('douban')">
+                        <div class="share-icon douban">豆</div>
+                        <span>豆瓣</span>
                     </button>
                     
-                    <!-- 微博分享 -->
-                    <button class="share-option" onclick="shareToApp('weibo')">
-                        <div class="share-icon weibo">微博</div>
-                        <span>微博</span>
+                    <!-- CMX分享 -->
+                    <button class="share-option" onclick="shareToApp('cmx')">
+                        <div class="share-icon cmx">C</div>
+                        <span>CMX</span>
                     </button>
                     
-                    <!-- QQ分享 -->
-                    <button class="share-option" onclick="shareToApp('qq')">
-                        <div class="share-icon qq">QQ</div>
-                        <span>QQ</span>
+                    <!-- Twitter分享 -->
+                    <button class="share-option" onclick="shareToApp('twitter')">
+                        <div class="share-icon twitter">X</div>
+                        <span>Twitter</span>
                     </button>
                     
                     <!-- 更多选项 -->
                     <button class="share-option" onclick="shareToApp('more')">
-                        <div class="share-icon more">更多</div>
+                        <div class="share-icon more">+</div>
                         <span>更多</span>
                     </button>
                 </div>
@@ -186,8 +186,7 @@
             // 模拟短链接生成过程 - 在实际应用中，这里应该调用短链接API
             setTimeout(function() {
                 // 这里只是模拟生成短链接，实际应用中应替换为真实API调用
-                // 例如: 调用t.cn, bit.ly等短链接服务
-                var shortUrl = "https://t.cn/" + generateRandomString(7);
+                var shortUrl = "https://s.cmx.im/" + generateRandomString(7);
                 
                 // 更新输入框值为短链接
                 urlElement.value = shortUrl;
@@ -253,24 +252,23 @@
             var urlElement = document.getElementById('hologram-url');
             var shareUrl = urlElement.value;
             var title = "{{ episode.title }}"; // 使用实际的播客标题
+            var description = "来自星际播客的精彩内容"; // 可以替换为实际描述
             
             var shareUrls = {
-                'wechat': 'javascript:alert("请使用微信扫描二维码分享");', // 微信需要二维码
-                'weibo': 'http://service.weibo.com/share/share.php?url=' + encodeURIComponent(shareUrl) + '&title=' + encodeURIComponent(title),
-                'qq': 'http://connect.qq.com/widget/shareqq/index.html?url=' + encodeURIComponent(shareUrl) + '&title=' + encodeURIComponent(title),
+                'douban': 'https://www.douban.com/share/service?href=' + encodeURIComponent(shareUrl) + '&name=' + encodeURIComponent(title) + '&text=' + encodeURIComponent(description),
+                'twitter': 'https://twitter.com/intent/tweet?url=' + encodeURIComponent(shareUrl) + '&text=' + encodeURIComponent(title),
+                'cmx': 'https://cmx.im/share?url=' + encodeURIComponent(shareUrl) + '&title=' + encodeURIComponent(title),
                 'more': 'javascript:navigator.share && navigator.share({title: "' + title + '", url: "' + shareUrl + '"})'
             };
             
             if (app === 'more' && navigator.share) {
                 navigator.share({
                     title: title,
+                    text: description,
                     url: shareUrl
                 }).catch(function(error) {
                     console.log('分享出错:', error);
                 });
-            } else if (app === 'wechat') {
-                // 为微信创建二维码
-                showQRCode(shareUrl);
             } else {
                 window.open(shareUrls[app], '_blank');
             }
@@ -282,25 +280,6 @@
             setTimeout(function() {
                 closeSharePanel();
             }, 3000);
-        }
-        
-        // 显示二维码
-        function showQRCode(url) {
-            // 这里应该实现显示二维码的功能
-            // 可以使用qrcode.js等库生成二维码
-            alert("请扫描二维码分享到微信\n链接: " + url);
-            
-            // 在实际实现中，应该创建一个二维码图像并显示
-            // 例如:
-            /*
-            var qrcodeContainer = document.createElement('div');
-            qrcodeContainer.className = 'qrcode-container';
-            qrcodeContainer.innerHTML = '<div id="qrcode"></div><button onclick="closeQRCode()">关闭</button>';
-            document.body.appendChild(qrcodeContainer);
-            
-            // 使用qrcode.js生成二维码
-            new QRCode(document.getElementById("qrcode"), url);
-            */
         }
         
         // 更新状态指示器
@@ -669,22 +648,26 @@
             margin-bottom: 5px;
             color: white;
             font-weight: bold;
+            font-size: 18px;
         }
         
-        .share-icon.wechat {
-            background-color: #07C160;
+        .share-icon.douban {
+            background-color: #00B51D; /* 豆瓣绿色 */
         }
         
-        .share-icon.weibo {
-            background-color: #E6162D;
+        .share-icon.cmx {
+            background-color: #FF5252; /* CMX红色 */
+            font-family: 'Arial', sans-serif;
         }
         
-        .share-icon.qq {
-            background-color: #12B7F5;
+        .share-icon.twitter {
+            background-color: #1DA1F2; /* Twitter蓝色 */
+            font-family: 'Arial', sans-serif;
         }
         
         .share-icon.more {
             background-color: #666;
+            font-size: 24px;
         }
         
         .close-panel {
