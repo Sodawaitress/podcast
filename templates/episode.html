@@ -138,59 +138,75 @@
                 </div>
             </div>
             
-            <!-- 终端控制按钮 -->
-            <div class="terminal-controls">
+            <!-- 紧凑型终端控制按钮 -->
+            <div class="compact-terminal-controls">
                 <!-- 复制链接按钮 -->
-                <button class="terminal-button blue" onclick="copyHologramUrl()">
-                    <div class="button-led"></div>
-                    <div class="button-label">复制</div>
-                    <div class="button-desc">COPY</div>
+                <button class="compact-button blue" onclick="copyHologramUrl()" title="复制链接">
+                    <div class="compact-led"></div>
+                    <div class="compact-icon">📋</div>
+                    <div class="compact-label">复制</div>
                 </button>
                 
                 <!-- 生成短链接按钮 -->
-                <button class="terminal-button purple" onclick="encryptUrl()">
-                    <div class="button-led"></div>
-                    <div class="button-label">加密</div>
-                    <div class="button-desc">ENCRYPT</div>
+                <button class="compact-button purple" onclick="encryptUrl()" title="生成短链接">
+                    <div class="compact-led"></div>
+                    <div class="compact-icon">🔒</div>
+                    <div class="compact-label">加密</div>
                 </button>
                 
                 <!-- 广播分享按钮 -->
-                <button class="terminal-button green" onclick="broadcastEpisode()">
-                    <div class="button-led"></div>
-                    <div class="button-label">广播</div>
-                    <div class="button-desc">BROADCAST</div>
+                <button class="compact-button green" onclick="broadcastEpisode()" title="分享广播">
+                    <div class="compact-led"></div>
+                    <div class="compact-icon">📡</div>
+                    <div class="compact-label">广播</div>
                 </button>
             </div>
             
             <!-- 分享面板，默认隐藏 -->
             <div class="share-panel" id="sharePanel">
-                <div class="share-panel-header">选择广播频道</div>
+                <div class="share-panel-header">选择传输频道</div>
                 <div class="share-options">
-                    <!-- 豆瓣分享 -->
+                    <!-- 频道 Alpha -->
                     <button class="share-option" onclick="shareToApp('douban')">
-                        <div class="share-icon douban">豆</div>
-                        <span>豆瓣</span>
+                        <div class="share-icon channel-alpha">
+                            <div class="channel-symbol">α</div>
+                            <div class="channel-ring"></div>
+                        </div>
+                        <span>频道 α</span>
                     </button>
                     
-                    <!-- CMX分享 -->
+                    <!-- 频道 Beta -->
                     <button class="share-option" onclick="shareToApp('cmx')">
-                        <div class="share-icon cmx">C</div>
-                        <span>CMX</span>
+                        <div class="share-icon channel-beta">
+                            <div class="channel-symbol">β</div>
+                            <div class="channel-ring"></div>
+                        </div>
+                        <span>频道 β</span>
                     </button>
                     
-                    <!-- Twitter分享 -->
+                    <!-- 频道 Gamma -->
                     <button class="share-option" onclick="shareToApp('twitter')">
-                        <div class="share-icon twitter">X</div>
-                        <span>Twitter</span>
+                        <div class="share-icon channel-gamma">
+                            <div class="channel-symbol">γ</div>
+                            <div class="channel-ring"></div>
+                        </div>
+                        <span>频道 γ</span>
                     </button>
                     
-                    <!-- 更多选项 -->
+                    <!-- 量子网络 -->
                     <button class="share-option" onclick="shareToApp('more')">
-                        <div class="share-icon more">+</div>
-                        <span>更多</span>
+                        <div class="share-icon quantum-network">
+                            <div class="quantum-symbol">∞</div>
+                            <div class="quantum-particles">
+                                <div class="particle p1"></div>
+                                <div class="particle p2"></div>
+                                <div class="particle p3"></div>
+                            </div>
+                        </div>
+                        <span>量子网络</span>
                     </button>
                 </div>
-                <button class="close-panel" onclick="closeSharePanel()">关闭</button>
+                <button class="close-panel" onclick="closeSharePanel()">终止传输</button>
             </div>
             
             <!-- 雷达扫描区 -->
@@ -688,33 +704,35 @@
             cursor: pointer;
         }
         
-        /* 全息通讯终端样式 - 紧凑版 */
+        /* 全息通讯终端样式 */
         .hologram-terminal {
-            background: rgba(5, 6, 26, 0.7);
-            border: 1px solid var(--primary-color);
-            border-radius: 6px;
-            padding: 15px;
-            margin: 20px 0;
+            background: rgba(5, 6, 26, 0.8);
+            border: 2px solid var(--primary-color);
+            border-radius: 8px;
+            padding: 25px;
+            margin: 30px 0;
             position: relative;
             overflow: hidden;
-            box-shadow: 0 0 12px rgba(0, 204, 255, 0.2);
+            box-shadow: 0 0 20px rgba(0, 204, 255, 0.3);
         }
         
-        /* 标题样式 - 更小 */
+        /* 标题样式 */
         .terminal-title {
             color: var(--primary-color);
             text-align: center;
-            font-size: 14px;
-            letter-spacing: 1px;
-            margin-bottom: 12px;
-            text-shadow: 0 0 3px var(--primary-color);
+            font-family: 'Star Jedi', 'Arial', sans-serif;
+            letter-spacing: 2px;
+            margin-bottom: 20px;
+            text-shadow: 
+                0 0 5px var(--primary-color),
+                0 0 10px var(--primary-color);
         }
         
-        /* 全息投影容器 - 紧凑 */
+        /* 全息投影容器 */
         .hologram-container {
             position: relative;
-            height: 80px;
-            margin: 15px 0;
+            height: 120px;
+            margin: 30px 0;
             display: flex;
             justify-content: center;
             align-items: center;
@@ -784,41 +802,41 @@
             }
         }
         
-        /* 全息投影 - 紧凑 */
+        /* 全息投影 */
         .hologram-projection {
             position: relative;
-            width: 85%;
-            height: 45px;
+            width: 80%;
+            height: 60px;
             display: flex;
             justify-content: center;
             align-items: center;
             z-index: 2;
         }
         
-        /* 全息环 - 更小 */
+        /* 全息环 */
         .hologram-ring {
             position: absolute;
             border-radius: 50%;
-            border: 1px solid rgba(0, 204, 255, 0.4);
-            box-shadow: 0 0 6px rgba(0, 204, 255, 0.2);
+            border: 1px solid rgba(0, 204, 255, 0.5);
+            box-shadow: 0 0 10px rgba(0, 204, 255, 0.3);
         }
         
         .hologram-ring.top {
             width: 100%;
             height: 100%;
-            animation: rotate 20s linear infinite;
+            animation: rotate 15s linear infinite;
         }
         
         .hologram-ring.middle {
-            width: 75%;
-            height: 75%;
-            animation: rotate-reverse 16s linear infinite;
+            width: 80%;
+            height: 80%;
+            animation: rotate-reverse 12s linear infinite;
         }
         
         .hologram-ring.bottom {
-            width: 50%;
-            height: 50%;
-            animation: rotate 12s linear infinite;
+            width: 60%;
+            height: 60%;
+            animation: rotate 10s linear infinite;
         }
         
         @keyframes rotate {
@@ -839,31 +857,30 @@
             }
         }
         
-        /* URL输入框 - 紧凑 */
+        /* URL输入框 */
         .hologram-url {
             width: 100%;
             background: rgba(0, 0, 0, 0.3);
             border: 1px solid var(--primary-color);
             color: var(--primary-color);
-            padding: 6px 8px;
+            padding: 10px;
             text-align: center;
             font-family: 'Droid Sans Mono', monospace;
-            font-size: 11px;
-            letter-spacing: 0.5px;
-            box-shadow: 0 0 6px rgba(0, 204, 255, 0.2);
+            letter-spacing: 1px;
+            box-shadow: 0 0 10px rgba(0, 204, 255, 0.3);
             position: relative;
             z-index: 5;
         }
         
         .hologram-url:focus {
             outline: none;
-            box-shadow: 0 0 8px rgba(0, 204, 255, 0.4);
+            box-shadow: 0 0 15px rgba(0, 204, 255, 0.5);
         }
         
-        /* 数据流可视化区域 - 更小 */
+        /* 数据流可视化区域 */
         .data-stream-visualization {
-            margin: 15px 0;
-            height: 60px;
+            margin: 30px 0;
+            height: 120px;
             position: relative;
         }
         
@@ -882,9 +899,9 @@
             width: 100%;
             height: 100%;
             background-image: 
-                linear-gradient(to right, rgba(0, 204, 255, 0.08) 1px, transparent 1px),
-                linear-gradient(to bottom, rgba(0, 204, 255, 0.08) 1px, transparent 1px);
-            background-size: 15px 15px;
+                linear-gradient(to right, rgba(0, 204, 255, 0.1) 1px, transparent 1px),
+                linear-gradient(to bottom, rgba(0, 204, 255, 0.1) 1px, transparent 1px);
+            background-size: 25px 25px;
             z-index: 1;
         }
         
@@ -897,37 +914,37 @@
         
         .stream-line {
             position: absolute;
-            height: 1px;
+            height: 2px;
             background: linear-gradient(
                 to right,
                 transparent 0%,
-                rgba(0, 204, 255, 0.6) 20%,
-                rgba(0, 255, 157, 0.5) 50%,
-                rgba(0, 204, 255, 0.6) 80%,
+                var(--primary-color) 20%,
+                rgba(0, 255, 157, 0.8) 50%,
+                var(--primary-color) 80%,
                 transparent 100%
             );
-            box-shadow: 0 0 3px rgba(0, 204, 255, 0.3);
+            box-shadow: 0 0 5px rgba(0, 204, 255, 0.5);
         }
         
         .stream-line.line-1 {
-            top: 30%;
-            width: 50%;
-            left: 25%;
-            animation: data-flow-1 4s infinite;
+            top: 25%;
+            width: 60%;
+            left: 20%;
+            animation: data-flow-1 3s infinite;
         }
         
         .stream-line.line-2 {
             top: 50%;
-            width: 65%;
-            left: 17%;
-            animation: data-flow-2 5s infinite 1s;
+            width: 80%;
+            left: 10%;
+            animation: data-flow-2 4s infinite 1s;
         }
         
         .stream-line.line-3 {
-            top: 70%;
-            width: 40%;
-            left: 30%;
-            animation: data-flow-3 4.5s infinite 0.5s;
+            top: 75%;
+            width: 50%;
+            left: 25%;
+            animation: data-flow-3 3.5s infinite 0.5s;
         }
         
         @keyframes data-flow-1 {
@@ -996,119 +1013,152 @@
             }
         }
         
-        /* 控制按钮区域 */
-        .terminal-controls {
+        /* 紧凑型终端控制按钮 */
+        .compact-terminal-controls {
             display: flex;
-            justify-content: space-around;
-            margin: 25px 0;
+            justify-content: center;
+            gap: 15px;
+            margin: 20px 0;
             flex-wrap: wrap;
         }
         
-        /* 按钮样式 */
-        .terminal-button {
+        .compact-button {
             position: relative;
-            width: 100px;
-            height: 100px;
-            border-radius: 50%;
-            border: 2px solid var(--primary-color);
-            background: var(--dark-color);
+            width: 70px;
+            height: 70px;
+            border-radius: 8px;
+            border: 1.5px solid var(--primary-color);
+            background: rgba(5, 6, 26, 0.9);
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
             cursor: pointer;
             transition: all 0.3s ease;
-            margin: 5px;
+            backdrop-filter: blur(5px);
+            box-shadow: 
+                0 0 10px rgba(0, 204, 255, 0.2),
+                inset 0 0 15px rgba(0, 204, 255, 0.1);
         }
         
-        .terminal-button::before {
+        .compact-button::before {
             content: '';
             position: absolute;
-            width: 80%;
-            height: 80%;
-            border-radius: 50%;
-            border: 1px solid rgba(255, 255, 255, 0.1);
+            top: 2px;
+            left: 2px;
+            right: 2px;
+            bottom: 2px;
+            border-radius: 6px;
+            border: 1px solid rgba(0, 204, 255, 0.2);
+            pointer-events: none;
         }
         
-        .terminal-button::after {
+        .compact-button::after {
             content: '';
             position: absolute;
-            width: 60%;
-            height: 60%;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border-radius: 8px;
+            background: linear-gradient(
+                45deg,
+                transparent 0%,
+                rgba(0, 204, 255, 0.1) 25%,
+                transparent 50%,
+                rgba(0, 204, 255, 0.1) 75%,
+                transparent 100%
+            );
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            pointer-events: none;
+        }
+        
+        .compact-button:hover {
+            transform: translateY(-2px) scale(1.05);
+            box-shadow: 
+                0 5px 15px rgba(0, 204, 255, 0.3),
+                inset 0 0 20px rgba(0, 204, 255, 0.2);
+        }
+        
+        .compact-button:hover::after {
+            opacity: 1;
+        }
+        
+        .compact-button:active {
+            transform: translateY(0) scale(0.98);
+        }
+        
+        .compact-led {
+            width: 4px;
+            height: 4px;
             border-radius: 50%;
-            border: 1px solid rgba(255, 255, 255, 0.1);
+            background: rgba(255, 255, 255, 0.4);
+            margin-bottom: 3px;
+            box-shadow: 0 0 3px rgba(255, 255, 255, 0.3);
+            transition: all 0.3s ease;
         }
         
-        .terminal-button:hover {
-            transform: scale(1.05);
-            box-shadow: 0 0 15px rgba(0, 204, 255, 0.3);
+        .compact-icon {
+            font-size: 16px;
+            margin-bottom: 2px;
+            opacity: 0.9;
         }
         
-        .terminal-button:active {
-            transform: scale(0.95);
+        .compact-label {
+            font-size: 9px;
+            color: rgba(255, 255, 255, 0.8);
+            font-family: 'Droid Sans Mono', monospace;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
         }
         
-        /* LED指示灯 */
-        .button-led {
-            width: 8px;
-            height: 8px;
-            border-radius: 50%;
-            background: rgba(255, 255, 255, 0.5);
-            margin-bottom: 5px;
-            box-shadow: 0 0 5px rgba(255, 255, 255, 0.3);
+        /* 蓝色紧凑按钮 */
+        .compact-button.blue {
+            border-color: var(--primary-color);
         }
-        
-        /* 按钮标签 */
-        .button-label {
-            font-size: 12px;
-            color: white;
-            text-align: center;
-        }
-        
-        /* 按钮描述 */
-        .button-desc {
-            font-size: 10px;
-            color: rgba(255, 255, 255, 0.7);
-            margin-top: 5px;
-        }
-        
-        /* 蓝色按钮 - 调低强度 */
-        .terminal-button.blue {
-            border-color: rgba(0, 204, 255, 0.6);
-            box-shadow: 0 0 6px rgba(0, 204, 255, 0.15);
-        }
-        .terminal-button.blue .button-led {
+        .compact-button.blue .compact-led {
             background: var(--primary-color);
-            box-shadow: 0 0 3px var(--primary-color);
+            box-shadow: 0 0 5px var(--primary-color);
         }
-        .terminal-button.blue:hover {
-            box-shadow: 0 0 10px rgba(0, 204, 255, 0.25);
+        .compact-button.blue:hover {
+            box-shadow: 
+                0 5px 15px rgba(0, 204, 255, 0.4),
+                inset 0 0 20px rgba(0, 204, 255, 0.2);
         }
         
-        /* 紫色按钮 - 调低强度 */
-        .terminal-button.purple {
-            border-color: rgba(153, 102, 255, 0.6);
-            box-shadow: 0 0 6px rgba(153, 102, 255, 0.15);
+        /* 紫色紧凑按钮 */
+        .compact-button.purple {
+            border-color: #9966ff;
+            box-shadow: 
+                0 0 10px rgba(153, 102, 255, 0.2),
+                inset 0 0 15px rgba(153, 102, 255, 0.1);
         }
-        .terminal-button.purple .button-led {
+        .compact-button.purple .compact-led {
             background: #9966ff;
-            box-shadow: 0 0 3px #9966ff;
+            box-shadow: 0 0 5px #9966ff;
         }
-        .terminal-button.purple:hover {
-            box-shadow: 0 0 10px rgba(153, 102, 255, 0.25);
+        .compact-button.purple:hover {
+            box-shadow: 
+                0 5px 15px rgba(153, 102, 255, 0.4),
+                inset 0 0 20px rgba(153, 102, 255, 0.2);
         }
         
-        /* 绿色按钮 - 调低强度 */
-        .terminal-button.green {
-            border-color: rgba(0, 255, 157, 0.6);
-            box-shadow: 0 0 6px rgba(0, 255, 157, 0.15);
+        /* 绿色紧凑按钮 */
+        .compact-button.green {
+            border-color: var(--accent-color);
+            box-shadow: 
+                0 0 10px rgba(0, 255, 157, 0.2),
+                inset 0 0 15px rgba(0, 255, 157, 0.1);
         }
-        .terminal-button.green .button-led {
+        .compact-button.green .compact-led {
             background: var(--accent-color);
-            box-shadow: 0 0 3px var(--accent-color);
+            box-shadow: 0 0 5px var(--accent-color);
         }
-        .terminal-button.green:hover {
-            box-shadow: 0 0 10px rgba(0, 255, 157, 0.25);
+        .compact-button.green:hover {
+            box-shadow: 
+                0 5px 15px rgba(0, 255, 157, 0.4),
+                inset 0 0 20px rgba(0, 255, 157, 0.2);
         }
         
         /* 分享面板 */
@@ -1136,28 +1186,35 @@
             text-align: center;
             margin-bottom: 15px;
             font-weight: bold;
+            font-family: 'Droid Sans Mono', monospace;
+            letter-spacing: 1px;
         }
         
         .share-options {
             display: flex;
             justify-content: space-around;
             flex-wrap: wrap;
+            gap: 15px;
         }
         
         .share-option {
             background: none;
             border: none;
-            color: white;
+            color: var(--primary-color);
             display: flex;
             flex-direction: column;
             align-items: center;
             cursor: pointer;
             margin: 10px;
             transition: all 0.3s ease;
+            font-family: 'Droid Sans Mono', monospace;
+            font-size: 11px;
+            letter-spacing: 0.5px;
         }
         
         .share-option:hover {
             transform: scale(1.1);
+            color: var(--accent-color);
         }
         
         .share-icon {
@@ -1167,29 +1224,146 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            margin-bottom: 5px;
-            color: white;
+            margin-bottom: 8px;
+            position: relative;
+            border: 2px solid;
+            background: rgba(0, 0, 0, 0.3);
+            backdrop-filter: blur(5px);
+        }
+        
+        /* 频道 Alpha */
+        .share-icon.channel-alpha {
+            border-color: #00B51D;
+            box-shadow: 0 0 15px rgba(0, 181, 29, 0.3);
+        }
+        
+        .share-icon.channel-alpha .channel-symbol {
+            color: #00B51D;
+            font-size: 20px;
             font-weight: bold;
-            font-size: 18px;
+            text-shadow: 0 0 5px rgba(0, 181, 29, 0.7);
         }
         
-        .share-icon.douban {
-            background-color: #00B51D;
+        /* 频道 Beta */
+        .share-icon.channel-beta {
+            border-color: #FF5252;
+            box-shadow: 0 0 15px rgba(255, 82, 82, 0.3);
         }
         
-        .share-icon.cmx {
-            background-color: #FF5252;
-            font-family: 'Arial', sans-serif;
+        .share-icon.channel-beta .channel-symbol {
+            color: #FF5252;
+            font-size: 20px;
+            font-weight: bold;
+            text-shadow: 0 0 5px rgba(255, 82, 82, 0.7);
         }
         
-        .share-icon.twitter {
-            background-color: #1DA1F2;
-            font-family: 'Arial', sans-serif;
+        /* 频道 Gamma */
+        .share-icon.channel-gamma {
+            border-color: #1DA1F2;
+            box-shadow: 0 0 15px rgba(29, 161, 242, 0.3);
         }
         
-        .share-icon.more {
-            background-color: #666;
+        .share-icon.channel-gamma .channel-symbol {
+            color: #1DA1F2;
+            font-size: 20px;
+            font-weight: bold;
+            text-shadow: 0 0 5px rgba(29, 161, 242, 0.7);
+        }
+        
+        /* 量子网络 */
+        .share-icon.quantum-network {
+            border-color: #9966ff;
+            box-shadow: 0 0 15px rgba(153, 102, 255, 0.3);
+        }
+        
+        .quantum-symbol {
+            color: #9966ff;
             font-size: 24px;
+            font-weight: bold;
+            text-shadow: 0 0 5px rgba(153, 102, 255, 0.7);
+            z-index: 2;
+        }
+        
+        .quantum-particles {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+        }
+        
+        .particle {
+            position: absolute;
+            width: 3px;
+            height: 3px;
+            border-radius: 50%;
+            background: #9966ff;
+            box-shadow: 0 0 5px rgba(153, 102, 255, 0.7);
+        }
+        
+        .particle.p1 {
+            top: 20%;
+            left: 20%;
+            animation: particle-float 2s infinite;
+        }
+        
+        .particle.p2 {
+            top: 70%;
+            right: 20%;
+            animation: particle-float 2.5s infinite 0.5s;
+        }
+        
+        .particle.p3 {
+            bottom: 30%;
+            left: 30%;
+            animation: particle-float 3s infinite 1s;
+        }
+        
+        @keyframes particle-float {
+            0%, 100% {
+                transform: translateY(0) scale(1);
+                opacity: 0.6;
+            }
+            50% {
+                transform: translateY(-10px) scale(1.2);
+                opacity: 1;
+            }
+        }
+        
+        /* 频道环效果 */
+        .channel-ring {
+            position: absolute;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            border: 1px solid;
+            opacity: 0.3;
+            animation: ring-pulse 2s infinite;
+        }
+        
+        .channel-alpha .channel-ring {
+            border-color: #00B51D;
+        }
+        
+        .channel-beta .channel-ring {
+            border-color: #FF5252;
+        }
+        
+        .channel-gamma .channel-ring {
+            border-color: #1DA1F2;
+        }
+        
+        @keyframes ring-pulse {
+            0% {
+                transform: scale(1);
+                opacity: 0.3;
+            }
+            50% {
+                transform: scale(1.1);
+                opacity: 0.6;
+            }
+            100% {
+                transform: scale(1);
+                opacity: 0.3;
+            }
         }
         
         .close-panel {
@@ -1202,28 +1376,32 @@
             border-radius: 5px;
             cursor: pointer;
             transition: all 0.3s ease;
+            font-family: 'Droid Sans Mono', monospace;
+            font-size: 11px;
+            letter-spacing: 1px;
         }
         
         .close-panel:hover {
             background: rgba(0, 255, 157, 0.1);
+            box-shadow: 0 0 10px rgba(0, 255, 157, 0.3);
         }
         
-        /* 雷达扫描区 */
+        /* 雷达扫描区 - 紧凑版 */
         .radar-container {
-            margin: 25px 0;
+            margin: 20px 0;
             text-align: center;
         }
         
         .radar-text {
             color: var(--primary-color);
-            margin-bottom: 10px;
-            font-size: 14px;
+            margin-bottom: 8px;
+            font-size: 12px;
         }
         
         .radar-scan {
             position: relative;
-            width: 150px;
-            height: 150px;
+            width: 100px;
+            height: 100px;
             border-radius: 50%;
             border: 1px solid var(--primary-color);
             margin: 0 auto;
@@ -1253,11 +1431,11 @@
         
         .radar-dot {
             position: absolute;
-            width: 5px;
-            height: 5px;
+            width: 4px;
+            height: 4px;
             border-radius: 50%;
             background: var(--primary-color);
-            box-shadow: 0 0 5px var(--primary-color);
+            box-shadow: 0 0 4px var(--primary-color);
         }
         
         .radar-dot.dot1 {
@@ -1287,36 +1465,36 @@
             }
         }
         
-        /* 传输状态指示器 */
+        /* 传输状态指示器 - 紧凑版 */
         .transmission-status {
             display: flex;
             align-items: center;
             justify-content: center;
-            margin-top: 20px;
+            margin-top: 15px;
         }
         
         .status-led {
-            width: 10px;
-            height: 10px;
+            width: 8px;
+            height: 8px;
             border-radius: 50%;
             background: rgba(255, 255, 255, 0.5);
-            margin-right: 10px;
+            margin-right: 8px;
             transition: all 0.3s ease;
         }
         
         .status-led.success {
             background: var(--accent-color);
-            box-shadow: 0 0 10px var(--accent-color);
+            box-shadow: 0 0 8px var(--accent-color);
         }
         
         .status-led.alert {
             background: #FF9900;
-            box-shadow: 0 0 10px #FF9900;
+            box-shadow: 0 0 8px #FF9900;
         }
         
         .status-led.processing {
             background: #9966ff;
-            box-shadow: 0 0 10px #9966ff;
+            box-shadow: 0 0 8px #9966ff;
             animation: processing 1s infinite;
         }
         
@@ -1331,7 +1509,7 @@
         
         .status-text {
             color: var(--primary-color);
-            font-size: 14px;
+            font-size: 12px;
         }
         
         /* 响应式调整 */
@@ -1356,14 +1534,18 @@
                 margin-top: 10px;
             }
             
-            .terminal-controls {
-                flex-direction: column;
-                align-items: center;
+            .compact-terminal-controls {
+                gap: 10px;
+            }
+            
+            .compact-button {
+                width: 60px;
+                height: 60px;
             }
             
             .radar-scan {
-                width: 120px;
-                height: 120px;
+                width: 80px;
+                height: 80px;
             }
         }
         </style>
