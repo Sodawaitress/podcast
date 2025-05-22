@@ -105,9 +105,10 @@
         <!-- 上一集/下一集导航按钮 -->
         <div style="display: flex; justify-content: center; align-items: center; margin: 30px auto;
         
-        <!-- 蒂国通讯终端 - 专门的分享界面 -->
+        <!-- Hologram Terminal for Sharing -->
         <div class="sharing-options hologram-terminal">
             <h3 class="terminal-title">蒂国通讯终端 - 信息传输</h3>
+            <div class="terminal-subtitle">选择传输频道</div>
             
             <!-- 全息投影URL展示区 -->
             <div class="hologram-container">
@@ -140,7 +141,6 @@
             
             <!-- 直接显示传输频道选择 -->
             <div class="share-panel active" id="sharePanel">
-                <div class="share-panel-header">选择传输频道</div>
                 <div class="share-options">
                     <!-- 频道 Alpha -->
                     <button class="share-option" onclick="shareToApp('douban')">
@@ -689,6 +689,18 @@
             position: relative;
             overflow: hidden;
             box-shadow: 0 0 20px rgba(0, 204, 255, 0.3);
+        }
+        
+        /* 终端副标题 */
+        .terminal-subtitle {
+            color: var(--accent-color);
+            text-align: center;
+            font-family: 'Droid Sans Mono', monospace;
+            font-size: 14px;
+            letter-spacing: 1px;
+            margin-bottom: 25px;
+            opacity: 0.9;
+            text-shadow: 0 0 3px rgba(0, 255, 157, 0.5);
         }
         
         /* 标题样式 */
