@@ -116,7 +116,7 @@
                     <div class="hologram-ring top"></div>
                     <div class="hologram-ring middle"></div>
                     <div class="hologram-ring bottom"></div>
-                    <input type="text" id="hologram-url" class="hologram-url" value="{{ url_for('episode', episode_id=episode.id, _external=True) }}" readonly onclick="this.select();">
+                    <input type="text" id="hologram-url" class="hologram-url" value="{{ url_for('episode', episode_id=episode.id, _external=True) }}" readonly onclick="this.select(); document.execCommand('copy'); updateStatus('传输完成', 'success');" title="点击复制链接">
                 </div>
             </div>
             
@@ -138,32 +138,8 @@
                 </div>
             </div>
             
-            <!-- 紧凑型终端控制按钮 -->
-            <div class="compact-terminal-controls">
-                <!-- 复制链接按钮 -->
-                <button class="compact-button blue" onclick="copyHologramUrl()" title="复制链接">
-                    <div class="compact-led"></div>
-                    <div class="compact-icon">📋</div>
-                    <div class="compact-label">复制</div>
-                </button>
-                
-                <!-- 生成短链接按钮 -->
-                <button class="compact-button purple" onclick="encryptUrl()" title="生成短链接">
-                    <div class="compact-led"></div>
-                    <div class="compact-icon">🔒</div>
-                    <div class="compact-label">加密</div>
-                </button>
-                
-                <!-- 广播分享按钮 -->
-                <button class="compact-button green" onclick="broadcastEpisode()" title="分享广播">
-                    <div class="compact-led"></div>
-                    <div class="compact-icon">📡</div>
-                    <div class="compact-label">广播</div>
-                </button>
-            </div>
-            
-            <!-- 分享面板，默认隐藏 -->
-            <div class="share-panel" id="sharePanel">
+            <!-- 直接显示传输频道选择 -->
+            <div class="share-panel active" id="sharePanel">
                 <div class="share-panel-header">选择传输频道</div>
                 <div class="share-options">
                     <!-- 频道 Alpha -->
@@ -206,7 +182,6 @@
                         <span>量子网络</span>
                     </button>
                 </div>
-                <button class="close-panel" onclick="closeSharePanel()">终止传输</button>
             </div>
             
             <!-- 雷达扫描区 -->
@@ -1161,24 +1136,20 @@
                 inset 0 0 20px rgba(0, 255, 157, 0.2);
         }
         
-        /* 分享面板 */
+        /* 分享面板 - 直接显示版本 */
         .share-panel {
-            position: absolute;
-            top: 100%;
-            left: 0;
-            right: 0;
-            background: rgba(5, 6, 26, 0.95);
-            border: 2px solid var(--accent-color);
+            background: rgba(5, 6, 26, 0.7);
+            border: 1px solid var(--accent-color);
             border-radius: 8px;
             padding: 20px;
-            transition: transform 0.3s ease;
-            transform: translateY(0);
-            z-index: 100;
-            box-shadow: 0 0 20px rgba(0, 255, 157, 0.3);
+            margin: 20px 0;
+            box-shadow: 0 0 15px rgba(0, 255, 157, 0.2);
+            transition: all 0.3s ease;
         }
         
         .share-panel.active {
-            transform: translateY(-100%);
+            transform: none;
+            position: static;
         }
         
         .share-panel-header {
@@ -1714,102 +1685,6 @@
             });
         });
         
-        // 复制链接功能
-        function copyHologramUrl() {
-            var urlElement = document.getElementById('hologram-url');
-            urlElement.select();
-            document.execCommand('copy');
-            
-            // 更新状态指示器
-            updateStatus('传输完成', 'success');
-            
-            // 添加全息投影激活效果
-            var hologramEffect = document.querySelector('.hologram-effect');
-            hologramEffect.classList.add('transmitting');
-            
-            // 3秒后恢复
-            setTimeout(function() {
-                var statusLed = document.querySelector('.transmission-status .status-led');
-                var statusText = document.querySelector('.transmission-status .status-text');
-                
-                statusLed.className = 'status-led';
-                statusText.textContent = '传输就绪';
-                hologramEffect.classList.remove('transmitting');
-            }, 3000);
-        }
-        
-        // 生成短链接功能
-        function encryptUrl() {
-            var urlElement = document.getElementById('hologram-url');
-            var originalUrl = urlElement.value;
-            
-            // 更新状态为"处理中"
-            updateStatus('加密处理中', 'processing');
-            
-            // 模拟短链接生成过程 - 在实际应用中，这里应该调用短链接API
-            setTimeout(function() {
-                // 这里只是模拟生成短链接，实际应用中应替换为真实API调用
-                var shortUrl = "https://s.cmx.im/" + generateRandomString(7);
-                
-                // 更新输入框值为短链接
-                urlElement.value = shortUrl;
-                
-                // 更新状态为"加密完成"
-                updateStatus('加密完成', 'success');
-                
-                // 添加全息投影激活效果
-                var hologramEffect = document.querySelector('.hologram-effect');
-                hologramEffect.classList.add('encrypted');
-                
-                // 5秒后恢复
-                setTimeout(function() {
-                    // 点击按钮可以在原始链接和短链接之间切换
-                    urlElement.setAttribute('data-original-url', originalUrl);
-                    urlElement.setAttribute('data-short-url', shortUrl);
-                    urlElement.setAttribute('data-is-short', 'true');
-                    
-                    var statusLed = document.querySelector('.transmission-status .status-led');
-                    var statusText = document.querySelector('.transmission-status .status-text');
-                    
-                    statusLed.className = 'status-led';
-                    statusText.textContent = '传输就绪';
-                    hologramEffect.classList.remove('encrypted');
-                }, 3000);
-            }, 1500);
-        }
-        
-        // 生成随机字符串作为短链接代码
-        function generateRandomString(length) {
-            var chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-            var result = '';
-            for (var i = 0; i < length; i++) {
-                result += chars.charAt(Math.floor(Math.random() * chars.length));
-            }
-            return result;
-        }
-        
-        // 显示分享面板
-        function broadcastEpisode() {
-            var sharePanel = document.getElementById('sharePanel');
-            sharePanel.classList.add('active');
-            
-            // 更新状态
-            updateStatus('广播准备中', 'alert');
-        }
-        
-        // 关闭分享面板
-        function closeSharePanel() {
-            var sharePanel = document.getElementById('sharePanel');
-            sharePanel.classList.remove('active');
-            
-            // 恢复状态
-            var statusLed = document.querySelector('.transmission-status .status-led');
-            var statusText = document.querySelector('.transmission-status .status-text');
-            
-            statusLed.className = 'status-led';
-            statusText.textContent = '传输就绪';
-        }
-        
         // 分享到指定应用
         function shareToApp(app) {
             var urlElement = document.getElementById('hologram-url');
@@ -1839,9 +1714,18 @@
             // 更新状态
             updateStatus('广播成功', 'success');
             
-            // 3秒后关闭分享面板
+            // 添加全息投影激活效果
+            var hologramEffect = document.querySelector('.hologram-effect');
+            hologramEffect.classList.add('transmitting');
+            
+            // 3秒后恢复
             setTimeout(function() {
-                closeSharePanel();
+                var statusLed = document.querySelector('.transmission-status .status-led');
+                var statusText = document.querySelector('.transmission-status .status-text');
+                
+                statusLed.className = 'status-led';
+                statusText.textContent = '传输就绪';
+                hologramEffect.classList.remove('transmitting');
             }, 3000);
         }
         
