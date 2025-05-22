@@ -102,47 +102,8 @@
             </audio>
         </div>
         
-        <div style="display: flex; justify-content: center; margin: 30px auto; width: 130px;">
-            {% if prev_url %}
-            <a href="{{ prev_url }}" style="text-decoration: none;">
-            {% else %}
-            <a href="#" style="text-decoration: none; pointer-events: none; opacity: 0.5;">
-            {% endif %}
-                <button type="button" style="background: none; border: none; cursor: pointer; padding: 0; margin-right: 5px;">
-                    <div style="position: relative; width: 60px; height: 60px; overflow: hidden;">
-                        <!-- 完全闭合的左半圆 -->
-                        <div style="position: absolute; top: 0; left: 0; width: 60px; height: 60px; overflow: hidden;">
-                            <div class="left-half-circle" style="position: absolute; width: 60px; height: 60px; border-radius: 30px; border: 2px solid var(--primary-color); background: var(--dark-color); clip-path: polygon(0 0, 50% 0, 50% 100%, 0% 100%); box-shadow: 0 0 10px rgba(0, 204, 255, 0.3); transition: all 0.3s ease;"></div>
-                            
-                            <!-- 内部同心圆 - 完全闭合 -->
-                            <div style="position: absolute; top: 4px; left: 4px; width: 52px; height: 52px; border-radius: 26px; border: 1px solid rgba(0, 204, 255, 0.4); clip-path: polygon(0 0, 50% 0, 50% 100%, 0% 100%);"></div>
-                            <div style="position: absolute; top: 12px; left: 12px; width: 36px; height: 36px; border-radius: 18px; border: 1px solid rgba(0, 204, 255, 0.6); clip-path: polygon(0 0, 50% 0, 50% 100%, 0% 100%);"></div>
-                            <div style="position: absolute; top: 20px; left: 20px; width: 20px; height: 20px; border-radius: 10px; border: 1px solid rgba(0, 204, 255, 0.8); clip-path: polygon(0 0, 50% 0, 50% 100%, 0% 100%);"></div>
-                        </div>
-                    </div>
-                </button>
-            </a>
-            
-            {% if next_url %}
-            <a href="{{ next_url }}" style="text-decoration: none;">
-            {% else %}
-            <a href="#" style="text-decoration: none; pointer-events: none; opacity: 0.5;">
-            {% endif %}
-                <button type="button" style="background: none; border: none; cursor: pointer; padding: 0; margin-left: 5px;">
-                    <div style="position: relative; width: 60px; height: 60px; overflow: hidden;">
-                        <!-- 完全闭合的右半圆 -->
-                        <div style="position: absolute; top: 0; left: 0; width: 60px; height: 60px; overflow: hidden;">
-                            <div class="right-half-circle" style="position: absolute; width: 60px; height: 60px; border-radius: 30px; border: 2px solid var(--primary-color); background: var(--dark-color); clip-path: polygon(50% 0, 100% 0, 100% 100%, 50% 100%); box-shadow: 0 0 10px rgba(0, 204, 255, 0.3); transition: all 0.3s ease;"></div>
-                            
-                            <!-- 内部同心圆 - 完全闭合 -->
-                            <div style="position: absolute; top: 4px; left: 4px; width: 52px; height: 52px; border-radius: 26px; border: 1px solid rgba(0, 204, 255, 0.4); clip-path: polygon(50% 0, 100% 0, 100% 100%, 50% 100%);"></div>
-                            <div style="position: absolute; top: 12px; left: 12px; width: 36px; height: 36px; border-radius: 18px; border: 1px solid rgba(0, 204, 255, 0.6); clip-path: polygon(50% 0, 100% 0, 100% 100%, 50% 100%);"></div>
-                            <div style="position: absolute; top: 20px; left: 20px; width: 20px; height: 20px; border-radius: 10px; border: 1px solid rgba(0, 204, 255, 0.8); clip-path: polygon(50% 0, 100% 0, 100% 100%, 50% 100%);"></div>
-                        </div>
-                    </div>
-                </button>
-            </a>
-        </div>
+        <!-- 上一集/下一集导航按钮 -->
+        <div style="display: flex; justify-content: center; align-items: center; margin: 30px auto;
         
         <!-- 蒂国通讯终端 - 专门的分享界面 -->
         <div class="sharing-options hologram-terminal">
@@ -727,35 +688,33 @@
             cursor: pointer;
         }
         
-        /* 全息通讯终端样式 */
+        /* 全息通讯终端样式 - 紧凑版 */
         .hologram-terminal {
-            background: rgba(5, 6, 26, 0.8);
-            border: 2px solid var(--primary-color);
-            border-radius: 8px;
-            padding: 25px;
-            margin: 30px 0;
+            background: rgba(5, 6, 26, 0.7);
+            border: 1px solid var(--primary-color);
+            border-radius: 6px;
+            padding: 15px;
+            margin: 20px 0;
             position: relative;
             overflow: hidden;
-            box-shadow: 0 0 20px rgba(0, 204, 255, 0.3);
+            box-shadow: 0 0 12px rgba(0, 204, 255, 0.2);
         }
         
-        /* 标题样式 */
+        /* 标题样式 - 更小 */
         .terminal-title {
             color: var(--primary-color);
             text-align: center;
-            font-family: 'Star Jedi', 'Arial', sans-serif;
-            letter-spacing: 2px;
-            margin-bottom: 20px;
-            text-shadow: 
-                0 0 5px var(--primary-color),
-                0 0 10px var(--primary-color);
+            font-size: 14px;
+            letter-spacing: 1px;
+            margin-bottom: 12px;
+            text-shadow: 0 0 3px var(--primary-color);
         }
         
-        /* 全息投影容器 */
+        /* 全息投影容器 - 紧凑 */
         .hologram-container {
             position: relative;
-            height: 120px;
-            margin: 30px 0;
+            height: 80px;
+            margin: 15px 0;
             display: flex;
             justify-content: center;
             align-items: center;
@@ -825,41 +784,41 @@
             }
         }
         
-        /* 全息投影 */
+        /* 全息投影 - 紧凑 */
         .hologram-projection {
             position: relative;
-            width: 80%;
-            height: 60px;
+            width: 85%;
+            height: 45px;
             display: flex;
             justify-content: center;
             align-items: center;
             z-index: 2;
         }
         
-        /* 全息环 */
+        /* 全息环 - 更小 */
         .hologram-ring {
             position: absolute;
             border-radius: 50%;
-            border: 1px solid rgba(0, 204, 255, 0.5);
-            box-shadow: 0 0 10px rgba(0, 204, 255, 0.3);
+            border: 1px solid rgba(0, 204, 255, 0.4);
+            box-shadow: 0 0 6px rgba(0, 204, 255, 0.2);
         }
         
         .hologram-ring.top {
             width: 100%;
             height: 100%;
-            animation: rotate 15s linear infinite;
+            animation: rotate 20s linear infinite;
         }
         
         .hologram-ring.middle {
-            width: 80%;
-            height: 80%;
-            animation: rotate-reverse 12s linear infinite;
+            width: 75%;
+            height: 75%;
+            animation: rotate-reverse 16s linear infinite;
         }
         
         .hologram-ring.bottom {
-            width: 60%;
-            height: 60%;
-            animation: rotate 10s linear infinite;
+            width: 50%;
+            height: 50%;
+            animation: rotate 12s linear infinite;
         }
         
         @keyframes rotate {
@@ -880,30 +839,31 @@
             }
         }
         
-        /* URL输入框 */
+        /* URL输入框 - 紧凑 */
         .hologram-url {
             width: 100%;
             background: rgba(0, 0, 0, 0.3);
             border: 1px solid var(--primary-color);
             color: var(--primary-color);
-            padding: 10px;
+            padding: 6px 8px;
             text-align: center;
             font-family: 'Droid Sans Mono', monospace;
-            letter-spacing: 1px;
-            box-shadow: 0 0 10px rgba(0, 204, 255, 0.3);
+            font-size: 11px;
+            letter-spacing: 0.5px;
+            box-shadow: 0 0 6px rgba(0, 204, 255, 0.2);
             position: relative;
             z-index: 5;
         }
         
         .hologram-url:focus {
             outline: none;
-            box-shadow: 0 0 15px rgba(0, 204, 255, 0.5);
+            box-shadow: 0 0 8px rgba(0, 204, 255, 0.4);
         }
         
-        /* 数据流可视化区域 */
+        /* 数据流可视化区域 - 更小 */
         .data-stream-visualization {
-            margin: 30px 0;
-            height: 120px;
+            margin: 15px 0;
+            height: 60px;
             position: relative;
         }
         
@@ -922,9 +882,9 @@
             width: 100%;
             height: 100%;
             background-image: 
-                linear-gradient(to right, rgba(0, 204, 255, 0.1) 1px, transparent 1px),
-                linear-gradient(to bottom, rgba(0, 204, 255, 0.1) 1px, transparent 1px);
-            background-size: 25px 25px;
+                linear-gradient(to right, rgba(0, 204, 255, 0.08) 1px, transparent 1px),
+                linear-gradient(to bottom, rgba(0, 204, 255, 0.08) 1px, transparent 1px);
+            background-size: 15px 15px;
             z-index: 1;
         }
         
@@ -937,37 +897,37 @@
         
         .stream-line {
             position: absolute;
-            height: 2px;
+            height: 1px;
             background: linear-gradient(
                 to right,
                 transparent 0%,
-                var(--primary-color) 20%,
-                rgba(0, 255, 157, 0.8) 50%,
-                var(--primary-color) 80%,
+                rgba(0, 204, 255, 0.6) 20%,
+                rgba(0, 255, 157, 0.5) 50%,
+                rgba(0, 204, 255, 0.6) 80%,
                 transparent 100%
             );
-            box-shadow: 0 0 5px rgba(0, 204, 255, 0.5);
+            box-shadow: 0 0 3px rgba(0, 204, 255, 0.3);
         }
         
         .stream-line.line-1 {
-            top: 25%;
-            width: 60%;
-            left: 20%;
-            animation: data-flow-1 3s infinite;
+            top: 30%;
+            width: 50%;
+            left: 25%;
+            animation: data-flow-1 4s infinite;
         }
         
         .stream-line.line-2 {
             top: 50%;
-            width: 80%;
-            left: 10%;
-            animation: data-flow-2 4s infinite 1s;
+            width: 65%;
+            left: 17%;
+            animation: data-flow-2 5s infinite 1s;
         }
         
         .stream-line.line-3 {
-            top: 75%;
-            width: 50%;
-            left: 25%;
-            animation: data-flow-3 3.5s infinite 0.5s;
+            top: 70%;
+            width: 40%;
+            left: 30%;
+            animation: data-flow-3 4.5s infinite 0.5s;
         }
         
         @keyframes data-flow-1 {
@@ -1112,43 +1072,43 @@
             margin-top: 5px;
         }
         
-        /* 蓝色按钮 */
+        /* 蓝色按钮 - 调低强度 */
         .terminal-button.blue {
-            border-color: var(--primary-color);
-            box-shadow: 0 0 10px rgba(0, 204, 255, 0.2);
+            border-color: rgba(0, 204, 255, 0.6);
+            box-shadow: 0 0 6px rgba(0, 204, 255, 0.15);
         }
         .terminal-button.blue .button-led {
             background: var(--primary-color);
-            box-shadow: 0 0 5px var(--primary-color);
+            box-shadow: 0 0 3px var(--primary-color);
         }
         .terminal-button.blue:hover {
-            box-shadow: 0 0 15px rgba(0, 204, 255, 0.4);
+            box-shadow: 0 0 10px rgba(0, 204, 255, 0.25);
         }
         
-        /* 紫色按钮 */
+        /* 紫色按钮 - 调低强度 */
         .terminal-button.purple {
-            border-color: #9966ff;
-            box-shadow: 0 0 10px rgba(153, 102, 255, 0.2);
+            border-color: rgba(153, 102, 255, 0.6);
+            box-shadow: 0 0 6px rgba(153, 102, 255, 0.15);
         }
         .terminal-button.purple .button-led {
             background: #9966ff;
-            box-shadow: 0 0 5px #9966ff;
+            box-shadow: 0 0 3px #9966ff;
         }
         .terminal-button.purple:hover {
-            box-shadow: 0 0 15px rgba(153, 102, 255, 0.4);
+            box-shadow: 0 0 10px rgba(153, 102, 255, 0.25);
         }
         
-        /* 绿色按钮 */
+        /* 绿色按钮 - 调低强度 */
         .terminal-button.green {
-            border-color: var(--accent-color);
-            box-shadow: 0 0 10px rgba(0, 255, 157, 0.2);
+            border-color: rgba(0, 255, 157, 0.6);
+            box-shadow: 0 0 6px rgba(0, 255, 157, 0.15);
         }
         .terminal-button.green .button-led {
             background: var(--accent-color);
-            box-shadow: 0 0 5px var(--accent-color);
+            box-shadow: 0 0 3px var(--accent-color);
         }
         .terminal-button.green:hover {
-            box-shadow: 0 0 15px rgba(0, 255, 157, 0.4);
+            box-shadow: 0 0 10px rgba(0, 255, 157, 0.25);
         }
         
         /* 分享面板 */
