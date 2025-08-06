@@ -62,18 +62,6 @@ def default_episodes():
         'is_demo': True  # 标记为演示播客
     }]
 
-# 默认事件数据
-def default_events():
-    return [{
-        'id': 1,
-        'title': 'Welcome to Planner',
-        'date': datetime.now().strftime('%Y-%m-%d'),
-        'time': '09:00',
-        'endTime': '10:00',
-        'location': '',
-        'notes': 'This is a demo event. You can delete it anytime.'
-    }]
-
 # 从Cloudinary下载JSON数据
 def download_episodes_from_cloudinary():
     # 首次部署时，requests可能不可用，使用默认数据
@@ -94,22 +82,6 @@ def download_episodes_from_cloudinary():
         print(f"从Cloudinary下载播客数据出错: {e}")
         return default_episodes()
 
-# 新增：从Cloudinary下载事件数据
-def download_events_from_cloudinary():
-    if not requests_available or not cloudinary_available:
-        return default_events()
-        
-    try:
-        url = cloudinary.utils.cloudinary_url("planner_events", resource_type="raw")[0]
-        response = requests.get(url)
-        if response.status_code == 200:
-            return json.loads(response.text)
-        else:
-            return default_events()
-    except Exception as e:
-        print(f"从Cloudinary下载事件数据出错: {e}")
-        return default_events()
-
 # 上传JSON数据到Cloudinary
 def upload_episodes_to_cloudinary(episodes):
     try:
@@ -125,24 +97,6 @@ def upload_episodes_to_cloudinary(episodes):
         return result.get('secure_url')
     except Exception as e:
         print(f"上传播客数据到Cloudinary出错: {e}")
-        return None
-
-# 新增：上传事件数据到Cloudinary
-def upload_events_to_cloudinary(events):
-    if not cloudinary_available:
-        return None
-        
-    try:
-        events_json = json.dumps(events, ensure_ascii=False)
-        result = cloudinary.uploader.upload(
-            "data:application/json;base64," + base64.b64encode(events_json.encode('utf-8')).decode('utf-8'),
-            resource_type="raw",
-            public_id="planner_events",
-            overwrite=True
-        )
-        return result.get('secure_url')
-    except Exception as e:
-        print(f"上传事件数据到Cloudinary出错: {e}")
         return None
 
 # 初始化播客数据
@@ -175,31 +129,6 @@ def inject_site_info():
 @app.route('/')
 def index():
     return render_template('index.html', episodes=EPISODES)
-
-# 新增：日程规划器页面
-@app.route('/planner')
-def planner():
-    return render_template('planner.html')
-
-# 新增：获取事件数据API
-@app.route('/api/events')
-def get_events():
-    events = download_events_from_cloudinary()
-    return jsonify(events)
-
-# 新增：保存事件数据API
-@app.route('/api/events', methods=['POST'])
-def save_events():
-    try:
-        events = request.get_json()
-        if events is not None:
-            upload_events_to_cloudinary(events)
-            return jsonify({"status": "success"})
-        else:
-            return jsonify({"status": "error", "message": "Invalid data"}), 400
-    except Exception as e:
-        print(f"保存事件出错: {e}")
-        return jsonify({"status": "error", "message": str(e)}), 500
 
 # 管理员登录
 @app.route('/admin', methods=['GET', 'POST'])
@@ -361,6 +290,9 @@ def status():
         "css_exists": css_exists,
         "css_path": css_path
     })
+@app.route('/planner')
+def planner():
+    return render_template('planner.html')
 
 if __name__ == '__main__':
     app.run(debug=True)
