@@ -290,9 +290,91 @@ def status():
         "css_exists": css_exists,
         "css_path": css_path
     })
-@app.route('/planner')
-def planner():
-    return render_template('planner.html')
+# 日历相关路由 - 添加到你现有的app.py文件中
+
+# 日历页面路由
+@app.route('/calendar')
+def calendar_page():
+    return send_from_directory('.', 'calendar.html')
+
+# 日历数据API - 获取日历数据
+@app.route('/api/calendar/load', methods=['GET'])
+def load_calendar_data():
+    if not cloudinary_available:
+        return jsonify({"error": "Cloudinary not available"}), 500
+    
+    try:
+        # 尝试从Cloudinary获取日历数据
+        url = cloudinary.utils.cloudinary_url("calendar_data", resource_type="raw")[0]
+        if requests_available:
+            response = requests.get(url)
+            if response.status_code == 200:
+                return jsonify(response.json())
+        
+        # 如果没有数据，返回默认数据
+        default_calendar_data = {
+            "events": [
+                {
+                    "id": 1,
+                    "title": "播客录制",
+                    "date": datetime.now().strftime('%Y-%m-%d'),
+                    "time": "09:00",
+                    "endTime": "10:30",
+                    "location": "录音室",
+                    "notes": "第10期节目录制"
+                }
+            ],
+            "timeSettings": {
+                "startHour": 6,
+                "endHour": 22
+            }
+        }
+        return jsonify(default_calendar_data)
+        
+    except Exception as e:
+        print(f"加载日历数据出错: {e}")
+        return jsonify({"error": "Failed to load calendar data"}), 500
+
+# 日历数据API - 保存日历数据
+@app.route('/api/calendar/save', methods=['POST'])
+def save_calendar_data():
+    if not cloudinary_available:
+        return jsonify({"error": "Cloudinary not available"}), 500
+    
+    try:
+        calendar_data = request.get_json()
+        
+        # 添加时间戳
+        calendar_data['lastUpdated'] = datetime.now().isoformat()
+        
+        # 转换为JSON字符串并上传到Cloudinary
+        calendar_json = json.dumps(calendar_data, ensure_ascii=False)
+        result = cloudinary.uploader.upload(
+            "data:application/json;base64," + base64.b64encode(calendar_json.encode('utf-8')).decode('utf-8'),
+            resource_type="raw",
+            public_id="calendar_data",
+            overwrite=True
+        )
+        
+        return jsonify({
+            "success": True,
+            "url": result.get('secure_url'),
+            "saved_at": datetime.now().isoformat()
+        })
+        
+    except Exception as e:
+        print(f"保存日历数据出错: {e}")
+        return jsonify({"error": "Failed to save calendar data"}), 500
+
+# 日历管理页面（需要登录）
+@app.route('/calendar/admin')
+@login_required
+def calendar_admin():
+    return render_template('calendar_admin.html')
+
+# 在你现有的 upload 路由后面，添加一个指向日历的链接
+# 你可以在 upload.html 模板中添加：
+# <a href="/calendar" class="btn">📅 管理日程</a>
 
 if __name__ == '__main__':
     app.run(debug=True)
