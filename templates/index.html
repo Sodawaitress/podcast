@@ -192,4 +192,101 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 });
 </script>
+{% endblock %}{% extends "base.html" %}
+
+{% block content %}
+<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem;">
+    <h2>播客列表</h2>
+    
+    <!-- 添加Planner按钮 -->
+    <a href="/planner" style="
+        display: inline-flex;
+        align-items: center;
+        background-color: black;
+        color: white;
+        padding: 12px 24px;
+        text-decoration: none;
+        border: 2px solid black;
+        font-weight: bold;
+        transition: all 0.2s;
+    " onmouseover="this.style.backgroundColor='#333';" 
+       onmouseout="this.style.backgroundColor='black';">
+        Planner
+    </a>
+</div>
+
+{% if episodes|length > 0 %}
+    <div class="episodes-list">
+        {% for episode in episodes %}
+        <div class="episode-card">
+            <h3>{{ episode.title }}</h3>
+            <div class="episode-meta">
+                <span class="episode-date">{{ episode.pub_date }}</span>
+            </div>
+            <p class="episode-description">{{ episode.description }}</p>
+            <div class="button-container">
+                <a href="{{ url_for('episode', episode_id=episode.id) }}" class="rainbowplanet-concentric">
+                    <!-- 彩虹行星效果层 -->
+                    <span class="planet-effect"></span>
+                    
+                    <!-- 同心圆结构 -->
+                    <div class="concentric-circles">
+                        <div class="circle-outer"></div>
+                        <div class="circle-middle"></div>
+                        <div class="circle-inner"></div>
+                        <div class="button-center">
+                            <div class="play-icon"></div>
+                        </div>
+                    </div>
+                </a>
+            </div>
+            
+            {% if episode.is_demo %}
+            <span style="display: inline-block; margin-top: 8px; font-size: 0.8em; color: #ff5fd7;">* 演示播客</span>
+            {% endif %}
+        </div>
+        {% endfor %}
+    </div>
+{% else %}
+    <p>还没有上传任何播客。</p>
+{% endif %}
+
+<div class="subscription-guide">
+    <h3>如何订阅</h3>
+    <p>将本站的 RSS Feed 地址添加到您的播客应用中：</p>
+    <code>{{ site_url }}/feed.xml</code>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // 为卡片添加点击功能
+    var episodeCards = document.querySelectorAll('.episode-card');
+    
+    episodeCards.forEach(function(card) {
+        var link = card.querySelector('a').getAttribute('href');
+        
+        // 避免重复触发按钮的点击事件
+        card.addEventListener('click', function(e) {
+            // 如果点击的是按钮本身或其内部元素，不执行操作
+            if (e.target.closest('.rainbowplanet-concentric') || e.target.closest('a')) {
+                return;
+            }
+            
+            // 否则跳转到相应页面
+            window.location.href = link;
+        });
+    });
+    
+    // 为同心圆按钮添加悬停效果（CSS已包含基本效果）
+    var concentricButtons = document.querySelectorAll('.rainbowplanet-concentric');
+    
+    // 可以在这里添加额外的动画效果如需要
+    concentricButtons.forEach(function(button) {
+        // 这里可以添加额外的JavaScript效果
+        // 目前CSS已经包含了主要的视觉效果
+    });
+});
+</script>
 {% endblock %}
