@@ -73,15 +73,17 @@
             }
           ]);
           
-          const [showForm, setShowForm] = useState(false);
-          const [editingEvent, setEditingEvent] = useState(null);
           const [formData, setFormData] = useState({
             title: '',
             date: new Date().toISOString().split('T')[0],
             time: '09:00',
             endTime: '10:00',
             location: '',
-            notes: ''
+            notes: '',
+            // 新增重复功能字段
+            repeat: 'none', // none, daily, weekly, monthly
+            repeatEnd: '', // 重复结束日期
+            repeatDays: [] // 对于周重复，选择哪几天
           });
 
           // 页面加载时从Cloudinary读取数据
@@ -236,7 +238,10 @@
                 time: tempEvent.time,
                 endTime: tempEvent.endTime,
                 location: '',
-                notes: ''
+                notes: '',
+                repeat: 'none',
+                repeatEnd: '',
+                repeatDays: []
               });
               setShowForm(true);
             }
@@ -318,29 +323,78 @@
             
             return days;
           };
-
+          // 生成重复事件的函数
+          const generateRepeatEvents = (formData) => {
+            const events = [];
+            const startDate = new Date(formData.date);
+            const endDate = formData.repeatEnd ? new Date(formData.repeatEnd) : new Date(startDate.getTime() + 90 * 24 * 60 * 60 * 1000); // 默认3个月
+            
+            let currentDate = new Date(startDate);
+            let count = 0;
+            const maxEvents = 100; // 防止生成过多事件
+            
+            while (currentDate <= endDate && count < maxEvents) {
+              // 创建事件
+              events.push({
+                ...formData,
+                id: Date.now() + count,
+                date: currentDate.toISOString().split('T')[0],
+                repeat: 'none' // 生成的单个事件不再标记为重复
+              });
+              
+              // 根据重复类型计算下一个日期
+              switch (formData.repeat) {
+                case 'daily':
+                  currentDate.setDate(currentDate.getDate() + 1);
+                  break;
+                case 'weekly':
+                  currentDate.setDate(currentDate.getDate() + 7);
+                  break;
+                case 'monthly':
+                  currentDate.setMonth(currentDate.getMonth() + 1);
+                  break;
+                default:
+                  break;
+              }
+              count++;
+            }
+            
+            return events;
+          };
           const handleSaveEvent = async () => {
             let newEvents;
-            if (editingEvent) {
-              newEvents = events.map(event => 
-                event.id === editingEvent.id 
-                  ? { ...formData, id: editingEvent.id }
-                  : event
-              );
-              setEditingEvent(null);
+            
+            if (formData.repeat === 'none' || editingEvent) {
+              // 单次事件或编辑事件，使用原有逻辑
+              if (editingEvent) {
+                newEvents = events.map(event => 
+                  event.id === editingEvent.id 
+                    ? { ...formData, id: editingEvent.id, repeat: 'none' }
+                    : event
+                );
+                setEditingEvent(null);
+              } else {
+                newEvents = [...events, { ...formData, id: Date.now() }];
+              }
             } else {
-              newEvents = [...events, { ...formData, id: Date.now() }];
+              // 生成重复事件
+              const repeatEvents = generateRepeatEvents(formData);
+              newEvents = [...events, ...repeatEvents];
             }
             
             setEvents(newEvents);
             
+            // 重置表单，包括新的重复字段
             setFormData({
               title: '',
               date: new Date().toISOString().split('T')[0],
               time: '09:00',
               endTime: '10:00',
               location: '',
-              notes: ''
+              notes: '',
+              repeat: 'none',
+              repeatEnd: '',
+              repeatDays: []
             });
             setShowForm(false);
             
@@ -989,7 +1043,37 @@ e.stopPropagation();
                           />
                         </div>
                       </div>
+                      {/* 新增：重复选项 */}
+                        <div className="border-t-2 border-black pt-4 mt-4">
+                          <label className="block font-bold mb-1">重复</label>
+                          <select
+                            value={formData.repeat}
+                            onChange={(e) => setFormData({...formData, repeat: e.target.value})}
+                            className="w-full p-2 border-2 border-black"
+                          >
+                            <option value="none">不重复</option>
+                            <option value="daily">每天</option>
+                            <option value="weekly">每周</option>
+                            <option value="monthly">每月</option>
+                          </select>
+                        </div>
 
+                        {/* 如果选择了重复，显示结束日期 */}
+                        {formData.repeat !== 'none' && (
+                          <div>
+                            <label className="block font-bold mb-1">重复结束日期</label>
+                            <input
+                              type="date"
+                              value={formData.repeatEnd}
+                              onChange={(e) => setFormData({...formData, repeatEnd: e.target.value})}
+                              className="w-full p-2 border-2 border-black"
+                              min={formData.date}
+                            />
+                            <p className="text-xs text-gray-600 mt-1">
+                              留空将默认创建3个月的重复事件
+                            </p>
+                          </div>
+                        )}
                       <div className="flex gap-4 mt-6">
                         <button
                           onClick={() => {
@@ -1001,7 +1085,10 @@ e.stopPropagation();
                               time: '09:00',
                               endTime: '10:00',
                               location: '',
-                              notes: ''
+                              notes: '',
+                              repeat: 'none',
+                              repeatEnd: '',
+                              repeatDays: []
                             });
                           }}
                           className="flex-1 py-2 border-2 border-black hover:bg-gray-100"
@@ -1020,12 +1107,12 @@ e.stopPropagation();
                             删除
                           </button>
                         )}
-                        <button
+                       <button
                           onClick={handleSaveEvent}
                           disabled={!formData.title.trim()}
                           className="flex-1 py-2 border-2 border-black bg-black text-white hover:bg-gray-800 disabled:opacity-50"
                         >
-                          {editingEvent ? '保存' : '添加'}
+                          {editingEvent ? '保存' : (formData.repeat !== 'none' ? '创建重复事件' : '添加')}
                         </button>
                       </div>
                     </div>

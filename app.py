@@ -291,5 +291,17 @@ def status():
         "css_path": css_path
     })
 
+@app.route('/calendar.html')
+@app.route('/calendar')
+def calendar():
+    return render_template('calendar.html')
+
+@app.errorhandler(404)
+def page_not_found(e):
+    return render_template('error.html', 
+                         error="404 - 页面未找到", 
+                         error_code="404"), 404
+
+    
 if __name__ == '__main__':
     app.run(debug=True)
