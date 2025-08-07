@@ -292,9 +292,16 @@ def status():
     })
 
 @app.route('/calendar.html')
-@app.route('/calendar')  # 也可以支持不带.html的URL
+@app.route('/calendar')
 def calendar():
-    return send_from_directory('static', 'calendar.html')
+    # 直接读取并返回文件内容，不经过模板引擎
+    try:
+        file_path = os.path.join(app.root_path, 'static', 'calendar.html')
+        with open(file_path, 'r', encoding='utf-8') as f:
+            content = f.read()
+        return content, 200, {'Content-Type': 'text/html; charset=utf-8'}
+    except Exception as e:
+        return f"Error loading calendar: {str(e)}", 500
 
     
 if __name__ == '__main__':
