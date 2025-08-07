@@ -1,4 +1,4 @@
-from flask import Flask, render_template, send_from_directory, url_for, request, redirect, jsonify
+from flask import Flask, render_template, send_from_directory, url_for, request, redirect, jsonify, send_file
 from flask import session, flash  # Add these imports
 from datetime import datetime
 import os
@@ -25,7 +25,7 @@ except ImportError:
     cloudinary_available = False
     print("警告: Cloudinary模块未找到。")
 
-app = Flask(__name__, static_folder='static')
+app = Flask(__name__, static_folder='static', static_url_path='/static')
 app.config['SECRET_KEY'] = secrets.token_hex(16)
 app.config['SITE_NAME'] = "灰礁播客"
 app.config['SITE_DESCRIPTION'] = "浮筝带来的灰礁上的声音"
@@ -294,14 +294,16 @@ def status():
 @app.route('/calendar.html')
 @app.route('/calendar')
 def calendar():
-    # 直接读取并返回文件内容，不经过模板引擎
     try:
-        file_path = os.path.join(app.root_path, 'static', 'calendar.html')
-        with open(file_path, 'r', encoding='utf-8') as f:
-            content = f.read()
-        return content, 200, {'Content-Type': 'text/html; charset=utf-8'}
-    except Exception as e:
-        return f"Error loading calendar: {str(e)}", 500
+        # 方法1: 使用send_from_directory
+        return send_from_directory('static', 'calendar.html')
+    except:
+        try:
+            # 方法2: 使用send_file
+            file_path = os.path.join(app.static_folder, 'calendar.html')
+            return send_file(file_path, mimetype='text/html')
+        except Exception as e:
+            return f"Error: {str(e)}", 500
 
     
 if __name__ == '__main__':
